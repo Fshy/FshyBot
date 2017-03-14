@@ -1,0 +1,2 @@
+# FshyBot
+Discord Bot
