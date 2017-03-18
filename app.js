@@ -108,6 +108,30 @@ bot.on('message', (message)=>{
     });
   }
 
+  // !register - Registers user to db
+  if(command === 'register'){
+    request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {
+      res = JSON.parse(body);
+      var exists = false;
+      if (error!=null) {
+        message.channel.sendMessage('\`ERROR: Could not access database\`');
+      }else {
+        for (var i = 0; i < res.user.length; i++) {
+          if (res.user[i].id===message.author.id) {
+            message.channel.sendMessage('\`ERROR: User already exists in database\`');
+            exists = true;
+          }
+        }
+        if (!exists) {
+          res.user.push({id: message.author.id, name:message.author.username, currency:5000});
+          // res = JSON.stringify(res);
+          request({ url: 'https://api.myjson.com/bins/'+config.jsonDB, method: 'PUT', json: res});
+          message.channel.sendMessage('Registered new wallet for @'+message.author.username);
+        }
+      }
+    });
+  }
+
   // !getbal <username> - Finds user balance
   if(command === 'getbal'){
     console.log('https://api.myjson.com/bins/'+config.jsonDB);
@@ -121,7 +145,6 @@ bot.on('message', (message)=>{
           for (var i = 0; i < res.user.length; i++) {
             if (res.user[i].id===id) {
               message.channel.sendMessage('Currency: $'+res.user[i].currency);
-              console.log(body.user[i].currency);
             }
           }
         }else{
