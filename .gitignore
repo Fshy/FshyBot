@@ -1,6 +1,10 @@
 # Config
 config.json
 
+# Webserver
+index.js
+public/
+
 # Logs
 logs
 *.log

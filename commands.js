@@ -1,5 +1,6 @@
-const request = require('request');
-const config  = require('./config.json');
+const request   = require('request');
+const Instafeed = require("instafeed.js");
+const config    = require('./config.json');
 
 module.exports = {
   help: function (message) {
@@ -112,7 +113,7 @@ module.exports = {
         if (!exists) {
           res.user.push({id: message.author.id, name:message.author.username, currency:5000});
           request({ url: 'https://api.myjson.com/bins/'+config.jsonDB, method: 'PUT', json: res});
-          message.channel.sendMessage('Registered new wallet for @'+message.author.id);
+          message.channel.sendMessage('Registered new wallet for <@'+message.author.id+'>');
         }
       }
     });
@@ -173,6 +174,32 @@ module.exports = {
           }
         }
       }
+    });
+  },
+  insta: function (args,message) {
+    var username=args[0];
+    request('https://www.instagram.com/'+username+'/?__a=1', function (error, response, body) {
+      res = JSON.parse(body);
+      var imgs = [];
+      var feed = new Instafeed({
+        get: 'user',
+        userId: res.user.id,
+        limit: '3',
+        sortBy: 'most-liked',
+        resolution: 'standard_resolution',
+        clientId: config.IGclientId,
+        accessToken: config.IGaccesstoken,
+        // template:'{{image}}',
+        mock:true,
+        success: function (data) {
+          var images = data.data, result, i, image;
+          for (i = 0; i < images.length; i++) {
+            console.log(images[i]);
+          }
+        }
+      });
+      feed.run();
+      // console.log(feed);
     });
   }
 };

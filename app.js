@@ -76,6 +76,11 @@ bot.on('message', (message)=>{
   // !walletadd <username> <amount> - Adds to User
   if(command === 'walletadd'){
     commands.walletadd(args,message);
+  }else
+
+  // !insta <username> - Displays 3 most popular images for the user
+  if (command === 'insta') {
+    commands.insta(args,message);
   }
 
 });
