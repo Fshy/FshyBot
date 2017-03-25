@@ -32,7 +32,7 @@ module.exports = {
           **!queue**\t- Display the current queue
           **!leave**\t- Clears the song queue and leaves the channel
 
-          For source code and other dank memes check [arc.moe](https://arc.moe)`,
+          For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](https://arc.moe)`,
         color: 15473237
       });
   },
