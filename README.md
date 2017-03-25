@@ -7,21 +7,24 @@
 [![David](https://img.shields.io/david/Fshy/FshyBot.svg?style=flat-square)](https://david-dm.org/Fshy/FshyBot)
 [![David](https://img.shields.io/david/dev/Fshy/FshyBot.svg?style=flat-square)](https://david-dm.org/Fshy/FshyBot?type=dev)
 ---
-<h2><center>Commands</center></h2>
+<h2><p align="center">Commands</p></h2>
 
-#####General
+<h5>General</h5>
 <pre>
 !help                   - Displays all available commands.
 !ping                   - Displays latency between the bot and the server.
 !uptime                 - Displays time since launch.
 </pre>
 
-#####API Lookup
+<h5>API Lookup</h5>
+
 <pre>
 !btc                    - Displays current Bitcoin spot price
 !eth                    - Displays current Ethereum spot price
 </pre>
-#####Music
+
+<h5>Music</h5>
+
 <pre>
 !play [title/link]      - Searches and queues the given term link for playback
 !playlist [playlistId]  - Queues all videos from a youtube playlist
