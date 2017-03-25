@@ -32,3 +32,9 @@
 !queue                  - Display the current queue
 !leave                  - Clears the song queue and leaves the channel
 </pre>
+
+<h5>Extra</h5>
+
+<pre>
+>                       - Any message preceded by an angle bracket converts it to greentext
+</pre>

@@ -32,6 +32,8 @@ module.exports = {
           **!queue**\t- Display the current queue
           **!leave**\t- Clears the song queue and leaves the channel
 
+          **>**\t- Any message preceded by an angle bracket converts it to greentext
+
           For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](https://arc.moe)`,
         color: 15473237
       });
@@ -79,6 +81,10 @@ module.exports = {
         }
       }
     });
+  },
+  greentext: function (message) {
+    message.delete().then().catch(console.error);
+    message.channel.sendMessage(message.author+":\`\`\`css\n"+message+"\`\`\`");
   }
   // register: function (message) {
   //   request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {

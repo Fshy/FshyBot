@@ -23,12 +23,18 @@ bot.on('ready', () => {
 
 bot.on('message', (message)=>{
   if(message.author.bot && !message.content.startsWith(prefix+'play')) return;
-  if(!message.content.startsWith(prefix)) return;
+
+  if(!message.content.startsWith(prefix) && !message.content.startsWith(">")) return;
   console.log("-- "+message.author.username+": "+message.content);
 
   let command = message.content.split(/\s+/g)[0];
   command = command.slice(prefix.length);
   let args = message.content.split(/\s+/g).slice(1);
+
+  // Greentext
+  if(message.content.startsWith(">")){
+    commands.greentext(message);
+  }else
 
   // !help = Displays all available commands
   if(command === 'help'){
