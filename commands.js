@@ -20,7 +20,7 @@ module.exports = {
 
           __**Commands:**__
           **!help**\t- Displays all available commands.
-          **!ping**\t- Displays latency between the bot and the server.
+          **!ping**\t- Displays response time to server.
           **!uptime**\t- Displays time since launch.
 
           **!btc**\t- Displays current Bitcoin spot price
@@ -63,21 +63,6 @@ module.exports = {
         message.channel.sendMessage('\`ERROR: Could not access coinmarketcap API\`');
       }else {
         message.channel.sendMessage('Current ETH Price: \`$'+response.price.usd.toFixed(2)+'\`');
-      }
-    });
-  },
-  search: function (args,message) {
-    var a = args.join("%20");
-    request('http://api.duckduckgo.com/?q='+a+'&format=json', function (error, response, body) {
-      body = JSON.parse(body);
-      if (error!=null) {
-        message.channel.sendMessage('\`ERROR: Could not access DuckDuckGo API\`');
-      }else {
-        if (body.Abstract) {
-          message.channel.sendMessage('```Markdown\n#'+body.Heading+':\n'+body.Abstract+'```');
-        }else {
-          message.channel.sendMessage('\`No Instant Answer Available\`');
-        }
       }
     });
   },

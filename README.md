@@ -12,7 +12,7 @@
 <h5>General</h5>
 <pre>
 !help                   - Displays all available commands.
-!ping                   - Displays latency between the bot and the server.
+!ping                   - Displays response time to server.
 !uptime                 - Displays time since launch.
 </pre>
 

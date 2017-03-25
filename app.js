@@ -37,7 +37,7 @@ bot.on('message', (message)=>{
 
   // !ping = Displays latency between the bot and the server
   if(command === 'ping'){
-    message.channel.sendMessage('Response Time between '+message.author+' and '+name+': \`'+(Date.now()-message.createdTimestamp)+'ms\`');
+    message.channel.sendMessage('Response time to discord server: \`'+(Date.now()-message.createdTimestamp)+'ms\`');
   }else
 
   // !uptime = Displays time since launch
