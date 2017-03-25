@@ -1,5 +1,4 @@
 const request   = require('request');
-const Instafeed = require("instafeed.js");
 const config    = require('./config.json');
 
 module.exports = {
@@ -26,7 +25,6 @@ module.exports = {
 
           **!btc**\t- Displays current Bitcoin spot price
           **!eth**\t- Displays current Ethereum spot price
-          **!search \<term\>**\t- Utilizes DuckDuckGo API for an instant answer
 
           **!play \<search term | link\>**\t- Searches and queues the given term/link for playback
           **!playlist \<playlistId\>**\t- Queues all videos from a youtube playlist
@@ -96,110 +94,84 @@ module.exports = {
         }
       }
     });
-  },
-  register: function (message) {
-    request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {
-      res = JSON.parse(body);
-      var exists = false;
-      if (error!=null) {
-        message.channel.sendMessage('\`ERROR: Could not access database\`');
-      }else {
-        for (var i = 0; i < res.user.length; i++) {
-          if (res.user[i].id===message.author.id) {
-            message.channel.sendMessage('\`ERROR: User already exists in database\`');
-            exists = true;
-          }
-        }
-        if (!exists) {
-          res.user.push({id: message.author.id, name:message.author.username, currency:5000});
-          request({ url: 'https://api.myjson.com/bins/'+config.jsonDB, method: 'PUT', json: res});
-          message.channel.sendMessage('Registered new wallet for <@'+message.author.id+'>');
-        }
-      }
-    });
-  },
-  wallet: function (args,message) {
-    request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {
-      res = JSON.parse(body);
-      if (error!=null) {
-        message.channel.sendMessage('\`ERROR: Could not access database\`');
-      }else {
-        var exists = false;
-        if (args[0]) {
-          var id = args[0].replace(/\D/g, '');
-          for (var i = 0; i < res.user.length; i++) {
-            if (res.user[i].id===id) {
-              exists = true;
-              message.channel.sendMessage('Currency: $'+res.user[i].currency);
-            }
-          }
-          if (!exists) {
-            message.channel.sendMessage('\`ERROR: User not found in database | Use !register to get started!\`');
-          }
-        }else{
-          for (var i = 0; i < res.user.length; i++) {
-            if (res.user[i].id===message.author.id) {
-              exists = true;
-              message.channel.sendMessage('Currency: $'+res.user[i].currency);
-            }
-          }
-          if (!exists) {
-            message.channel.sendMessage('\`ERROR: User not found in database | Use !register to get started!\`');
-          }
-        }
-      }
-    });
-  },
-  walletadd: function (args,message) {
-    request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {
-      var res = JSON.parse(body);
-      if (error!=null) {
-        message.channel.sendMessage('\`ERROR: Could not access database\`');
-      }else {
-        var exists = false;
-        if (args.length!=2) {
-          message.channel.sendMessage('\`ERROR: Incorrect Format => !walletadd <@user> <amount>\`');
-        }else {
-          var id = args[0].replace(/\D/g, '');
-          for (var i = 0; i < res.user.length; i++) {
-            if (res.user[i].id===id) {
-              exists = true;
-              res.user[i].currency += parseInt(args[1]);
-              message.channel.sendMessage('Added $'+parseInt(args[1])+' to '+message.mentions.users.get(id)+'\'s account | New Balance: $'+res.user[i].currency)
-              .then(request({ url: 'https://api.myjson.com/bins/'+config.jsonDB, method: 'PUT', json: res }));
-            }
-          }
-          if (!exists) {
-            message.channel.sendMessage('\`ERROR: User not found in database | Use !register to get started!\`');
-          }
-        }
-      }
-    });
-  },
-  insta: function (args,message) {
-    var username=args[0];
-    request('https://www.instagram.com/'+username+'/?__a=1', function (error, response, body) {
-      res = JSON.parse(body);
-      var imgs = [];
-      var feed = new Instafeed({
-        get: 'user',
-        userId: res.user.id,
-        limit: '3',
-        sortBy: 'most-liked',
-        resolution: 'standard_resolution',
-        clientId: config.IGclientId,
-        accessToken: config.IGaccesstoken,
-        // template:'{{image}}',
-        mock:true,
-        success: function (data) {
-          var images = data.data, result, i, image;
-          for (i = 0; i < images.length; i++) {
-            console.log(images[i]);
-          }
-        }
-      });
-      feed.run();
-      // console.log(feed);
-    });
   }
+  // register: function (message) {
+  //   request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {
+  //     res = JSON.parse(body);
+  //     var exists = false;
+  //     if (error!=null) {
+  //       message.channel.sendMessage('\`ERROR: Could not access database\`');
+  //     }else {
+  //       for (var i = 0; i < res.user.length; i++) {
+  //         if (res.user[i].id===message.author.id) {
+  //           message.channel.sendMessage('\`ERROR: User already exists in database\`');
+  //           exists = true;
+  //         }
+  //       }
+  //       if (!exists) {
+  //         res.user.push({id: message.author.id, name:message.author.username, currency:5000});
+  //         request({ url: 'https://api.myjson.com/bins/'+config.jsonDB, method: 'PUT', json: res});
+  //         message.channel.sendMessage('Registered new wallet for <@'+message.author.id+'>');
+  //       }
+  //     }
+  //   });
+  // },
+  // wallet: function (args,message) {
+  //   request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {
+  //     res = JSON.parse(body);
+  //     if (error!=null) {
+  //       message.channel.sendMessage('\`ERROR: Could not access database\`');
+  //     }else {
+  //       var exists = false;
+  //       if (args[0]) {
+  //         var id = args[0].replace(/\D/g, '');
+  //         for (var i = 0; i < res.user.length; i++) {
+  //           if (res.user[i].id===id) {
+  //             exists = true;
+  //             message.channel.sendMessage('Currency: $'+res.user[i].currency);
+  //           }
+  //         }
+  //         if (!exists) {
+  //           message.channel.sendMessage('\`ERROR: User not found in database | Use !register to get started!\`');
+  //         }
+  //       }else{
+  //         for (var i = 0; i < res.user.length; i++) {
+  //           if (res.user[i].id===message.author.id) {
+  //             exists = true;
+  //             message.channel.sendMessage('Currency: $'+res.user[i].currency);
+  //           }
+  //         }
+  //         if (!exists) {
+  //           message.channel.sendMessage('\`ERROR: User not found in database | Use !register to get started!\`');
+  //         }
+  //       }
+  //     }
+  //   });
+  // },
+  // walletadd: function (args,message) {
+  //   request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {
+  //     var res = JSON.parse(body);
+  //     if (error!=null) {
+  //       message.channel.sendMessage('\`ERROR: Could not access database\`');
+  //     }else {
+  //       var exists = false;
+  //       if (args.length!=2) {
+  //         message.channel.sendMessage('\`ERROR: Incorrect Format => !walletadd <@user> <amount>\`');
+  //       }else {
+  //         var id = args[0].replace(/\D/g, '');
+  //         for (var i = 0; i < res.user.length; i++) {
+  //           if (res.user[i].id===id) {
+  //             exists = true;
+  //             res.user[i].currency += parseInt(args[1]);
+  //             message.channel.sendMessage('Added $'+parseInt(args[1])+' to '+message.mentions.users.get(id)+'\'s account | New Balance: $'+res.user[i].currency)
+  //             .then(request({ url: 'https://api.myjson.com/bins/'+config.jsonDB, method: 'PUT', json: res }));
+  //           }
+  //         }
+  //         if (!exists) {
+  //           message.channel.sendMessage('\`ERROR: User not found in database | Use !register to get started!\`');
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 };

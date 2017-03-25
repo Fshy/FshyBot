@@ -53,34 +53,9 @@ bot.on('message', (message)=>{
     commands.eth(message);
   }else
 
-  // !search <term> - Utilizes DDG API for an instant answer
-  if(command === 'search'){
-    commands.search(args,message);
-  }else
-
   // !playlist <playlistId> - Queues all videos from a youtube playlist
   if(command === 'playlist'){
     commands.playlist(args,message);
-  }
-
-  // !register - Registers user to db
-  if(command === 'register'){
-    commands.register(message);
-  }
-
-  // !wallet <username> - Finds user balance
-  if(command === 'wallet'){
-    commands.wallet(args,message);
-  }else
-
-  // !walletadd <username> <amount> - Adds to User
-  if(command === 'walletadd'){
-    commands.walletadd(args,message);
-  }else
-
-  // !insta <username> - Displays 3 most popular images for the user
-  if (command === 'insta') {
-    commands.insta(args,message);
   }
 
 });
