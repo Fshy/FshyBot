@@ -1,8 +1,8 @@
 {
-  "token":"https://discordapp.com/developers/applications/me",
+  "token":"YOUR DISCORD ACCESS TOKEN",
   "prefix":"!",
   "name":"2B | FshyBot",
   "game":"Nier: Automata",
-  "googleAPIkey":"https://console.developers.google.com",
-  "jsonDB":"http://myjson.com/api"
+  "googleAPIkey":"YOUR GOOGLE API KEY",
+  "jsonDB":"YOUR MYJSON.COM ID"
 }
