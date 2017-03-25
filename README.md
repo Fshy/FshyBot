@@ -2,6 +2,11 @@
 [![2b2](http://i.imgur.com/uBZlAzC.jpg)](http://discord.arc.moe)
 [![2b3](http://i.imgur.com/sY7kVJA.jpg)](#)
 
+[![Discord](https://discordapp.com/api/guilds/136501988941758464/embed.png)](http://discord.arc.moe/)
+[![Travis](https://img.shields.io/travis/Fshy/FshyBot.svg?style=flat-square)]()
+[![David](https://img.shields.io/david/Fshy/FshyBot.svg?style=flat-square)]()
+[![DavidDev](https://img.shields.io/david/Fshy/FshyBot/express.svg?style=flat-square)]()
+
 # Commands
 <pre>
 !help                   - Displays all available commands.
