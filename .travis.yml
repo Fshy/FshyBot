@@ -3,5 +3,9 @@ node_js: 6
 cache:
   directories:
     - node_modules
-install: npm install
+install:
+  - npm install ffmpeg-binaries
+  - npm install youtube-dl
+  - npm install ytdl-core
+  - npm install
 script: npm test
