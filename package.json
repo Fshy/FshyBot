@@ -13,7 +13,7 @@
     "jshint": "^2.9.4"
   },
   "scripts": {
-    "test": "./node_modules/jshint/bin/jshint app.js"
+    "test": "jshint app.js"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 const request = require('request');
 const Discord = require('discord.js');
 const music   = require('discord.js-music-v11');
