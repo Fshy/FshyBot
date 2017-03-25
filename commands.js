@@ -84,7 +84,18 @@ module.exports = {
   },
   greentext: function (message) {
     message.delete().then().catch(console.error);
-    message.channel.sendMessage(message.author+":\`\`\`css\n"+message+"\`\`\`");
+    if (message.mentions.users.first()!=null) {
+      var out = 'From'+message.author+' | Tagged Users: ';
+      var mentioned = message.mentions.users.array();
+      for (var i = 0; i < mentioned.length; i++) {
+        out +='<@';
+        out += mentioned[i].id;
+        out += '> ';
+      }
+      message.channel.sendMessage(out+"\`\`\`css\n"+message+"\`\`\`");
+    }else {
+      message.channel.sendMessage(message.author+":\`\`\`css\n"+message+"\`\`\`");
+    }
   }
   // register: function (message) {
   //   request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {
