@@ -21,6 +21,7 @@
 <pre>
 !btc                    - Displays current Bitcoin spot price
 !eth                    - Displays current Ethereum spot price
+!anime_irl              - Uploads a random image from the r/anime_irl frontpage
 </pre>
 
 <h5>Music</h5>

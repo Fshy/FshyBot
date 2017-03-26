@@ -3,6 +3,7 @@
 const request = require('request');
 const Discord = require('discord.js');
 const music   = require('discord.js-music-v11');
+const snoowrap= require('snoowrap');
 const config  = require('./config.json');
 const commands= require('./commands');
 const bot     = new Discord.Client();
@@ -11,6 +12,13 @@ const token   = config.token;
 const prefix  = config.prefix;
 const name    = config.name;
 const game    = config.game;
+
+const reddit  = new snoowrap({
+  userAgent: config.name,
+  clientId: config.reddit_id,
+  clientSecret: config.reddit_secret,
+  refreshToken: config.reddit_refresh
+});
 
 var launchTime = Date.now();
 
@@ -23,21 +31,13 @@ bot.on('ready', () => {
 
 bot.on('message', (message)=>{
   if(message.author.bot && !message.content.startsWith(prefix+'play')) return;
-
-  if(!message.content.startsWith(prefix)
-  // && !message.content.startsWith(">")
-) return;
+  if(!message.content.startsWith(prefix)) return;
 
   console.log("-- "+message.author.username+": "+message.content);
 
   let command = message.content.split(/\s+/g)[0];
   command = command.slice(prefix.length);
   let args = message.content.split(/\s+/g).slice(1);
-
-  // Greentext
-  // if (message.content.startsWith(">")) {
-  //   commands.greentext(message);
-  // }else
 
   // !help = Displays all available commands
   if (command === 'help') {
@@ -72,6 +72,11 @@ bot.on('message', (message)=>{
   // !roll <# of sides> <# of dice>
   if (command === 'roll') {
     commands.roll(args,message);
+  }else
+
+  // !anime_irl - Uploads a random image from the r/anime_irl frontpage
+  if (command === 'anime_irl') {
+    commands.animeirl(reddit,message);
   }
 
 });

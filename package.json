@@ -9,6 +9,7 @@
     "ffmpeg-binaries": "^3.2.2-3",
     "node-opus": "^0.2.4",
     "request": "^2.81.0",
+    "snoowrap": "^1.12.0",
     "youtube-dl": "^1.11.1"
   },
   "devDependencies": {

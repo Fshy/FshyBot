@@ -3,5 +3,8 @@
   "prefix":"!",
   "name":"2B | FshyBot",
   "game":"Nier: Automata",
-  "googleAPIkey":"YOUR YOUTUBE API KEY"
+  "googleAPIkey":"YOUR YOUTUBE API KEY",
+  "reddit_id":"YOUR REDDIT ID",
+  "reddit_secret":"YOUR REDDIT SECRET",
+  "reddit_refresh":"YOUR REDDIT OAUTH2 REFRESH TOKEN"
 }

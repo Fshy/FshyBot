@@ -25,6 +25,7 @@ module.exports = {
 
           **!btc**\t- Displays current Bitcoin spot price
           **!eth**\t- Displays current Ethereum spot price
+          **!anime_irl**\t- Uploads a random image from the r/anime_irl frontpage
 
           **!play [title/link]**\t- Searches and queues the given term/link for playback
           **!playlist [playlistId]**\t- Queues all videos from a youtube playlist
@@ -130,6 +131,18 @@ module.exports = {
     }
     output += "= "+res;
     message.channel.sendEmbed({description: output,color: 15514833});
+  },
+  animeirl: function (reddit,message) {
+    reddit.getSubreddit('anime_irl').getHot().map(post => post.url).then(function (data) {
+      var urls = [];
+      for (var i = 0; i < 15; i++) { //Top 15 sorted by Hot
+        if ((/\.(jpe?g|png|gif|bmp)$/i).test(data[i])) { //If matches image file push to array
+          urls.push(data[i]);
+        }
+      }
+      var random = Math.floor(Math.random() * 15);//Picks one out of the top 15 image posts
+      message.channel.sendFile(urls[random]).then(console.log("Image successfully posted"););
+    });
   }
   // register: function (message) {
   //   request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {
