@@ -33,9 +33,10 @@ module.exports = {
           **!leave**\t- Clears the song queue and leaves the channel
 
           **>**\t- Any message preceded by an angle bracket converts it to greentext
+          **!roll \<# of sides\> \<# of dice\>**\t- Rolls an n-sided die, m times
 
           For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](https://arc.moe)`,
-        color: 15473237
+        color: 15514833
       });
   },
   uptime: function (launchTime,message) {
@@ -46,25 +47,39 @@ module.exports = {
     var minutes = time % 60;
     time = parseInt(time/60);
     var hours = time % 24;
-    message.channel.sendMessage('Uptime: \`'+hours+' hrs '+minutes+' mins '+seconds+' sec\`');
+    time = parseInt(time/24);
+    var days = time;
+    message.channel.sendEmbed({description: 'Uptime: '+days+' days '+hours+' hrs '+minutes+' mins '+seconds+' sec',color: 15514833});
   },
   btc: function (message) {
     request('https://coinmarketcap-nexuist.rhcloud.com/api/btc', function (error, response, body) {
       response = JSON.parse(body);
+      var change='';
       if (error!=null) {
-        message.channel.sendMessage('\`ERROR: Could not access coinmarketcap API\`');
+        message.channel.sendEmbed({description: 'ERROR: Could not access coinmarketcap API',color: 15514833});
       }else {
-        message.channel.sendMessage('Current BTC Price: \`$'+response.price.usd.toFixed(2)+'\`');
+        if (response.change<0) {
+          change = '▼';
+        }else {
+          change = '▲';
+        }
+        message.channel.sendEmbed({description: 'Current BTC Price: $'+response.price.usd.toFixed(2)+'\nChange: '+change+'$'+response.change,color: 15514833});
       }
     });
   },
   eth: function (message) {
     request('https://coinmarketcap-nexuist.rhcloud.com/api/eth', function (error, response, body) {
       response = JSON.parse(body);
+      var change='';
       if (error!=null) {
-        message.channel.sendMessage('\`ERROR: Could not access coinmarketcap API\`');
+        message.channel.sendEmbed({description: 'ERROR: Could not access coinmarketcap API',color: 15514833});
       }else {
-        message.channel.sendMessage('Current ETH Price: \`$'+response.price.usd.toFixed(2)+'\`');
+        if (response.change<0) {
+          change = '▼';
+        }else {
+          change = '▲';
+        }
+        message.channel.sendEmbed({description: 'Current ETH Price: $'+response.price.usd.toFixed(2)+'\nChange: '+change+'$'+response.change,color: 15514833});
       }
     });
   },
@@ -73,7 +88,7 @@ module.exports = {
     request('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key='+config.googleAPIkey+'&maxResults=50&playlistId='+list, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
-        message.channel.sendMessage('\`ERROR: Could not access Google API\`');
+        message.channel.sendEmbed({description: 'ERROR: Could not access YouTube API',color: 15514833});
       }else {
         message.member.voiceChannel.join();
         for (var i = 0; i < body.items.length; i++) {
@@ -82,20 +97,40 @@ module.exports = {
       }
     });
   },
-  greentext: function (message) {
-    message.delete().then().catch(console.error);
-    if (message.mentions.users.first()!=null) {
-      var out = 'From'+message.author+' | Tagged Users: ';
-      var mentioned = message.mentions.users.array();
-      for (var i = 0; i < mentioned.length; i++) {
-        out +='<@';
-        out += mentioned[i].id;
-        out += '> ';
+  // greentext: function (message) {
+  //   message.delete().then().catch(console.error);
+  //   if (message.mentions.users.first()!=null) {
+  //     var out = 'From'+message.author+' | Tagged Users: ';
+  //     var mentioned = message.mentions.users.array();
+  //     for (var i = 0; i < mentioned.length; i++) {
+  //       out +='<@';
+  //       out += mentioned[i].id;
+  //       out += '> ';
+  //     }
+  //     message.channel.sendMessage(out+"\`\`\`css\n"+message+"\`\`\`");
+  //   }else {
+  //     message.channel.sendMessage(message.author+":\`\`\`css\n"+message+"\`\`\`");
+  //   }
+  // },
+  roll: function (args,message) {
+    var res = 0;
+    var sides = 6;
+    var num = 1;
+    var n;
+    if (args[0]) {
+      var sides = args[0];
+      if (args[1]) {
+        var num = args[1];
       }
-      message.channel.sendMessage(out+"\`\`\`css\n"+message+"\`\`\`");
-    }else {
-      message.channel.sendMessage(message.author+":\`\`\`css\n"+message+"\`\`\`");
     }
+    var output = "Rolled a "+sides+"-sided die "+num+" times:\n";
+    for (var i = 0; i < num; i++) {
+      n = Math.floor(Math.random() * sides) + 1;
+      output += "["+n+"] ";
+      res += n;
+    }
+    output += "= "+res;
+    message.channel.sendEmbed({description: output,color: 15514833});
   }
   // register: function (message) {
   //   request('https://api.myjson.com/bins/'+config.jsonDB, function (error, response, body) {
