@@ -41,4 +41,67 @@
 
 <hr>
 <h2><p align="center">Installation</p></h2>
-<strong>TODO:</strong> Write something here..
+<h3>Prerequisites</h3>
+
+* [Node.js](https://nodejs.org/en/download/) (Version 6.x or newer)
+* [python 2.7](https://www.python.org/download/releases/2.7/)
+
+<h5>Windows:</h5>
+
+```shell
+#Install Microsoft Build Tools
+npm install --global --production windows-build-tools
+```
+
+<h5>Ubuntu/Linux:</h5>
+
+```shell
+#Install Node/npm
+$ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+$ sudo apt-get install -y nodejs
+
+#Install python2.7
+$ sudo apt-get install -y python2.7
+
+#Install required build tools (make, gcc)
+$ sudo apt-get install -y build-essential
+
+#Configure python for node-gyp
+$ npm config set python python2.7
+```
+
+<hr>
+
+<h3>Build</h3>
+
+```shell
+$ git clone https://github.com/Fshy/FshyBot
+$ cd FshyBot
+$ npm install
+```
+
+Rename `config_example.json` to `config.json` and add your user token/API keys to suit.
+
+<hr>
+
+<h3>Running</h3>
+
+With a working config file in place, we're ready to start the script from the terminal/command prompt.
+
+```shell
+#Launch bot
+$ node app.js
+```
+
+It's recommended however, to run scripts using a process manager such as [PM2](https://github.com/Unitech/pm2). This ensures your bot automatically restarts in case of a crash. We can also configure pm2 to launch on startup.
+
+```shell
+#Install pm2
+$ npm install pm2 -g
+
+#Launch using pm2
+$ pm2 start app.js
+
+# Configure pm2 to launch on startup
+$ pm2 startup
+```
