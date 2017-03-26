@@ -1,6 +1,6 @@
 [![2b1](http://i.imgur.com/hftWBMJ.jpg)](http://arc.moe)
 [![2b2](http://i.imgur.com/uBZlAzC.jpg)](http://discord.arc.moe)
-[![2b3](http://i.imgur.com/sY7kVJA.jpg)](#Installation)
+[![2b3](http://i.imgur.com/sY7kVJA.jpg)](#installation)
 
 [![Discord](https://discordapp.com/api/guilds/136501988941758464/embed.png)](http://discord.arc.moe/)
 [![AppVeyor](https://img.shields.io/appveyor/ci/Fshy/FshyBot.svg?style=flat-square)](https://ci.appveyor.com/project/Fshy/fshybot)
