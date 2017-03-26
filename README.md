@@ -1,6 +1,6 @@
 [![2b1](http://i.imgur.com/hftWBMJ.jpg)](http://arc.moe)
 [![2b2](http://i.imgur.com/uBZlAzC.jpg)](http://discord.arc.moe)
-[![2b3](http://i.imgur.com/sY7kVJA.jpg)](#)
+[![2b3](http://i.imgur.com/sY7kVJA.jpg)](#Installation)
 
 [![Discord](https://discordapp.com/api/guilds/136501988941758464/embed.png)](http://discord.arc.moe/)
 [![AppVeyor](https://img.shields.io/appveyor/ci/Fshy/FshyBot.svg?style=flat-square)](https://ci.appveyor.com/project/Fshy/fshybot)
@@ -33,8 +33,12 @@
 !leave                  - Clears the song queue and leaves the channel
 </pre>
 
-<h5>Extra</h5>
+<h5>Misc</h5>
 
 <pre>
->                       - Any message preceded by an angle bracket converts it to greentext
+!roll [sides] [num]     - Rolls an n-sided die, m times and displays the result
 </pre>
+
+<hr>
+<h2><p align="center">Installation</p></h2>
+<strong>TODO:</strong> Write something here..

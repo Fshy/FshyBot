@@ -26,14 +26,13 @@ module.exports = {
           **!btc**\t- Displays current Bitcoin spot price
           **!eth**\t- Displays current Ethereum spot price
 
-          **!play \<search term | link\>**\t- Searches and queues the given term/link for playback
-          **!playlist \<playlistId\>**\t- Queues all videos from a youtube playlist
-          **!skip \<number\>**\t- Skip some number of songs or 1 song if a number is not specified
+          **!play [title/link]**\t- Searches and queues the given term/link for playback
+          **!playlist [playlistId]**\t- Queues all videos from a youtube playlist
+          **!skip [number]**\t- Skip some number of songs or 1 song if a number is not specified
           **!queue**\t- Display the current queue
           **!leave**\t- Clears the song queue and leaves the channel
 
-          **>**\t- Any message preceded by an angle bracket converts it to greentext
-          **!roll \<# of sides\> \<# of dice\>**\t- Rolls an n-sided die, m times
+          **!roll [sides] [num]**\t- Rolls an n-sided die, m times and displays the result
 
           For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](https://arc.moe)`,
         color: 15514833
