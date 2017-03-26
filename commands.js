@@ -141,7 +141,7 @@ module.exports = {
         }
       }
       var random = Math.floor(Math.random() * 15);//Picks one out of the top 15 image posts
-      message.channel.sendFile(urls[random]).then(console.log("Image successfully posted"););
+      message.channel.sendFile(urls[random]).then(console.log("Image successfully posted"));
     });
   }
   // register: function (message) {
