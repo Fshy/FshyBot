@@ -21,7 +21,6 @@
 <pre>
 !btc                    - Displays current Bitcoin spot price
 !eth                    - Displays current Ethereum spot price
-!anime_irl              - Uploads a random image from the r/anime_irl frontpage
 </pre>
 
 <h5>Music</h5>
@@ -32,6 +31,20 @@
 !skip [number]          - Skip some number of songs or 1 song if a number is not specified
 !queue                  - Display the current queue
 !leave                  - Clears the song queue and leaves the channel
+</pre>
+
+<h5>Anime/NSFW</h5>
+
+<pre>
+!anime_irl              - Uploads a random image from the r/anime_irl frontpage
+!animemes               - Uploads a random image from the r/animemes frontpage
+!wholesome              - Uploads a random image from the r/wholesomeanimemes frontpage
+
+!satania                - Uploads a random image from the r/satania frontpage
+!2B                     - Uploads a random SFW 2B image from Danbooru
+
+!ecchi                  - Uploads a random image from the r/ecchi frontpage
+!lewd [search term]     - Uploads a random NSFW image from danbooru, of the given search term
 </pre>
 
 <h5>Misc</h5>
@@ -105,4 +118,5 @@ $ pm2 start app.js
 
 # Configure pm2 to launch on startup
 $ pm2 startup
+$ pm2 save
 ```
