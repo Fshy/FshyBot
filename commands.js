@@ -24,25 +24,20 @@ module.exports = {
           **!ping**\t- Displays response time to server.
           **!uptime**\t- Displays time since launch.
 
-          **!btc**\t- Displays current Bitcoin spot price
-          **!eth**\t- Displays current Ethereum spot price
-
           **!play [title/link]**\t- Searches and queues the given term/link for playback
           **!playlist [playlistId]**\t- Queues all videos from a youtube playlist
           **!skip [number]**\t- Skip some number of songs or 1 song if a number is not specified
           **!queue**\t- Display the current queue
           **!leave**\t- Clears the song queue and leaves the channel
 
-          **!anime_irl**\t- Uploads a random image from the r/anime_irl frontpage
-          **!animemes**\t- Uploads a random image from the r/animemes frontpage
-          **!wholesome**\t- Uploads a random image from the r/wholesomeanimemes frontpage
-
-          **!satania**\t- Uploads a random image from the r/satania frontpage
-          **!2B**\t- Uploads a random SFW 2B image from Danbooru
-
-          **!ecchi**\t- Uploads a random image from the r/ecchi frontpage
           **!lewd [search term]**\t- Uploads a random NSFW image from danbooru, of the given search term
+          **!sfw [search term]**\t- Uploads a random SFW image from danbooru, of the given search term
+          **!tags [search term]**\t- Searches Danbooru for possible related search tags
+          **!reddit [subreddit]**\t- Uploads a random image from the frontpage of a given subreddit
+          **!2B [nsfw]**\t- Uploads a random 2B image, or a NSFW version if supplied as a parameter
 
+          **!btc**\t- Displays current Bitcoin spot price
+          **!eth**\t- Displays current Ethereum spot price
           **!roll [sides] [num]**\t- Rolls an n-sided die, m times and displays the result
 
           For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](https://arc.moe)`,
@@ -129,19 +124,23 @@ module.exports = {
   },
   getSubredditImages: function (reddit,message,subreddit) {
     reddit.getSubreddit(subreddit).getHot().map(post => post.url).then(function (data) {
-      var urls = [];
-      for (var i = 0; i < 50; i++) { //Top 50 sorted by Hot
-        if ((/\.(jpe?g|png|gif|bmp)$/i).test(data[i])) { //If matches image file push to array
-          urls.push(data[i]);
+      if (data) {
+        var urls = [];
+        for (var i = 0; i < 50; i++) { //Top 50 sorted by Hot
+          if ((/\.(jpe?g|png|gif|bmp)$/i).test(data[i])) { //If matches image file push to array
+            urls.push(data[i]);
+          }
         }
+        var random = Math.floor(Math.random() * urls.length);//Picks one randomly to post
+        var embed = new Discord.RichEmbed().setImage(urls[random]).setFooter().setColor(15514833);
+        message.channel.sendEmbed(embed);
+      }else {
+
       }
-      var random = Math.floor(Math.random() * urls.length);//Picks one randomly to post
-      var embed = new Discord.RichEmbed().setImage(urls[random]).setColor(15514833);
-      message.channel.sendEmbed(embed);
     });
   },
   danbooru: function (tag,rating,amount,message) {
-    if (tag.toLowerCase()==='kanna') {
+    if (tag.toLowerCase().match(/kanna/g) || tag.toLowerCase().match(/kamui/g) &&rating==='e') {
       message.channel.sendEmbed({description: 'Don\'t lewd the dragon loli',color: 15514833});
       return;
     }
@@ -155,18 +154,26 @@ module.exports = {
           var embed = new Discord.RichEmbed().setImage('http://danbooru.donmai.us'+body[random].file_url).setDescription('[Source]('+body[random].source+')').setColor(15514833);
           message.channel.sendEmbed(embed);
         }else {
-          request('http://danbooru.donmai.us/related_tag.json?query=*'+tag+'*', function (e, r, b) {
-            b = JSON.parse(b);
-            var suggestions = 'ERROR: Could not find any posts matching '+tag+'\n';
-            suggestions += 'Try using a character\'s full name or one of these related tags:\n';
-            for (var i = 0; i < body.length; i++) {
-              suggestions += b.tags[i][0];
-              suggestions += '\n';
-            }
-            message.channel.sendEmbed({description: suggestions,color: 15514833});
-          });
+          var suggestions = 'ERROR: Could not find any posts matching '+tag+'\nTry using the '+config.prefix+'tags [search term] command to narrow down the search';
+          message.channel.sendEmbed({description: suggestions,color: 15514833});
         }
       }
+    });
+  },
+  danbooruTags: function (tag,message) {
+    request('http://danbooru.donmai.us/tags/autocomplete.json?search[name_matches]=*'+tag+'*', function (e, r, b) {
+      var suggestions = '';
+      b = JSON.parse(b);
+      if (b[0]!=null) {
+        suggestions += 'Related tags:\n\n';
+        for (var i = 0; i < b.length; i++) {
+          suggestions += b[i].name;
+          suggestions += '\n';
+        }
+      }else {
+        suggestions = 'No tags found for '+tag;
+      }
+      message.channel.sendEmbed({description: suggestions,color: 15514833});
     });
   }
 };

@@ -16,19 +16,13 @@
 !uptime                 - Displays time since launch.
 </pre>
 
-<h5>API Lookup</h5>
-
-<pre>
-!btc                    - Displays current Bitcoin spot price
-!eth                    - Displays current Ethereum spot price
-</pre>
 
 <h5>Music</h5>
 
 <pre>
-!play [title/link]      - Searches and queues the given term link for playback
-!playlist [playlistId]  - Queues all videos from a youtube playlist
-!skip [number]          - Skip some number of songs or 1 song if a number is not specified
+!play     [title/link]  - Searches and queues the given term link for playback
+!playlist [playlistID]  - Queues all videos from a youtube playlist
+!skip     [number]      - Skip some number of songs or 1 song if a number is not specified
 !queue                  - Display the current queue
 !leave                  - Clears the song queue and leaves the channel
 </pre>
@@ -36,20 +30,18 @@
 <h5>Anime/NSFW</h5>
 
 <pre>
-!anime_irl              - Uploads a random image from the r/anime_irl frontpage
-!animemes               - Uploads a random image from the r/animemes frontpage
-!wholesome              - Uploads a random image from the r/wholesomeanimemes frontpage
-
-!satania                - Uploads a random image from the r/satania frontpage
-!2B                     - Uploads a random SFW 2B image from Danbooru
-
-!ecchi                  - Uploads a random image from the r/ecchi frontpage
-!lewd [search term]     - Uploads a random NSFW image from danbooru, of the given search term
+!lewd [search term]     - Uploads a random NSFW image from Danbooru, of the given search term
+!sfw  [search term]     - Uploads a random SFW image from Danbooru, of the given search term
+!tags [search term]     - Searches Danbooru for possible related search tags
+!r    [subreddit]       - Uploads a random image from frontpage of a given subreddit
+!2B [nsfw]              - Uploads a random 2B image, or a NSFW version if supplied as a parameter
 </pre>
 
 <h5>Misc</h5>
 
 <pre>
+!btc                    - Displays current Bitcoin spot price
+!eth                    - Displays current Ethereum spot price
 !roll [sides] [num]     - Rolls an n-sided die, m times and displays the result
 </pre>
 

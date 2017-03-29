@@ -75,39 +75,38 @@ bot.on('message', (message)=>{
   }else
 
   // !anime_irl - Uploads a random image from the r/anime_irl frontpage
-  if (command === 'anime_irl') {
-    commands.getSubredditImages(reddit,message,command);
-  }else
-
-  // !animemes - Uploads a random image from the r/animemes frontpage
-  if (command === 'animemes') {
-    commands.getSubredditImages(reddit,message,'animemes');
-  }else
-
-  // !wholesome - Uploads a random image from the r/wholesomeanimemes frontpage
-  if (command === 'wholesome') {
-    commands.getSubredditImages(reddit,message,'wholesomeanimemes');
-  }else
-
-  // !ecchi - Uploads a random image from the r/ecchi frontpage
-  if (command === 'ecchi') {
-    commands.getSubredditImages(reddit,message,'ecchi');
-  }else
-
-  // !satania - Uploads a random image from the r/satania frontpage
-  if (command === 'satania') {
-    commands.getSubredditImages(reddit,message,command);
+  if (command === 'r') {
+    if (args[0]) {
+      commands.getSubredditImages(reddit,message,args[0]);
+    }else {
+      message.channel.sendEmbed({description: 'ERROR: No subreddit specified | Use !r [subreddit]',color: 15514833});
+    }
   }else
 
   // !2B - Uploads a random safe 2B image from danbooru
   if (command === '2B' || command === '2b') {
-    commands.danbooru('yorha_no._2_type_b','safe',100,message);
+    if(args[0]==='nsfw')
+      commands.danbooru('yorha_no._2_type_b','e',100,message);
+    else
+      commands.danbooru('yorha_no._2_type_b','s',100,message);
   }else
 
   // !lewd <search term> - Searches danbooru for a specific tag, and uploads a random nsfw image
   if (command === 'lewd') {
     var tag = args.join('_');
     commands.danbooru(tag,'e',100,message);
+  }else
+
+  // !sfw <search term> - Searches danbooru for a specific tag, and uploads a random safe image
+  if (command === 'sfw') {
+    var tag = args.join('_');
+    commands.danbooru(tag,'s',100,message);
+  }
+
+  // !tags <search term> - Searches danbooru for possible related search tags
+  if (command === 'tags') {
+    var tag = args.join('_');
+    commands.danbooruTags(tag,message);
   }
 
 });
