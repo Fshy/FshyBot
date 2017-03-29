@@ -74,7 +74,7 @@ bot.on('message', (message)=>{
     commands.roll(args,message);
   }else
 
-  // !anime_irl - Uploads a random image from the r/anime_irl frontpage
+  // !r - Uploads a random image from the frontpage of a given subreddit
   if (command === 'r') {
     if (args[0]) {
       commands.getSubredditImages(reddit,message,args[0]);

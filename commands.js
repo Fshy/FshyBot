@@ -30,14 +30,14 @@ module.exports = {
           **!queue**\t- Display the current queue
           **!leave**\t- Clears the song queue and leaves the channel
 
-          **!lewd [search term]**\t- Uploads a random NSFW image from danbooru, of the given search term
-          **!sfw [search term]**\t- Uploads a random SFW image from danbooru, of the given search term
+          **!lewd [search term]**\t- Uploads a random NSFW image of the given search term
+          **!sfw  [search term]**\t- Uploads a random SFW image of the given search term
           **!tags [search term]**\t- Searches Danbooru for possible related search tags
-          **!reddit [subreddit]**\t- Uploads a random image from the frontpage of a given subreddit
-          **!2B [nsfw]**\t- Uploads a random 2B image, or a NSFW version if supplied as a parameter
+          **!2B [nsfw]**\t- Uploads a 2B image, or a NSFW version if supplied
 
           **!btc**\t- Displays current Bitcoin spot price
           **!eth**\t- Displays current Ethereum spot price
+          **!r    [subreddit]**\t- Uploads a random image from the frontpage of a given subreddit
           **!roll [sides] [num]**\t- Rolls an n-sided die, m times and displays the result
 
           For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](https://arc.moe)`,
@@ -123,16 +123,16 @@ module.exports = {
     message.channel.sendEmbed({description: output,color: 15514833});
   },
   getSubredditImages: function (reddit,message,subreddit) {
-    reddit.getSubreddit(subreddit).getHot().map(post => post.url).then(function (data) {
+    reddit.getSubreddit(subreddit).getHot().then(function (data) {
       if (data) {
         var urls = [];
-        for (var i = 0; i < 50; i++) { //Top 50 sorted by Hot
-          if ((/\.(jpe?g|png|gif|bmp)$/i).test(data[i])) { //If matches image file push to array
+        for (var i = 0; i < 10; i++) { //Top 10 sorted by Hot
+          if ((/\.(jpe?g|png|gif|bmp)$/i).test(data[i].url)) { //If matches image file push to array
             urls.push(data[i]);
           }
         }
         var random = Math.floor(Math.random() * urls.length);//Picks one randomly to post
-        var embed = new Discord.RichEmbed().setImage(urls[random]).setFooter().setColor(15514833);
+        var embed = new Discord.RichEmbed().setImage(urls[random].url).setDescription(urls[random].title+'\n[Source](http://reddit.com'+urls[random].permalink+')').setColor(15514833);
         message.channel.sendEmbed(embed);
       }else {
 

@@ -33,8 +33,7 @@
 !lewd [search term]     - Uploads a random NSFW image from Danbooru, of the given search term
 !sfw  [search term]     - Uploads a random SFW image from Danbooru, of the given search term
 !tags [search term]     - Searches Danbooru for possible related search tags
-!r    [subreddit]       - Uploads a random image from frontpage of a given subreddit
-!2B [nsfw]              - Uploads a random 2B image, or a NSFW version if supplied as a parameter
+!2B   [nsfw]            - Uploads a random 2B image, or a NSFW version if supplied as a parameter
 </pre>
 
 <h5>Misc</h5>
@@ -42,6 +41,7 @@
 <pre>
 !btc                    - Displays current Bitcoin spot price
 !eth                    - Displays current Ethereum spot price
+!r    [subreddit]       - Uploads a random image from frontpage of a given subreddit
 !roll [sides] [num]     - Rolls an n-sided die, m times and displays the result
 </pre>
 
