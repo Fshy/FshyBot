@@ -90,7 +90,7 @@ module.exports = {
   },
   playlist: function (args,message) {
     var list = args[0];
-    request('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key='+config.googleAPIkey+'&maxResults=50&playlistId='+list, function (error, response, body) {
+    request('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key='+config.youtube.apiKey+'&maxResults=50&playlistId='+list, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
         message.channel.sendEmbed({description: 'ERROR: Could not access YouTube API',color: 15514833});

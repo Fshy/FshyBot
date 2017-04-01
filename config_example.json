@@ -1,10 +1,24 @@
 {
-  "token":"YOUR DISCORD USER TOKEN",
-  "prefix":"!",
-  "name":"2B | FshyBot",
-  "game":"NieR: Automata",
-  "googleAPIkey":"YOUR YOUTUBE API KEY",
-  "reddit_id":"YOUR REDDIT ID",
-  "reddit_secret":"YOUR REDDIT SECRET",
-  "reddit_refresh":"YOUR REDDIT OAUTH2 REFRESH TOKEN"
+  "token":                "DISCORD_USER_TOKEN",
+  "prefix":               "!",
+  "name":                 "2B | FshyBot",
+  "game":                 "NieR: Automata",
+  "youtube":{
+    "apiKey":             "YOUTUBE_API_KEY"
+  },
+  "reddit":{
+    "userAgent":          "2B | FshyBot",
+    "clientId":           "REDDIT_APP_ID",
+    "clientSecret":       "REDDIT_APP_SECRET",
+    "username":           "REDDIT_ACCOUNT_USERNAME",
+    "password":           "REDDIT_ACCOUNT_PASSWORD"
+  },
+  "firebase": {
+    "apiKey":             "FIREBASE_API_KEY",
+    "authDomain":         "FIREBASE_DOMAIN",
+    "databaseURL":        "FIREBASE_DB_URL",
+    "projectId":          "FIREBASE_PROJECT_ID",
+    "storageBucket":      "FIREBASE_STORAGE_BUCKET",
+    "messagingSenderId":  "FIREBASE_SENDER_ID"
+  }
 }

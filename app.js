@@ -3,40 +3,35 @@
 const request = require('request');
 const Discord = require('discord.js');
 const music   = require('discord.js-music-v11');
+const firebase= require("firebase");
 const snoowrap= require('snoowrap');
 const config  = require('./config.json');
 const commands= require('./commands');
-const bot     = new Discord.Client();
 
-const token   = config.token;
-const prefix  = config.prefix;
-const name    = config.name;
-const game    = config.game;
+const client  = new Discord.Client();
+const reddit  = new snoowrap(config.reddit);
 
-const reddit  = new snoowrap({
-  userAgent: config.name,
-  clientId: config.reddit_id,
-  clientSecret: config.reddit_secret,
-  refreshToken: config.reddit_refresh
-});
+music(client);
+firebase.initializeApp(config.firebase);
+client.login(config.token);
 
 var launchTime = Date.now();
 
-bot.on('ready', () => {
-  bot.user.setUsername(name);
-  bot.user.setGame(game);
-  console.log("// "+bot.user.username+" took "+(Date.now()-launchTime)+"ms to boot");
+client.on('ready', () => {
+  client.user.setUsername(config.name);
+  client.user.setGame(config.game);
+  console.log("// "+client.user.username+" took "+(Date.now()-launchTime)+"ms to boot");
   console.log("// Online and listening for input");
 });
 
-bot.on('message', (message)=>{
-  if(message.author.bot && !message.content.startsWith(prefix+'play')) return;
-  if(!message.content.startsWith(prefix)) return;
+client.on('message', (message)=>{
+  if(message.author.bot && !message.content.startsWith(config.prefix+'play')) return;
+  if(!message.content.startsWith(config.prefix)) return;
 
   console.log("-- "+message.author.username+": "+message.content);
 
   let command = message.content.split(/\s+/g)[0];
-  command = command.slice(prefix.length);
+  command = command.slice(config.prefix.length);
   let args = message.content.split(/\s+/g).slice(1);
 
   // !help = Displays all available commands
@@ -101,7 +96,7 @@ bot.on('message', (message)=>{
   if (command === 'sfw') {
     var tag = args.join('_');
     commands.danbooru(tag,'s',100,message);
-  }
+  }else
 
   // !tags <search term> - Searches danbooru for possible related search tags
   if (command === 'tags') {
@@ -110,7 +105,3 @@ bot.on('message', (message)=>{
   }
 
 });
-
-music(bot);
-
-bot.login(token);
