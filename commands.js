@@ -44,8 +44,8 @@ module.exports = {
         color: 15514833
       });
   },
-  uptime: function (launchTime,message) {
-    var time = Date.now()-launchTime;
+  uptime: function (client,message) {
+    var time = client.uptime;
     time = parseInt(time/1000);
     var seconds = time % 60;
     time = parseInt(time/60);

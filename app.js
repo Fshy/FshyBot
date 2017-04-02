@@ -1,27 +1,26 @@
 /*jshint esversion: 6 */
 
-const request = require('request');
-const Discord = require('discord.js');
-const music   = require('discord.js-music-v11');
-const firebase= require("firebase");
-const snoowrap= require('snoowrap');
-const config  = require('./config.json');
-const commands= require('./commands');
+const request   = require('request');
+const Discord   = require('discord.js');
+const music     = require('discord.js-music-v11');
+const firebase  = require("firebase");
+const snoowrap  = require('snoowrap');
+const config    = require('./config.json');
+const commands  = require('./commands');
 
-const client  = new Discord.Client();
-const reddit  = new snoowrap(config.reddit);
+firebase.initializeApp(config.firebase);
+const database  = firebase.database();
+const bookmarks = database.ref('bookmarks');
+const client    = new Discord.Client();
+const reddit    = new snoowrap(config.reddit);
 
 music(client);
-firebase.initializeApp(config.firebase);
 client.login(config.token);
-
-var launchTime = Date.now();
 
 client.on('ready', () => {
   client.user.setUsername(config.name);
   client.user.setGame(config.game);
-  console.log("// "+client.user.username+" took "+(Date.now()-launchTime)+"ms to boot");
-  console.log("// Online and listening for input");
+  console.log('\n// '+config.name+' Online and listening for input');
 });
 
 client.on('message', (message)=>{
@@ -47,11 +46,11 @@ client.on('message', (message)=>{
       break;
     // !ping = Displays latency between the bot and the server
     case 'ping':
-      message.channel.sendEmbed({description: 'Response time to discord server: '+(Date.now()-message.createdTimestamp)+'ms',color: 15514833});
+      message.channel.sendEmbed({description: 'Response time to discord server: '+client.ping+'ms',color: 15514833});
       break;
     // !uptime = Displays time since launch
     case 'uptime':
-      commands.uptime(launchTime,message);
+      commands.uptime(client,message);
       break;
     // !btc - Displays current Bitcoin spot price
     case 'btc':
