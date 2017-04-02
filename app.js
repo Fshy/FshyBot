@@ -33,6 +33,14 @@ client.on('message', (message)=>{
   let args    = message.content.split(/\s+/g).slice(1);
 
   switch (command) {
+    // discord.js-music-v11 commands
+    case 'play':
+    case 'skip':
+    case 'queue':
+    case 'pause':
+    case 'resume':
+    case 'leave':
+      break;
     // !help = Displays all available commands
     case 'help':
       commands.help(message);
