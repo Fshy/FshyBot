@@ -20,9 +20,10 @@ module.exports = {
           ???
 
           __**Commands:**__
-          **!help**\t- Displays all available commands.
-          **!ping**\t- Displays response time to server.
-          **!uptime**\t- Displays time since launch.
+          **!help**\t- Displays all available commands
+          **!ping**\t- Displays response time to server
+          **!uptime**\t- Displays time since launch
+          **!setgame  [game]**\t- [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
 
           **!play [title/link]**\t- Searches and queues the given term/link for playback
           **!playlist [playlistId]**\t- Queues all videos from a youtube playlist
@@ -54,7 +55,7 @@ module.exports = {
     var hours = time % 24;
     time = parseInt(time/24);
     var days = time;
-    message.channel.sendEmbed({description: 'Uptime: '+days+' days '+hours+' hrs '+minutes+' mins '+seconds+' sec',color: 15514833});
+    message.channel.sendEmbed({description: `Uptime: ${days} days ${hours} hrs ${minutes} mins ${seconds} sec`,color: 15514833});
   },
   btc: function (message) {
     request('https://coinmarketcap-nexuist.rhcloud.com/api/btc', function (error, response, body) {
@@ -68,7 +69,7 @@ module.exports = {
         }else {
           change = '▲';
         }
-        message.channel.sendEmbed({description: 'Current BTC Price: $'+response.price.usd.toFixed(2)+'\nChange: '+change+'$'+response.change,color: 15514833});
+        message.channel.sendEmbed({description: `Current BTC Price: $${response.price.usd.toFixed(2)}\nChange: ${change}$${response.change}`,color: 15514833});
       }
     });
   },
@@ -84,20 +85,20 @@ module.exports = {
         }else {
           change = '▲';
         }
-        message.channel.sendEmbed({description: 'Current ETH Price: $'+response.price.usd.toFixed(2)+'\nChange: '+change+'$'+response.change,color: 15514833});
+        message.channel.sendEmbed({description: `Current ETH Price: $${response.price.usd.toFixed(2)}\nChange: ${change}$${response.change}`,color: 15514833});
       }
     });
   },
   playlist: function (args,message) {
     var list = args[0];
-    request('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key='+config.youtube.apiKey+'&maxResults=50&playlistId='+list, function (error, response, body) {
+    request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key=${config.youtube.apiKey}&maxResults=50&playlistId=${list}`, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
         message.channel.sendEmbed({description: 'ERROR: Could not access YouTube API',color: 15514833});
       }else {
         message.member.voiceChannel.join();
         for (var i = 0; i < body.items.length; i++) {
-          message.channel.sendMessage('!play '+body.items[i].snippet.resourceId.videoId).then(message => message.delete());
+          message.channel.sendMessage(`!play ${body.items[i].snippet.resourceId.videoId}`).then(message => message.delete());
         }
       }
     });
@@ -113,10 +114,10 @@ module.exports = {
         var num = args[1];
       }
     }
-    var output = "Rolled a "+sides+"-sided die "+num+" times:\n";
+    var output = `Rolled a ${sides}-sided die ${num} times:\n`;
     for (var i = 0; i < num; i++) {
       n = Math.floor(Math.random() * sides) + 1;
-      output += "["+n+"] ";
+      output += `[${n}] `;
       res += n;
     }
     output += "= "+res;
@@ -132,7 +133,7 @@ module.exports = {
           }
         }
         var random = Math.floor(Math.random() * urls.length);//Picks one randomly to post
-        var embed = new Discord.RichEmbed().setImage(urls[random].url).setDescription(urls[random].title+'\n[Source](http://reddit.com'+urls[random].permalink+')').setColor(15514833);
+        var embed = new Discord.RichEmbed().setImage(urls[random].url).setDescription(`${urls[random].title}\n[Source](http://reddit.com${urls[random].permalink})`).setColor(15514833);
         message.channel.sendEmbed(embed);
       }else {
 
@@ -144,24 +145,24 @@ module.exports = {
       message.channel.sendEmbed({description: 'Don\'t lewd the dragon loli',color: 15514833});
       return;
     }
-    request('http://danbooru.donmai.us/posts.json?tags=*'+tag+'*+rating%3A'+rating+'+limit%3A'+amount, function (error, response, body) {
+    request(`http://danbooru.donmai.us/posts.json?tags=*${tag}*+rating%3A${rating}+limit%3A${amount}`, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
         message.channel.sendEmbed({description: 'ERROR: Could not access Danbooru API',color: 15514833});
       }else {
         var random = Math.floor(Math.random() * body.length);//Picks one randomly to post
         if (body[random]) {
-          var embed = new Discord.RichEmbed().setImage('http://danbooru.donmai.us'+body[random].file_url).setDescription('[Source]('+body[random].source+')').setColor(15514833);
+          var embed = new Discord.RichEmbed().setImage(`http://danbooru.donmai.us${body[random].file_url}`).setDescription(`[Source](${body[random].source})`).setColor(15514833);
           message.channel.sendEmbed(embed);
         }else {
-          var suggestions = 'ERROR: Could not find any posts matching '+tag+'\nTry using the '+config.prefix+'tags [search term] command to narrow down the search';
+          var suggestions = `ERROR: Could not find any posts matching ${tag}\nTry using the ${config.prefix}tags [search term] command to narrow down the search`;
           message.channel.sendEmbed({description: suggestions,color: 15514833});
         }
       }
     });
   },
   danbooruTags: function (tag,message) {
-    request('http://danbooru.donmai.us/tags/autocomplete.json?search[name_matches]=*'+tag+'*', function (e, r, b) {
+    request(`http://danbooru.donmai.us/tags/autocomplete.json?search[name_matches]=*${tag}*`, function (e, r, b) {
       var suggestions = '';
       b = JSON.parse(b);
       if (b[0]!=null) {
@@ -171,7 +172,7 @@ module.exports = {
           suggestions += '\n';
         }
       }else {
-        suggestions = 'No tags found for '+tag;
+        suggestions = `No tags found for ${tag}`;
       }
       message.channel.sendEmbed({description: suggestions,color: 15514833});
     });

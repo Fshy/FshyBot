@@ -20,13 +20,13 @@ client.login(config.token);
 client.on('ready', () => {
   client.user.setUsername(config.name);
   client.user.setGame(config.game);
-  console.log('\n// '+config.name+' Online and listening for input');
+  console.log(`\n// ${config.name} Online and listening for input`);
 });
 
 client.on('message', (message)=>{
-  if(message.author.bot && !message.content.startsWith(config.prefix+'play')) return;
+  if(message.author.bot && !message.content.startsWith(`${config.prefix}play`)) return;
   if(!message.content.startsWith(config.prefix)) return;
-  console.log("-- "+message.author.username+": "+message.content);
+  console.log(`-- ${message.author.username}: ${message.content}`);
 
   let command = message.content.split(/\s+/g)[0].slice(config.prefix.length);
   let args    = message.content.split(/\s+/g).slice(1);
@@ -57,7 +57,7 @@ client.on('message', (message)=>{
       break;
     // !ping = Displays latency between the bot and the server
     case 'ping':
-      message.channel.sendEmbed({description: 'Response time to discord server: '+client.ping+'ms',color: 15514833});
+      message.channel.sendEmbed({description: `Response time to discord server: ${client.ping}ms`,color: 15514833});
       break;
     // !uptime = Displays time since launch
     case 'uptime':

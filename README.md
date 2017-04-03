@@ -11,9 +11,10 @@
 
 <h5>General</h5>
 <pre>
-!help                   - Displays all available commands.
-!ping                   - Displays response time to server.
-!uptime                 - Displays time since launch.
+!help                   - Displays all available commands
+!ping                   - Displays response time to server
+!uptime                 - Displays time since launch
+!setgame  [game]        - [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
 </pre>
 
 
