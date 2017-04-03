@@ -40,6 +40,17 @@ client.on('message', (message)=>{
     case 'resume':
     case 'leave':
       break;
+    // Moderator Only Commands
+    case 'setgame':
+      if (commands.checkRole(message,config.modRole)) {
+        if (args[0]) {
+          var game = args.join(' ');
+          client.user.setGame(game);
+        }else {
+          client.user.setGame(null);
+        }
+      }
+      break;
     // !help = Displays all available commands
     case 'help':
       commands.help(message);
@@ -76,8 +87,7 @@ client.on('message', (message)=>{
         message.channel.sendEmbed({description: 'ERROR: No subreddit specified | Use !r [subreddit]',color: 15514833});
       }
       break;
-      case 'r':
-    // !2B - Uploads a random safe 2B image from danbooru
+    // !2B - Uploads a random 2B image from danbooru
     case '2B':
     case '2b':
       if(args[0]==='nsfw')

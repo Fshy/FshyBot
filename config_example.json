@@ -3,6 +3,7 @@
   "prefix":               "!",
   "name":                 "2B | FshyBot",
   "game":                 "NieR: Automata",
+  "modRole":              "Admin",
   "youtube":{
     "apiKey":             "YOUTUBE_API_KEY"
   },

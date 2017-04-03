@@ -175,5 +175,14 @@ module.exports = {
       }
       message.channel.sendEmbed({description: suggestions,color: 15514833});
     });
+  },
+  checkRole: function (message, requiredRole) {
+    var role = message.guild.roles.find('name',requiredRole);
+    if (message.member.roles.has(role.id)) {
+      return true;
+    }else {
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${requiredRole}`,color: 15514833});
+      return false;
+    }
   }
 };
