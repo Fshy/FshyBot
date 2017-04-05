@@ -46,7 +46,7 @@ module.exports = {
       **!r    [subreddit]**\t- Uploads a random image from the frontpage of a given subreddit
       **!roll [sides] [num]**\t- Rolls an n-sided die, m times and displays the result
 
-      For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](https://arc.moe)`;
+      For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)`;
       var embed = new Discord.RichEmbed()
         .setTitle(`${config.name} Commands:`)
         .setDescription(h)
