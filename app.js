@@ -51,6 +51,15 @@ client.on('message', (message)=>{
         }
       }
       break;
+    case 'setstatus':
+      if (commands.checkRole(message,config.modRole)) {
+        if (args[0]==='online' || args[0]==='idle' || args[0]==='invisible' || args[0]==='dnd') {
+          client.user.setStatus(args[0]);
+        }else {
+          message.channel.sendEmbed({description: `ERROR: Incorrect syntax | Use !setstatus [status]\nStatuses: online, idle, invisible, dnd`,color: 15514833});
+        }
+      }
+      break;
     // !help = Displays all available commands
     case 'help':
       commands.help(message);

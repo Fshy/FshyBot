@@ -23,7 +23,8 @@ module.exports = {
           **!help**\t- Displays all available commands
           **!ping**\t- Displays response time to server
           **!uptime**\t- Displays time since launch
-          **!setgame  [game]**\t- [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
+          **!setgame    [game]**\t- [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
+          **!setstatus  [status]**\t- [ADMIN] Sets the status of the bot
 
           **!play [title/link]**\t- Searches and queues the given term/link for playback
           **!playlist [playlistId]**\t- Queues all videos from a youtube playlist

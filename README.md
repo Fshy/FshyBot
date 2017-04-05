@@ -14,7 +14,8 @@
 !help                   - Displays all available commands
 !ping                   - Displays response time to server
 !uptime                 - Displays time since launch
-!setgame  [game]        - [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
+!setgame    [game]      - [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
+!setstatus  [status]    - [ADMIN] Sets the status of the bot
 </pre>
 
 
