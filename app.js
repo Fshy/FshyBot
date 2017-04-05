@@ -20,6 +20,7 @@ client.login(config.token);
 client.on('ready', () => {
   client.user.setUsername(config.name);
   client.user.setGame(config.game);
+  client.user.setAvatar(config.avatar)
   console.log(`\n// ${config.name} Online and listening for input`);
 });
 
@@ -41,22 +42,41 @@ client.on('message', (message)=>{
     case 'leave':
       break;
     // Moderator Only Commands
+    case 'setname':
+      if (commands.checkRole(message,config.modRole)) {
+        if (args[0]) {
+          var name = args.join(' ');
+          client.user.setUsername(name).then(message.channel.sendEmbed({description: `Name successfully updated!`,color: 15514833}));
+        }else {
+          message.channel.sendEmbed({description: `ERROR: Specify a string to change username to`,color: 15514833});
+        }
+      }
+      break;
     case 'setgame':
       if (commands.checkRole(message,config.modRole)) {
         if (args[0]) {
           var game = args.join(' ');
-          client.user.setGame(game);
+          client.user.setGame(game).then(message.channel.sendEmbed({description: `Game successfully updated!`,color: 15514833}));
         }else {
-          client.user.setGame(null);
+          client.user.setGame(null).then(message.channel.sendEmbed({description: `Game successfully cleared!`,color: 15514833}));
         }
       }
       break;
     case 'setstatus':
       if (commands.checkRole(message,config.modRole)) {
         if (args[0]==='online' || args[0]==='idle' || args[0]==='invisible' || args[0]==='dnd') {
-          client.user.setStatus(args[0]);
+          client.user.setStatus(args[0]).then(message.channel.sendEmbed({description: `Status successfully updated!`,color: 15514833}));
         }else {
           message.channel.sendEmbed({description: `ERROR: Incorrect syntax | Use !setstatus [status]\nStatuses: online, idle, invisible, dnd`,color: 15514833});
+        }
+      }
+      break;
+    case 'setavatar':
+      if (commands.checkRole(message,config.modRole)) {
+        if ((/\.(jpe?g|png|gif|bmp)$/i).test(args[0])) {
+          client.user.setAvatar(args[0]).then(message.channel.sendEmbed({description: `Avatar successfully updated!`,color: 15514833}));
+        }else {
+          message.channel.sendEmbed({description: `ERROR: That's not an image filetype I recognize | Try: .jpg .png .gif .bmp`,color: 15514833});
         }
       }
       break;

@@ -5,7 +5,7 @@ const config    = require('./config.json');
 module.exports = {
   help: function (message) {
     return message.channel.sendEmbed({
-        description: `__**2B | FshyBot**__
+        description: `__**${config.name}**__
 
           __**Rules:**__
           1. This is an assignment-free zone
@@ -23,7 +23,9 @@ module.exports = {
           **!help**\t- Displays all available commands
           **!ping**\t- Displays response time to server
           **!uptime**\t- Displays time since launch
+          **!setname    [name]**\t- [ADMIN] Sets the username of the bot, limited to 2 requests/hr
           **!setgame    [game]**\t- [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
+          **!setavatar  [image url]**\t- [ADMIN] Sets the avatar of te bot from an image url
           **!setstatus  [status]**\t- [ADMIN] Sets the status of the bot
 
           **!play [title/link]**\t- Searches and queues the given term/link for playback
