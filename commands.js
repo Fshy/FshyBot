@@ -3,50 +3,59 @@ const Discord   = require('discord.js');
 const config    = require('./config.json');
 
 module.exports = {
-  help: function (message) {
-    return message.channel.sendEmbed({
-        description: `__**${config.name}**__
+  rules: function (client,message) {
+    var r = `
+      1. This is an assignment-free zone
+      2. If your mic echoes, you're fucking banned
+      ~~3. No loitering in the lobby~~
+      ~~4. No asking for Server Icons~~
+      ~~5. If you have to ask for icons, ask Fshy~~
+      6. Don't be a faggot
+      7. Get Gud`;
+      var embed = new Discord.RichEmbed()
+        .setTitle(`Rules:`)
+        .setDescription(r)
+        .setColor(15514833);
+      message.channel.sendEmbed(embed);
+      message.delete();
+  },
+  help: function (client,message) {
+    var h = `
+      **!rules**\t- Displays the guild rules
+      **!help**\t- Displays all available commands
+      **!ping**\t- Displays response time to server
+      **!uptime**\t- Displays time since launch
+      **!setname    [name]**\t- [ADMIN] Sets the username of the bot, limited to 2 requests/hr
+      **!setgame    [game]**\t- [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
+      **!setavatar  [image url]**\t- [ADMIN] Sets the avatar of te bot from an image url
+      **!setstatus  [status]**\t- [ADMIN] Sets the status of the bot
 
-          __**Rules:**__
-          1. This is an assignment-free zone
-          2. If your mic echoes, you're fucking banned
-          ~~3. No loitering in the lobby~~
-          ~~4. No asking for Server Icons~~
-          ~~5. If you have to ask for icons, ask Fshy~~
-          6. Don't be a faggot
-          7. Get Gud
+      **!play [title/link]**\t- Searches and queues the given term/link for playback
+      **!playlist [playlistId]**\t- Queues all videos from a youtube playlist
+      **!skip [number]**\t- Skip some number of songs or 1 song if a number is not specified
+      **!queue**\t- Display the current queue
+      **!leave**\t- Clears the song queue and leaves the channel
 
-          __**FAQ:**__
-          ???
+      **!lewd [search term]**\t- Uploads a random NSFW image of the given search term
+      **!sfw  [search term]**\t- Uploads a random SFW image of the given search term
+      **!tags [search term]**\t- Searches Danbooru for possible related search tags
+      **!2B [nsfw]**\t- Uploads a 2B image, or a NSFW version if supplied
 
-          __**Commands:**__
-          **!help**\t- Displays all available commands
-          **!ping**\t- Displays response time to server
-          **!uptime**\t- Displays time since launch
-          **!setname    [name]**\t- [ADMIN] Sets the username of the bot, limited to 2 requests/hr
-          **!setgame    [game]**\t- [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
-          **!setavatar  [image url]**\t- [ADMIN] Sets the avatar of te bot from an image url
-          **!setstatus  [status]**\t- [ADMIN] Sets the status of the bot
+      **!btc**\t- Displays current Bitcoin spot price
+      **!eth**\t- Displays current Ethereum spot price
+      **!r    [subreddit]**\t- Uploads a random image from the frontpage of a given subreddit
+      **!roll [sides] [num]**\t- Rolls an n-sided die, m times and displays the result
 
-          **!play [title/link]**\t- Searches and queues the given term/link for playback
-          **!playlist [playlistId]**\t- Queues all videos from a youtube playlist
-          **!skip [number]**\t- Skip some number of songs or 1 song if a number is not specified
-          **!queue**\t- Display the current queue
-          **!leave**\t- Clears the song queue and leaves the channel
-
-          **!lewd [search term]**\t- Uploads a random NSFW image of the given search term
-          **!sfw  [search term]**\t- Uploads a random SFW image of the given search term
-          **!tags [search term]**\t- Searches Danbooru for possible related search tags
-          **!2B [nsfw]**\t- Uploads a 2B image, or a NSFW version if supplied
-
-          **!btc**\t- Displays current Bitcoin spot price
-          **!eth**\t- Displays current Ethereum spot price
-          **!r    [subreddit]**\t- Uploads a random image from the frontpage of a given subreddit
-          **!roll [sides] [num]**\t- Rolls an n-sided die, m times and displays the result
-
-          For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](https://arc.moe)`,
-        color: 15514833
-      });
+      For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](https://arc.moe)`;
+      var embed = new Discord.RichEmbed()
+        .setTitle(`${config.name} Commands:`)
+        .setDescription(h)
+        .setImage(`http://i.imgur.com/a96NGOY.png`)
+        .setFooter(`Updated at`)
+        .setTimestamp()
+        .setColor(15514833);
+      message.channel.sendEmbed(embed);
+      message.delete();
   },
   uptime: function (client,message) {
     var time = client.uptime;

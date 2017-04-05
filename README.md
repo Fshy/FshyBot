@@ -11,6 +11,7 @@
 
 <h5>General</h5>
 <pre>
+!rules                  - Displays the guild rules
 !help                   - Displays all available commands
 !ping                   - Displays response time to server
 !uptime                 - Displays time since launch

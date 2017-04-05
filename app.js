@@ -80,9 +80,13 @@ client.on('message', (message)=>{
         }
       }
       break;
+    // !rules = Displays the guild rules
+    case 'rules':
+      commands.rules(client,message);
+      break;
     // !help = Displays all available commands
     case 'help':
-      commands.help(message);
+      commands.help(client,message);
       break;
     // !ping = Displays latency between the bot and the server
     case 'ping':
