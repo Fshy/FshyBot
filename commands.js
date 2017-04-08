@@ -57,6 +57,20 @@ module.exports = {
       message.channel.sendEmbed(embed);
       message.delete();
   },
+  version: function (version,message) {
+    request('https://raw.githubusercontent.com/Fshy/FshyBot/master/package.json', function (error, response, body) {
+      response = JSON.parse(body);
+      if (error!=null) {
+        message.channel.sendEmbed({description: 'ERROR: Could not access repository',color: 15514833});
+      }else {
+        if (response.version!=version) {
+          message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Navigate to your installation folder and use **git pull** to update | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: 15514833});
+        }else {
+          message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: 15514833});
+        }
+      }
+    });
+  },
   uptime: function (client,message) {
     var time = client.uptime;
     time = parseInt(time/1000);

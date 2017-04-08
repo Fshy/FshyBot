@@ -89,14 +89,7 @@ client.on('message', (message)=>{
       commands.help(client,message);
       break;
     case 'version':
-      // var ref = database.ref(`info/${command}`);
-      // ref.on("value", function(data){
-      //   if (data.val()!=version) {
-      //     message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${data.val()}\n\n:warning: *Navigate to your installation folder and use **git pull** to update | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: 15514833});
-      //   }else {
-      //     message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${data.val()}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: 15514833});
-      //   }
-      // });
+      commands.version(version,message);
       break;
     // !ping = Displays latency between the bot and the server
     case 'ping':
