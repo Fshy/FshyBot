@@ -1,12 +1,12 @@
 /*jshint esversion: 6 */
 
-const version   = "1.0.24";
 const request   = require('request');
 const Discord   = require('discord.js');
 const music     = require('discord.js-music-v11');
 const firebase  = require("firebase");
 const snoowrap  = require('snoowrap');
 const config    = require('./config.json');
+const version   = require('./package.json').version;
 const commands  = require('./commands');
 
 firebase.initializeApp(config.firebase);
@@ -89,14 +89,14 @@ client.on('message', (message)=>{
       commands.help(client,message);
       break;
     case 'version':
-      var ref = database.ref(`info/${command}`);
-      ref.on("value", function(data){
-        if (data.val()!=version) {
-          message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${data.val()}\n\n:warning: *Navigate to your installation folder and use **git pull** to update | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: 15514833});
-        }else {
-          message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${data.val()}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: 15514833});
-        }
-      });
+      // var ref = database.ref(`info/${command}`);
+      // ref.on("value", function(data){
+      //   if (data.val()!=version) {
+      //     message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${data.val()}\n\n:warning: *Navigate to your installation folder and use **git pull** to update | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: 15514833});
+      //   }else {
+      //     message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${data.val()}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: 15514833});
+      //   }
+      // });
       break;
     // !ping = Displays latency between the bot and the server
     case 'ping':
