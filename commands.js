@@ -157,10 +157,6 @@ class Commands {
     message.channel.sendEmbed({description: output,color: 15514833});
   }
 
-  getSubredditImages(reddit,message,subreddit) {
-
-  }
-
   danbooru(tag,rating,amount,message) {
     if (tag.toLowerCase().match(/kanna/g) || tag.toLowerCase().match(/kamui/g) &&rating==='e') {
       message.channel.sendEmbed({description: 'Don\'t lewd the dragon loli',color: 15514833});
