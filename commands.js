@@ -2,8 +2,8 @@ const request   = require('request');
 const Discord   = require('discord.js');
 const config    = require('./config.json');
 
-module.exports = {
-  rules: function (client,message) {
+class Commands {
+  rules(client,message) {
     var r = `
       1. This is an assignment-free zone
       2. If your mic echoes, you're fucking banned
@@ -18,8 +18,9 @@ module.exports = {
         .setColor(15514833);
       message.channel.sendEmbed(embed);
       message.delete();
-  },
-  help: function (client,message) {
+  }
+
+  help(client,message) {
     var h = `
       **!rules**\t- Displays the guild rules
       **!help**\t- Displays all available commands
@@ -56,8 +57,9 @@ module.exports = {
         .setColor(15514833);
       message.channel.sendEmbed(embed);
       message.delete();
-  },
-  version: function (version,message) {
+  }
+
+  version(version,message) {
     request('https://raw.githubusercontent.com/Fshy/FshyBot/master/package.json', function (error, response, body) {
       response = JSON.parse(body);
       if (error!=null) {
@@ -70,8 +72,9 @@ module.exports = {
         }
       }
     });
-  },
-  uptime: function (client,message) {
+  }
+
+  uptime(client,message) {
     var time = client.uptime;
     time = parseInt(time/1000);
     var seconds = time % 60;
@@ -82,8 +85,9 @@ module.exports = {
     time = parseInt(time/24);
     var days = time;
     message.channel.sendEmbed({description: `Uptime: ${days} days ${hours} hrs ${minutes} mins ${seconds} sec`,color: 15514833});
-  },
-  btc: function (message) {
+  }
+
+  btc(message) {
     request('https://coinmarketcap-nexuist.rhcloud.com/api/btc', function (error, response, body) {
       response = JSON.parse(body);
       var change='';
@@ -98,8 +102,9 @@ module.exports = {
         message.channel.sendEmbed({description: `Current BTC Price: $${response.price.usd.toFixed(2)}\nChange: ${change}$${response.change}`,color: 15514833});
       }
     });
-  },
-  eth: function (message) {
+  }
+
+  eth(message) {
     request('https://coinmarketcap-nexuist.rhcloud.com/api/eth', function (error, response, body) {
       response = JSON.parse(body);
       var change='';
@@ -114,8 +119,9 @@ module.exports = {
         message.channel.sendEmbed({description: `Current ETH Price: $${response.price.usd.toFixed(2)}\nChange: ${change}$${response.change}`,color: 15514833});
       }
     });
-  },
-  playlist: function (args,message) {
+  }
+
+  playlist(args,message) {
     var list = args[0];
     request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key=${config.youtube.apiKey}&maxResults=50&playlistId=${list}`, function (error, response, body) {
       body = JSON.parse(body);
@@ -128,8 +134,9 @@ module.exports = {
         }
       }
     });
-  },
-  roll: function (args,message) {
+  }
+
+  roll(args,message) {
     var res = 0;
     var sides = 6;
     var num = 1;
@@ -148,25 +155,13 @@ module.exports = {
     }
     output += "= "+res;
     message.channel.sendEmbed({description: output,color: 15514833});
-  },
-  getSubredditImages: function (reddit,message,subreddit) {
-    reddit.getSubreddit(subreddit).getHot().then(function (data) {
-      if (data) {
-        var urls = [];
-        for (var i = 0; i < 10; i++) { //Top 10 sorted by Hot
-          if ((/\.(jpe?g|png|gif|bmp)$/i).test(data[i].url)) { //If matches image file push to array
-            urls.push(data[i]);
-          }
-        }
-        var random = Math.floor(Math.random() * urls.length);//Picks one randomly to post
-        var embed = new Discord.RichEmbed().setImage(urls[random].url).setDescription(`${urls[random].title}\n[Source](http://reddit.com${urls[random].permalink})`).setColor(15514833);
-        message.channel.sendEmbed(embed);
-      }else {
+  }
 
-      }
-    });
-  },
-  danbooru: function (tag,rating,amount,message) {
+  getSubredditImages(reddit,message,subreddit) {
+
+  }
+
+  danbooru(tag,rating,amount,message) {
     if (tag.toLowerCase().match(/kanna/g) || tag.toLowerCase().match(/kamui/g) &&rating==='e') {
       message.channel.sendEmbed({description: 'Don\'t lewd the dragon loli',color: 15514833});
       return;
@@ -186,8 +181,9 @@ module.exports = {
         }
       }
     });
-  },
-  danbooruTags: function (tag,message) {
+  }
+
+  danbooruTags(tag,message) {
     request(`http://danbooru.donmai.us/tags/autocomplete.json?search[name_matches]=*${tag}*`, function (e, r, b) {
       var suggestions = '';
       b = JSON.parse(b);
@@ -202,14 +198,89 @@ module.exports = {
       }
       message.channel.sendEmbed({description: suggestions,color: 15514833});
     });
-  },
-  checkRole: function (message, requiredRole) {
-    var role = message.guild.roles.find('name',requiredRole);
-    if (message.member.roles.has(role.id)) {
-      return true;
+  }
+
+  rslash(reddit,message,args) {
+    if (args[0]) {
+      reddit.getSubreddit(args[0]).getHot().then(function (data) {
+        if (data) {
+          var urls = [];
+          for (var i = 0; i < 10; i++) { //Top 10 sorted by Hot
+            if ((/\.(jpe?g|png|gif|bmp)$/i).test(data[i].url)) { //If matches image file push to array
+              urls.push(data[i]);
+            }
+          }
+          if (urls.length!=0) {
+            var random = Math.floor(Math.random() * urls.length);//Picks one randomly to post
+            var embed = new Discord.RichEmbed().setImage(urls[random].url).setDescription(`${urls[random].title}\n[Source](http://reddit.com${urls[random].permalink})`).setColor(15514833);
+            message.channel.sendEmbed(embed);
+          }else {
+            message.channel.sendEmbed({description: `Sorry, no images could be found on r/${args[0]}`,color: 15514833});
+          }
+        }else {
+          message.channel.sendEmbed({description: 'ERROR: Could not retrieve subreddit data',color: 15514833});
+        }
+      });
     }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${requiredRole}`,color: 15514833});
-      return false;
+      message.channel.sendEmbed({description: 'ERROR: No subreddit specified | Use !r [subreddit]',color: 15514833});
     }
   }
-};
+
+  checkRole(message) {
+    var role = message.guild.roles.find('name',config.modRole);
+    return message.member.roles.has(role.id);
+  }
+
+  setName(client,args,message){
+    if (this.checkRole(message)) {
+      if (args[0]) {
+        var name = args.join(' ');
+        client.user.setUsername(name).then(message.channel.sendEmbed({description: `Name successfully updated!`,color: 15514833}));
+      }else {
+        message.channel.sendEmbed({description: `ERROR: Specify a string to change username to`,color: 15514833});
+      }
+    }else {
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: 15514833});
+    }
+  }
+
+  setGame(client,args,message){
+    if (this.checkRole(message)) {
+      if (args[0]) {
+        var game = args.join(' ');
+        client.user.setGame(game).then(message.channel.sendEmbed({description: `Game successfully updated!`,color: 15514833}));
+      }else {
+        client.user.setGame(null).then(message.channel.sendEmbed({description: `Game successfully cleared!`,color: 15514833}));
+      }
+    }else {
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: 15514833});
+    }
+  }
+
+  setStatus(client,args,message){
+    if (this.checkRole(message)) {
+      if (args[0]==='online' || args[0]==='idle' || args[0]==='invisible' || args[0]==='dnd') {
+        client.user.setStatus(args[0]).then(message.channel.sendEmbed({description: `Status successfully updated!`,color: 15514833}));
+      }else {
+        message.channel.sendEmbed({description: `ERROR: Incorrect syntax | Use !setstatus [status]\nStatuses: online, idle, invisible, dnd`,color: 15514833});
+      }
+    }else {
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: 15514833});
+    }
+  }
+
+  setAvatar(client,args,message){
+    if (this.checkRole(message)) {
+      if ((/\.(jpe?g|png|gif|bmp)$/i).test(args[0])) {
+        client.user.setAvatar(args[0]).then(message.channel.sendEmbed({description: `Avatar successfully updated!`,color: 15514833}));
+      }else {
+        message.channel.sendEmbed({description: `ERROR: That's not an image filetype I recognize | Try: .jpg .png .gif .bmp`,color: 15514833});
+      }
+    }else {
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: 15514833});
+    }
+  }
+
+}
+
+module.exports = new Commands();
