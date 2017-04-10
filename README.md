@@ -15,6 +15,7 @@
 !help                   - Displays all available commands
 !ping                   - Displays response time to server
 !uptime                 - Displays time since launch
+!version                - Checks for updates to the bot
 !setname    [name]      - [ADMIN] Sets the username of the bot, limited to 2 requests/hr
 !setgame    [game]      - [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
 !setavatar  [image url] - [ADMIN] Sets the avatar of te bot from an image url

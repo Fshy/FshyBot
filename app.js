@@ -33,115 +33,43 @@ client.on('message', (message)=>{
   let args    = message.content.split(/\s+/g).slice(1);
 
   switch (command) {
-    // discord.js-music-v11 commands
+    // General
+    case  'rules':      commands.rules(client,message);           break;
+    case  'help':       commands.help(client,message);            break;
+    case  'ping':       commands.ping(client,message);            break;
+    case  'uptime':     commands.uptime(client,message);          break;
+    case  'version':    commands.version(version,message);        break;
+
+    // Moderator Only Commands
+    case  'setname':    commands.setName(client,args,message);    break;
+    case  'setgame':    commands.setGame(client,args,message);    break;
+    case  'setavatar':  commands.setAvatar(client,args,message);  break;
+    case  'setstatus':  commands.setStatus(client,args,message);  break;
+
+    // Music
     case 'play':
     case 'skip':
     case 'queue':
     case 'pause':
     case 'resume':
-    case 'leave':
-      break;
-      
-    // Moderator Only Commands
-    case 'test':
-      // var role = message.guild.roles.find('name',config.modRole);
-      // console.log(message.member.roles.has(role.id));
-      break;
+    case 'leave':                                                 break;
+    case 'playlist':    commands.playlist(args,message);          break;
 
-    case 'setname':
-      commands.setName(client,args,message);
-      break;
-
-    case 'setgame':
-      commands.setGame(client,args,message);
-      break;
-
-    case 'setstatus':
-      commands.setStatus(client,args,message);
-      break;
-
-    case 'setavatar':
-      commands.setAvatar(client,args,message);
-      break;
-
-    // !rules = Displays the guild rules
-    case 'rules':
-      commands.rules(client,message);
-      break;
-
-    // !help = Displays all available commands
-    case 'help':
-      commands.help(client,message);
-      break;
-
-    case 'version':
-      commands.version(version,message);
-      break;
-
-    // !ping = Displays latency between the bot and the server
-    case 'ping':
-      message.channel.sendEmbed({description: `Response time to discord server: ${client.ping}ms`,color: 15514833});
-      break;
-
-    // !uptime = Displays time since launch
-    case 'uptime':
-      commands.uptime(client,message);
-      break;
-
-    // !btc - Displays current Bitcoin spot price
-    case 'btc':
-      commands.btc(message);
-      break;
-
-    // !eth - Displays current Ethereum spot price
-    case 'eth':
-      commands.eth(message);
-      break;
-
-    // !playlist <playlistId> - Queues all videos from a youtube playlist
-    case 'playlist':
-      commands.playlist(args,message);
-      break;
-
-    // !roll <# of sides> <# of dice>
-    case 'roll':
-      commands.roll(args,message);
-      break;
-
-    // !r - Uploads a random image from the frontpage of a given subreddit
-    case 'r':
-      commands.rslash(reddit,message,args);
-      break;
-
-    // !2B - Uploads a random 2B image from danbooru
+    // Anime/NSFW
+    case 'lewd':        commands.danbooru(args,'e',100,message);  break;
+    case 'sfw':         commands.danbooru(args,'s',100,message);  break;
+    case 'tags':        commands.danbooruTags(args,message);      break;
     case '2B':
-    case '2b':
-      if(args[0]==='nsfw')
-        commands.danbooru('yorha_no._2_type_b','e',100,message);
-      else
-        commands.danbooru('yorha_no._2_type_b','s',100,message);
-      break;
+    case '2b':          commands.img2B(args,message);             break;
 
-    // !lewd <search term> - Searches danbooru for a specific tag, and uploads a random nsfw image
-    case 'lewd':
-      var tag = args.join('_');
-      commands.danbooru(tag,'e',100,message);
-      break;
+    // Misc
+    case 'btc':         commands.btc(message);                    break;
+    case 'eth':         commands.eth(message);                    break;
+    case 'r':           commands.rslash(reddit,message,args);     break;
+    case 'roll':        commands.roll(args,message);              break;
 
-    // !sfw <search term> - Searches danbooru for a specific tag, and uploads a random safe image
-    case 'sfw':
-      var tag = args.join('_');
-      commands.danbooru(tag,'s',100,message);
-      break;
-
-    // !tags <search term> - Searches danbooru for possible related search tags
-    case 'tags':
-      var tag = args.join('_');
-      commands.danbooruTags(tag,message);
-      break;
-
-    default:
-      message.channel.sendEmbed({description: 'A-Are you talking to me? Because that\'s not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.',color: 15514833});
+    // Default
+    default:          message.channel.sendEmbed({description: 'A-Are you talking to me? Because that\'s not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.',color: 15514833});
   }
 
 });

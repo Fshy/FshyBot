@@ -26,6 +26,7 @@ class Commands {
       **!help**\t- Displays all available commands
       **!ping**\t- Displays response time to server
       **!uptime**\t- Displays time since launch
+      **!version**\t- Checks for updates to the bot
       **!setname    [name]**\t- [ADMIN] Sets the username of the bot, limited to 2 requests/hr
       **!setgame    [game]**\t- [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
       **!setavatar  [image url]**\t- [ADMIN] Sets the avatar of te bot from an image url
@@ -57,6 +58,10 @@ class Commands {
         .setColor(15514833);
       message.channel.sendEmbed(embed);
       message.delete();
+  }
+
+  ping(client,message){
+    message.channel.sendEmbed({description: `Response time to discord server: ${client.ping}ms`,color: 15514833});
   }
 
   version(version,message) {
@@ -157,8 +162,9 @@ class Commands {
     message.channel.sendEmbed({description: output,color: 15514833});
   }
 
-  danbooru(tag,rating,amount,message) {
-    if (tag.toLowerCase().match(/kanna/g) || tag.toLowerCase().match(/kamui/g) &&rating==='e') {
+  danbooru(args,rating,amount,message) {
+    var tag = args.join('_');
+    if ((tag.toLowerCase().match(/kanna/g) && rating==='e') || (tag.toLowerCase().match(/kamui/g) && rating==='e')) {
       message.channel.sendEmbed({description: 'Don\'t lewd the dragon loli',color: 15514833});
       return;
     }
@@ -179,7 +185,8 @@ class Commands {
     });
   }
 
-  danbooruTags(tag,message) {
+  danbooruTags(args,message) {
+    var tag = args.join('_');
     request(`http://danbooru.donmai.us/tags/autocomplete.json?search[name_matches]=*${tag}*`, function (e, r, b) {
       var suggestions = '';
       b = JSON.parse(b);
@@ -220,6 +227,13 @@ class Commands {
     }else {
       message.channel.sendEmbed({description: 'ERROR: No subreddit specified | Use !r [subreddit]',color: 15514833});
     }
+  }
+
+  img2B(args,message){
+    if(args[0]==='nsfw')
+      this.danbooru(['yorha_no._2_type_b'],'e',100,message);
+    else
+      this.danbooru(['yorha_no._2_type_b'],'s',100,message);
   }
 
   checkRole(message) {
