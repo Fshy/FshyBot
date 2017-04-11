@@ -29,7 +29,7 @@ class Commands {
       **!uptime**\t- Displays time since launch
       **!version**\t- Checks for updates to the bot
 
-      **!update**\t- [ADMIN] Updates to the master branch, IMPORTANT: Requires pm2 to restart client 
+      **!update**\t- [ADMIN] Updates to the master branch, IMPORTANT: Requires pm2 to restart client
       **!setname    [name]**\t- [ADMIN] Sets the username of the bot, limited to 2 requests/hr
       **!setgame    [game]**\t- [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
       **!setavatar  [image url]**\t- [ADMIN] Sets the avatar of te bot from an image url
@@ -94,7 +94,7 @@ class Commands {
         this.execute(exec, 'git reset --hard origin/master',
           this.execute(exec, 'npm install',
             this.execute(exec, 'pm2 restart all',
-              message.channel.sendEmbed({description: ':white_check_mark: SUCCESS: Use !version to check changelog',color: config.decimalColour});
+              message.channel.sendEmbed({description: ':white_check_mark: SUCCESS: Use !version to check changelog',color: config.decimalColour})
             )
           )
         )
