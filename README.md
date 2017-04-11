@@ -16,6 +16,11 @@
 !ping                   - Displays response time to server
 !uptime                 - Displays time since launch
 !version                - Checks for updates to the bot
+</pre>
+
+<h5>Admin</h5>
+<pre>
+!update                 - [ADMIN] Updates to the master branch, IMPORTANT: Requires pm2 to restart client
 !setname    [name]      - [ADMIN] Sets the username of the bot, limited to 2 requests/hr
 !setgame    [game]      - [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
 !setavatar  [image url] - [ADMIN] Sets the avatar of te bot from an image url
@@ -112,7 +117,7 @@ It's recommended however, to run scripts using a process manager such as [PM2](h
 $ npm install pm2 -g
 
 #Launch using pm2
-$ pm2 start app.js
+$ pm2 start app.js --name="fshybot"
 
 # Configure pm2 to launch on startup
 $ pm2 startup

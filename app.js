@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 
 const request   = require('request');
+const exec      = require('child_process').exec;
 const Discord   = require('discord.js');
 const music     = require('discord.js-music-v11');
 const firebase  = require("firebase");
@@ -40,7 +41,8 @@ client.on('message', (message)=>{
     case  'uptime':     commands.uptime(client,message);          break;
     case  'version':    commands.version(version,message);        break;
 
-    // Moderator Only Commands
+    // Admin Commands
+    case  'update':     commands.update(exec,version,message);    break;
     case  'setname':    commands.setName(client,args,message);    break;
     case  'setgame':    commands.setGame(client,args,message);    break;
     case  'setavatar':  commands.setAvatar(client,args,message);  break;

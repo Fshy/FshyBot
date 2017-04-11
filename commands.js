@@ -28,6 +28,8 @@ class Commands {
       **!ping**\t- Displays response time to server
       **!uptime**\t- Displays time since launch
       **!version**\t- Checks for updates to the bot
+
+      **!update**\t- [ADMIN] Updates to the master branch, IMPORTANT: Requires pm2 to restart client 
       **!setname    [name]**\t- [ADMIN] Sets the username of the bot, limited to 2 requests/hr
       **!setgame    [game]**\t- [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
       **!setavatar  [image url]**\t- [ADMIN] Sets the avatar of te bot from an image url
@@ -72,12 +74,34 @@ class Commands {
         message.channel.sendEmbed({description: 'ERROR: Could not access repository',color: config.decimalColour});
       }else {
         if (response.version!=version) {
-          message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Navigate to your installation folder and use **git pull** to update | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: config.decimalColour});
+          message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Use **!update** to fetch master branch and restart bot | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: config.decimalColour});
         }else {
           message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: config.decimalColour});
         }
       }
     });
+  }
+
+  execute(exec,command,callback){
+    exec(command).stdout.on('data', function(data) {
+      console.log(data);
+    });
+  }
+
+  update(exec,version,message){
+    if (this.checkRole(message)) {
+      this.execute(exec, 'git fetch',
+        this.execute(exec, 'git reset --hard origin/master',
+          this.execute(exec, 'npm install',
+            this.execute(exec, 'pm2 restart all',
+              message.channel.sendEmbed({description: ':white_check_mark: SUCCESS: Use !version to check changelog',color: config.decimalColour});
+            )
+          )
+        )
+      );
+    }else {
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
+    }
   }
 
   uptime(client,message) {
