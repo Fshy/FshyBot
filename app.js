@@ -69,7 +69,7 @@ client.on('message', (message)=>{
     case 'roll':        commands.roll(args,message);              break;
 
     // Default
-    default:          message.channel.sendEmbed({description: 'A-Are you talking to me? Because that\'s not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.',color: 15514833});
+    default:            message.channel.sendEmbed({description: 'A-Are you talking to me? Because that\'s not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.',color: config.decimalColour});
   }
 
 });

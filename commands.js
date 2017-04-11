@@ -3,6 +3,7 @@ const Discord   = require('discord.js');
 const config    = require('./config.json');
 
 class Commands {
+
   rules(client,message) {
     var r = `
       1. This is an assignment-free zone
@@ -15,7 +16,7 @@ class Commands {
       var embed = new Discord.RichEmbed()
         .setTitle(`Rules:`)
         .setDescription(r)
-        .setColor(15514833);
+        .setColor(config.decimalColour);
       message.channel.sendEmbed(embed);
       message.delete();
   }
@@ -55,25 +56,25 @@ class Commands {
         .setImage(`http://i.imgur.com/a96NGOY.png`)
         .setFooter(`Updated at`)
         .setTimestamp()
-        .setColor(15514833);
+        .setColor(config.decimalColour);
       message.channel.sendEmbed(embed);
       message.delete();
   }
 
   ping(client,message){
-    message.channel.sendEmbed({description: `Response time to discord server: ${client.ping}ms`,color: 15514833});
+    message.channel.sendEmbed({description: `Response time to discord server: ${client.ping}ms`,color: config.decimalColour});
   }
 
   version(version,message) {
     request('https://raw.githubusercontent.com/Fshy/FshyBot/master/package.json', function (error, response, body) {
       response = JSON.parse(body);
       if (error!=null) {
-        message.channel.sendEmbed({description: 'ERROR: Could not access repository',color: 15514833});
+        message.channel.sendEmbed({description: 'ERROR: Could not access repository',color: config.decimalColour});
       }else {
         if (response.version!=version) {
-          message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Navigate to your installation folder and use **git pull** to update | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: 15514833});
+          message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Navigate to your installation folder and use **git pull** to update | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: config.decimalColour});
         }else {
-          message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: 15514833});
+          message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: config.decimalColour});
         }
       }
     });
@@ -89,7 +90,7 @@ class Commands {
     var hours = time % 24;
     time = parseInt(time/24);
     var days = time;
-    message.channel.sendEmbed({description: `Uptime: ${days} days ${hours} hrs ${minutes} mins ${seconds} sec`,color: 15514833});
+    message.channel.sendEmbed({description: `Uptime: ${days} days ${hours} hrs ${minutes} mins ${seconds} sec`,color: config.decimalColour});
   }
 
   btc(message) {
@@ -97,14 +98,14 @@ class Commands {
       response = JSON.parse(body);
       var change='';
       if (error!=null) {
-        message.channel.sendEmbed({description: 'ERROR: Could not access coinmarketcap API',color: 15514833});
+        message.channel.sendEmbed({description: 'ERROR: Could not access coinmarketcap API',color: config.decimalColour});
       }else {
         if (response.change<0) {
           change = '▼';
         }else {
           change = '▲';
         }
-        message.channel.sendEmbed({description: `Current BTC Price: $${response.price.usd.toFixed(2)}\nChange: ${change}$${response.change}`,color: 15514833});
+        message.channel.sendEmbed({description: `Current BTC Price: $${response.price.usd.toFixed(2)}\nChange: ${change}$${response.change}`,color: config.decimalColour});
       }
     });
   }
@@ -114,14 +115,14 @@ class Commands {
       response = JSON.parse(body);
       var change='';
       if (error!=null) {
-        message.channel.sendEmbed({description: 'ERROR: Could not access coinmarketcap API',color: 15514833});
+        message.channel.sendEmbed({description: 'ERROR: Could not access coinmarketcap API',color: config.decimalColour});
       }else {
         if (response.change<0) {
           change = '▼';
         }else {
           change = '▲';
         }
-        message.channel.sendEmbed({description: `Current ETH Price: $${response.price.usd.toFixed(2)}\nChange: ${change}$${response.change}`,color: 15514833});
+        message.channel.sendEmbed({description: `Current ETH Price: $${response.price.usd.toFixed(2)}\nChange: ${change}$${response.change}`,color: config.decimalColour});
       }
     });
   }
@@ -131,7 +132,7 @@ class Commands {
     request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key=${config.youtube.apiKey}&maxResults=50&playlistId=${list}`, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
-        message.channel.sendEmbed({description: 'ERROR: Could not access YouTube API',color: 15514833});
+        message.channel.sendEmbed({description: 'ERROR: Could not access YouTube API',color: config.decimalColour});
       }else {
         message.member.voiceChannel.join();
         for (var i = 0; i < body.items.length; i++) {
@@ -159,27 +160,27 @@ class Commands {
       res += n;
     }
     output += "= "+res;
-    message.channel.sendEmbed({description: output,color: 15514833});
+    message.channel.sendEmbed({description: output,color: config.decimalColour});
   }
 
   danbooru(args,rating,amount,message) {
     var tag = args.join('_');
     if ((tag.toLowerCase().match(/kanna/g) && rating==='e') || (tag.toLowerCase().match(/kamui/g) && rating==='e')) {
-      message.channel.sendEmbed({description: 'Don\'t lewd the dragon loli',color: 15514833});
+      message.channel.sendEmbed({description: 'Don\'t lewd the dragon loli',color: config.decimalColour});
       return;
     }
     request(`http://danbooru.donmai.us/posts.json?tags=*${tag}*+rating%3A${rating}+limit%3A${amount}`, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
-        message.channel.sendEmbed({description: 'ERROR: Could not access Danbooru API',color: 15514833});
+        message.channel.sendEmbed({description: 'ERROR: Could not access Danbooru API',color: config.decimalColour});
       }else {
         var random = Math.floor(Math.random() * body.length);//Picks one randomly to post
         if (body[random]) {
-          var embed = new Discord.RichEmbed().setImage(`http://danbooru.donmai.us${body[random].file_url}`).setDescription(`[Source](${body[random].source})`).setColor(15514833);
+          var embed = new Discord.RichEmbed().setImage(`http://danbooru.donmai.us${body[random].file_url}`).setDescription(`[Source](${body[random].source})`).setColor(config.decimalColour);
           message.channel.sendEmbed(embed);
         }else {
           var suggestions = `ERROR: Could not find any posts matching ${tag}\nTry using the ${config.prefix}tags [search term] command to narrow down the search`;
-          message.channel.sendEmbed({description: suggestions,color: 15514833});
+          message.channel.sendEmbed({description: suggestions,color: config.decimalColour});
         }
       }
     });
@@ -199,7 +200,7 @@ class Commands {
       }else {
         suggestions = `No tags found for ${tag}`;
       }
-      message.channel.sendEmbed({description: suggestions,color: 15514833});
+      message.channel.sendEmbed({description: suggestions,color: config.decimalColour});
     });
   }
 
@@ -215,17 +216,17 @@ class Commands {
           }
           if (urls.length!=0) {
             var random = Math.floor(Math.random() * urls.length);//Picks one randomly to post
-            var embed = new Discord.RichEmbed().setImage(urls[random].url).setDescription(`${urls[random].title}\n[Source](http://reddit.com${urls[random].permalink})`).setColor(15514833);
+            var embed = new Discord.RichEmbed().setImage(urls[random].url).setDescription(`${urls[random].title}\n[Source](http://reddit.com${urls[random].permalink})`).setColor(config.decimalColour);
             message.channel.sendEmbed(embed);
           }else {
-            message.channel.sendEmbed({description: `Sorry, no images could be found on r/${args[0]}`,color: 15514833});
+            message.channel.sendEmbed({description: `Sorry, no images could be found on r/${args[0]}`,color: config.decimalColour});
           }
         }else {
-          message.channel.sendEmbed({description: 'ERROR: Could not retrieve subreddit data',color: 15514833});
+          message.channel.sendEmbed({description: 'ERROR: Could not retrieve subreddit data',color: config.decimalColour});
         }
       });
     }else {
-      message.channel.sendEmbed({description: 'ERROR: No subreddit specified | Use !r [subreddit]',color: 15514833});
+      message.channel.sendEmbed({description: 'ERROR: No subreddit specified | Use !r [subreddit]',color: config.decimalColour});
     }
   }
 
@@ -245,12 +246,12 @@ class Commands {
     if (this.checkRole(message)) {
       if (args[0]) {
         var name = args.join(' ');
-        client.user.setUsername(name).then(message.channel.sendEmbed({description: `Name successfully updated!`,color: 15514833}));
+        client.user.setUsername(name).then(message.channel.sendEmbed({description: `Name successfully updated!`,color: config.decimalColour}));
       }else {
-        message.channel.sendEmbed({description: `ERROR: Specify a string to change username to`,color: 15514833});
+        message.channel.sendEmbed({description: `ERROR: Specify a string to change username to`,color: config.decimalColour});
       }
     }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: 15514833});
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
     }
   }
 
@@ -258,36 +259,36 @@ class Commands {
     if (this.checkRole(message)) {
       if (args[0]) {
         var game = args.join(' ');
-        client.user.setGame(game).then(message.channel.sendEmbed({description: `Game successfully updated!`,color: 15514833}));
+        client.user.setGame(game).then(message.channel.sendEmbed({description: `Game successfully updated!`,color: config.decimalColour}));
       }else {
-        client.user.setGame(null).then(message.channel.sendEmbed({description: `Game successfully cleared!`,color: 15514833}));
+        client.user.setGame(null).then(message.channel.sendEmbed({description: `Game successfully cleared!`,color: config.decimalColour}));
       }
     }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: 15514833});
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
     }
   }
 
   setStatus(client,args,message){
     if (this.checkRole(message)) {
       if (args[0]==='online' || args[0]==='idle' || args[0]==='invisible' || args[0]==='dnd') {
-        client.user.setStatus(args[0]).then(message.channel.sendEmbed({description: `Status successfully updated!`,color: 15514833}));
+        client.user.setStatus(args[0]).then(message.channel.sendEmbed({description: `Status successfully updated!`,color: config.decimalColour}));
       }else {
-        message.channel.sendEmbed({description: `ERROR: Incorrect syntax | Use !setstatus [status]\nStatuses: online, idle, invisible, dnd`,color: 15514833});
+        message.channel.sendEmbed({description: `ERROR: Incorrect syntax | Use !setstatus [status]\nStatuses: online, idle, invisible, dnd`,color: config.decimalColour});
       }
     }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: 15514833});
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
     }
   }
 
   setAvatar(client,args,message){
     if (this.checkRole(message)) {
       if ((/\.(jpe?g|png|gif|bmp)$/i).test(args[0])) {
-        client.user.setAvatar(args[0]).then(message.channel.sendEmbed({description: `Avatar successfully updated!`,color: 15514833}));
+        client.user.setAvatar(args[0]).then(message.channel.sendEmbed({description: `Avatar successfully updated!`,color: config.decimalColour}));
       }else {
-        message.channel.sendEmbed({description: `ERROR: That's not an image filetype I recognize | Try: .jpg .png .gif .bmp`,color: 15514833});
+        message.channel.sendEmbed({description: `ERROR: That's not an image filetype I recognize | Try: .jpg .png .gif .bmp`,color: config.decimalColour});
       }
     }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: 15514833});
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
     }
   }
 

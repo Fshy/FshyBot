@@ -5,6 +5,7 @@
   "game":                 "NieR: Automata",
   "avatar":               "http://i.imgur.com/4eJdZIF.png",
   "modRole":              "Admin",
+  "decimalColour":        "15514833",
   "youtube":{
     "apiKey":             "YOUTUBE_API_KEY"
   },
