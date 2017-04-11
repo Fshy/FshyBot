@@ -19,7 +19,8 @@ music(client);
 client.login(config.token);
 
 client.on('ready', () => {
-  client.user.setUsername(config.name);
+  if (client.user.username!==config.name)
+    client.user.setUsername(config.name);
   client.user.setGame(config.game);
   client.user.setAvatar(config.avatar)
   console.log(`\n// ${config.name} Online and listening for input`);
