@@ -338,7 +338,7 @@ class Commands {
         for (var i = 0; i < keys.length; i++) {
           var key = keys[i];
           if (users[key].id===message.author.id) {
-            message.channel.sendEmbed({description: `${message.author.username}'s Balance: ${users[key].gbp} GBP`,color: config.decimalColour});
+            message.channel.sendEmbed({description: `:moneybag: ${message.author.username}'s Balance: ${users[key].gbp} GBP`,color: config.decimalColour});
             return;
           }
         }
@@ -368,6 +368,40 @@ class Commands {
         }
       });
     });
+  }
+
+  betGbp(userDB,args,message){
+    var wager = Number.parseInt(args[0]);
+    if (wager) {
+      var roll = Math.floor(Math.random() * 100) + 1;
+      userDB.once("value", (data) => {
+        var users = data.val();
+        if (users) {
+          var keys = Object.keys(users);
+          for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            if (users[key].id===message.author.id) {
+              if (users[key].gbp<wager) {
+                message.channel.sendEmbed({description: `ERROR: Insufficient Funds | Your Balance: ${users[key].gbp}`,color: config.decimalColour});
+              }else {
+                if (roll<50) {
+                  userDB.child(key).update({"gbp": users[key].gbp - wager});
+                  message.channel.sendEmbed({description: `:anger: Sorry, You Rolled ${roll}/100 | New Balance: ${users[key].gbp-wager}`,color: config.decimalColour});
+                }else {
+                  userDB.child(key).update({"gbp": users[key].gbp + wager});
+                  message.channel.sendEmbed({description: `:dollar: Congrats! You Rolled ${roll}/100 | New Balance: ${users[key].gbp+wager}`,color: config.decimalColour});
+                }
+              }
+              return;
+            }
+          }
+        }
+        userDB.push({id: message.author.id,gbp: 1000});
+        message.channel.sendEmbed({description: `Registered new user ${message.author.username} with 1000 GBP, try placing your wager again`,color: config.decimalColour});
+      });
+    }else {
+      message.channel.sendEmbed({description: `ERROR: Specify an amount to wager using !bet [amount]`,color: config.decimalColour});
+    }
   }
 
 }

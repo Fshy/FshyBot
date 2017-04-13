@@ -78,7 +78,10 @@ client.on('message', (message)=>{
     case 'eth':         commands.eth(message);                    break;
     case 'r':           commands.rslash(reddit,message,args);     break;
     case 'roll':        commands.roll(args,message);              break;
+
+    //Points System
     case 'gbp':         commands.getGbp(userDB,message);          break;
+    case 'bet':         commands.betGbp(userDB,args,message);     break;
 
     // Default
     default:            message.channel.sendEmbed({description: 'A-Are you talking to me? Because that\'s not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.',color: config.decimalColour});
