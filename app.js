@@ -12,6 +12,7 @@ const commands  = require('./commands');
 
 firebase.initializeApp(config.firebase);
 const database  = firebase.database();
+const userDB    = database.ref('users');
 const client    = new Discord.Client();
 const reddit    = new snoowrap(config.reddit);
 
@@ -24,6 +25,12 @@ client.on('ready', () => {
   client.user.setGame(config.game);
   client.user.setAvatar(config.avatar)
   console.log(`\n// ${config.name} Online and listening for input`);
+  client.setInterval(function () {
+    for(var u of client.guilds){
+      commands.addGbp(userDB,u[1]);
+    }
+    console.log('Added +1 GBP to all Online Users');
+  },300000);
 });
 
 client.on('message', (message)=>{
@@ -36,18 +43,19 @@ client.on('message', (message)=>{
 
   switch (command) {
     // General
-    case  'rules':      commands.rules(client,message);           break;
-    case  'help':       commands.help(client,message);            break;
-    case  'ping':       commands.ping(client,message);            break;
-    case  'uptime':     commands.uptime(client,message);          break;
-    case  'version':    commands.version(version,message);        break;
+    case 'rules':       commands.rules(client,message);           break;
+    case 'help':        commands.help(client,message);            break;
+    case 'ping':        commands.ping(client,message);            break;
+    case 'uptime':      commands.uptime(client,message);          break;
+    case 'version':     commands.version(version,message);        break;
 
     // Admin Commands
-    case  'update':     commands.update(exec,version,message);    break;
-    case  'setname':    commands.setName(client,args,message);    break;
-    case  'setgame':    commands.setGame(client,args,message);    break;
-    case  'setavatar':  commands.setAvatar(client,args,message);  break;
-    case  'setstatus':  commands.setStatus(client,args,message);  break;
+    case 'update':      commands.update(exec,version,message);    break;
+    case 'setname':     commands.setName(client,args,message);    break;
+    case 'setgame':     commands.setGame(client,args,message);    break;
+    case 'setavatar':   commands.setAvatar(client,args,message);  break;
+    case 'setstatus':   commands.setStatus(client,args,message);  break;
+    case 'alert':       commands.alert(args,message);             break;
 
     // Music
     case 'play':
@@ -70,6 +78,7 @@ client.on('message', (message)=>{
     case 'eth':         commands.eth(message);                    break;
     case 'r':           commands.rslash(reddit,message,args);     break;
     case 'roll':        commands.roll(args,message);              break;
+    case 'gbp':         commands.getGbp(userDB,message);          break;
 
     // Default
     default:            message.channel.sendEmbed({description: 'A-Are you talking to me? Because that\'s not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.',color: config.decimalColour});

@@ -316,6 +316,60 @@ class Commands {
     }
   }
 
+  sendChannel(message,text){
+    var ch = message.guild.channels.find('name',config.defaultChannel);
+    ch.sendEmbed({description: text,color: config.decimalColour});
+  }
+
+  alert(args,message){
+    if (this.checkRole(message)) {
+      var say = args.join(' ');
+      this.sendChannel(message,`@everyone ${say}`);
+    }else {
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
+    }
+  }
+
+  getGbp(userDB,message){
+    userDB.once("value", (data) => {
+      var users = data.val();
+      if (users) {
+        var keys = Object.keys(users);
+        for (var i = 0; i < keys.length; i++) {
+          var key = keys[i];
+          if (users[key].id===message.author.id) {
+            message.channel.sendEmbed({description: `${message.author.username}'s Balance: ${users[key].gbp} GBP`,color: config.decimalColour});
+            return;
+          }
+        }
+      }
+      userDB.push({id: message.author.id,gbp: 1000});
+      message.channel.sendEmbed({description: `Registered new user ${message.author.username} with 1000 GBP`,color: config.decimalColour});
+    });
+  }
+
+  addGbp(userDB,guild){
+    guild.fetchMembers().then(function (data) {
+      var onlineUsers = [];
+      for(var u of data.presences.keys()){
+        onlineUsers.push(u);
+      }
+      userDB.once("value", (data) => {
+        var users = data.val();
+        if (users) {
+          var keys = Object.keys(users);
+          for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            if (onlineUsers.includes(users[key].id)) {
+              var gbp = users[key].gbp + 1;
+              userDB.child(key).update({"gbp": gbp});
+            }
+          }
+        }
+      });
+    });
+  }
+
 }
 
 module.exports = new Commands();
