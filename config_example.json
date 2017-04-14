@@ -3,10 +3,8 @@
   "prefix":               "!",
   "name":                 "2B | FshyBot",
   "game":                 "NieR: Automata",
-  "avatar":               "http://i.imgur.com/4eJdZIF.png",
   "modRole":              "Admin",
   "decimalColour":        "15514833",
-  "defaultChannel":       "general",
   "youtube":{
     "apiKey":             "YOUTUBE_API_KEY"
   },

@@ -53,7 +53,7 @@ class Commands {
 
       For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)`;
       var embed = new Discord.RichEmbed()
-        .setTitle(`${config.name} Commands:`)
+        .setTitle(`Commands List:`)
         .setDescription(h)
         .setImage(`http://i.imgur.com/a96NGOY.png`)
         .setFooter(`Updated at`)
@@ -316,20 +316,6 @@ class Commands {
     }
   }
 
-  sendChannel(message,text){
-    var ch = message.guild.channels.find('name',config.defaultChannel);
-    ch.sendEmbed({description: text,color: config.decimalColour});
-  }
-
-  alert(args,message){
-    if (this.checkRole(message)) {
-      var say = args.join(' ');
-      this.sendChannel(message,`@everyone ${say}`);
-    }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
-    }
-  }
-
   getGbp(userDB,message){
     userDB.once("value", (data) => {
       var users = data.val();
@@ -402,6 +388,33 @@ class Commands {
     }else {
       message.channel.sendEmbed({description: `ERROR: Specify an amount to wager using !bet [amount]`,color: config.decimalColour});
     }
+  }
+
+  displayShop(userDB,message){
+    var bal = 0;
+    userDB.once("value", (data) => {
+      var users = data.val();
+      if (users) {
+        var keys = Object.keys(users);
+        for (var i = 0; i < keys.length; i++) {
+          var key = keys[i];
+          if (users[key].id===message.author.id) {
+            bal = users[key].gbp;
+          }
+        }
+      }
+      var embed = new Discord.RichEmbed()
+        .setTitle(`Points Shop | :moneybag: Balance: ${bal} GBP`)
+        .setImage(`http://i.imgur.com/5tk87o1.png`)
+        .setDescription(`Facilitates the purchasing of server perks`)
+        .addField(`:gay_pride_flag: Custom Name Colour - 5000 GBP`,
+          `!buy name [#hex colour code]`)
+        .addField(`:thinking: Custom Emoji Slot - 7500 GBP`,
+          `!buy emoji [image link]`)
+        .setColor(config.decimalColour)
+        .setFooter(`Disclaimer: Purchases may be revoked at Admin discretion`);
+      message.channel.sendEmbed(embed);
+    });
   }
 
 }

@@ -20,15 +20,11 @@ music(client);
 client.login(config.token);
 
 client.on('ready', () => {
-  if (client.user.username!==config.name)
-    client.user.setUsername(config.name);
   client.user.setGame(config.game);
-  client.user.setAvatar(config.avatar)
   console.log(`\n// ${config.name} Online and listening for input`);
   client.setInterval(function () {
-    for(var u of client.guilds){
-      commands.addGbp(userDB,u[1]);
-    }
+    for(var guild of client.guilds)
+      commands.addGbp(userDB,guild[1]);
     console.log('Added +1 GBP to all Online Users');
   },300000);
 });
@@ -49,13 +45,12 @@ client.on('message', (message)=>{
     case 'uptime':      commands.uptime(client,message);          break;
     case 'version':     commands.version(version,message);        break;
 
-    // Admin Commands
+    // Owner Commands
     case 'update':      commands.update(exec,version,message);    break;
     case 'setname':     commands.setName(client,args,message);    break;
     case 'setgame':     commands.setGame(client,args,message);    break;
     case 'setavatar':   commands.setAvatar(client,args,message);  break;
     case 'setstatus':   commands.setStatus(client,args,message);  break;
-    case 'alert':       commands.alert(args,message);             break;
 
     // Music
     case 'play':
@@ -73,15 +68,16 @@ client.on('message', (message)=>{
     case '2B':
     case '2b':          commands.img2B(args,message);             break;
 
+    //Points System
+    case 'gbp':         commands.getGbp(userDB,message);          break;
+    case 'shop':        commands.displayShop(userDB,message);     break;
+    case 'bet':         commands.betGbp(userDB,args,message);     break;
+
     // Misc
     case 'btc':         commands.btc(message);                    break;
     case 'eth':         commands.eth(message);                    break;
     case 'r':           commands.rslash(reddit,message,args);     break;
     case 'roll':        commands.roll(args,message);              break;
-
-    //Points System
-    case 'gbp':         commands.getGbp(userDB,message);          break;
-    case 'bet':         commands.betGbp(userDB,args,message);     break;
 
     // Default
     default:            message.channel.sendEmbed({description: 'A-Are you talking to me? Because that\'s not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.',color: config.decimalColour});
