@@ -358,7 +358,7 @@ class Commands {
 
   betGbp(userDB,args,message){
     var wager = Number.parseInt(args[0]);
-    if (wager) {
+    if (wager>0) {
       var roll = Math.floor(Math.random() * 100) + 1;
       userDB.once("value", (data) => {
         var users = data.val();
