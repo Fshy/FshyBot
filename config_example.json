@@ -3,7 +3,8 @@
   "prefix":               "!",
   "name":                 "2B | FshyBot",
   "game":                 "NieR: Automata",
-  "modRole":              "Admin",
+  "adminRoleID":          "DISCORD_ROLE_ID",
+  "ownerID":              "DISCORD_USER_ID",
   "decimalColour":        "15514833",
   "youtube":{
     "apiKey":             "YOUTUBE_API_KEY"

@@ -89,7 +89,7 @@ class Commands {
   }
 
   update(exec,version,message){
-    if (this.checkRole(message)) {
+    if (this.checkOwner(message)) {
       this.execute(exec, 'git fetch',
         this.execute(exec, 'git reset --hard origin/master',
           this.execute(exec, 'npm install',
@@ -100,7 +100,7 @@ class Commands {
         )
       );
     }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command`,color: config.decimalColour});
     }
   }
 
@@ -261,9 +261,18 @@ class Commands {
       this.danbooru(['yorha_no._2_type_b'],'s',100,message);
   }
 
-  checkRole(message) {
-    var role = message.guild.roles.find('name',config.modRole);
-    return message.member.roles.has(role.id);
+  checkRole(message){
+    var role = false;
+    role = message.guild.roles.get(config.adminRoleID);
+    if (role===undefined) {
+      return false;
+    }else {
+      return true;
+    }
+  }
+
+  checkOwner(message){
+    return (message.author.id===config.ownerID);
   }
 
   setName(client,args,message){
@@ -275,7 +284,7 @@ class Commands {
         message.channel.sendEmbed({description: `ERROR: Specify a string to change username to`,color: config.decimalColour});
       }
     }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command`,color: config.decimalColour});
     }
   }
 
@@ -288,7 +297,7 @@ class Commands {
         client.user.setGame(null).then(message.channel.sendEmbed({description: `Game successfully cleared!`,color: config.decimalColour}));
       }
     }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command`,color: config.decimalColour});
     }
   }
 
@@ -300,7 +309,7 @@ class Commands {
         message.channel.sendEmbed({description: `ERROR: Incorrect syntax | Use !setstatus [status]\nStatuses: online, idle, invisible, dnd`,color: config.decimalColour});
       }
     }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command`,color: config.decimalColour});
     }
   }
 
@@ -312,7 +321,7 @@ class Commands {
         message.channel.sendEmbed({description: `ERROR: That's not an image filetype I recognize | Try: .jpg .png .gif .bmp`,color: config.decimalColour});
       }
     }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command\nRequired Role: ${config.modRole}`,color: config.decimalColour});
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command`,color: config.decimalColour});
     }
   }
 

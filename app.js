@@ -47,6 +47,8 @@ client.on('message', (message)=>{
 
     // Owner Commands
     case 'update':      commands.update(exec,version,message);    break;
+
+    // Admin Commands
     case 'setname':     commands.setName(client,args,message);    break;
     case 'setgame':     commands.setGame(client,args,message);    break;
     case 'setavatar':   commands.setAvatar(client,args,message);  break;
@@ -68,7 +70,7 @@ client.on('message', (message)=>{
     case '2B':
     case '2b':          commands.img2B(args,message);             break;
 
-    //Points System
+    // Points System
     case 'gbp':         commands.getGbp(userDB,message);          break;
     case 'shop':        commands.displayShop(userDB,message);     break;
     case 'bet':         commands.betGbp(userDB,args,message);     break;
