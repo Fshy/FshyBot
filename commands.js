@@ -463,7 +463,7 @@ class Commands {
         'npm install',
         'pm2 restart all'
       ], function(err){
-        message.channel.sendEmbed({description: ':white_check_mark: SUCCESS: Use !version to check changelog',color: config.decimalColour});
+        message.channel.sendEmbed({description: `ERROR: ${err.message}`,color: config.decimalColour});
       });
     }else {
       message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command`,color: config.decimalColour});
