@@ -47,7 +47,7 @@ client.on('message', (message)=>{
     case 'version':     commands.version(version,message);        break;
 
     // Owner Commands
-    case 'update':      commands.update(exec,version,message);    break;
+    case 'update':      commands.update(message);                 break;
 
     // Admin Commands
     case 'setname':     commands.setName(client,args,message);    break;

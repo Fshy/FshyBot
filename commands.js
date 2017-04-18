@@ -88,28 +88,6 @@ class Commands {
     });
   }
 
-  execute(exec,command,callback){
-    exec(command).stdout.on('data', function(data) {
-      console.log(data);
-    });
-  }
-
-  update(exec,version,message){
-    if (this.checkOwner(message)) {
-      this.execute(exec, 'git fetch',
-        this.execute(exec, 'git reset --hard origin/master',
-          this.execute(exec, 'npm install',
-            this.execute(exec, 'pm2 restart all',
-              message.channel.sendEmbed({description: ':white_check_mark: SUCCESS: Use !version to check changelog',color: config.decimalColour})
-            )
-          )
-        )
-      );
-    }else {
-      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command`,color: config.decimalColour});
-    }
-  }
-
   uptime(client,message) {
     var time = client.uptime;
     time = parseInt(time/1000);
@@ -442,6 +420,53 @@ class Commands {
       }
     }else {
       message.channel.sendEmbed({description: `ERROR: Enter an expression to evaluate`,color: config.decimalColour});
+    }
+  }
+
+  // execute a single shell command where "cmd" is a string
+  exec(cmd, cb){
+    var child_process = require('child_process');
+    var parts = cmd.split(/\s+/g);
+    var p = child_process.spawn(parts[0], parts.slice(1), {stdio: 'inherit'});
+    p.on('exit', function(code){
+      var err = null;
+      if (code) {
+        err = new Error('command "'+ cmd +'" exited with wrong status code "'+ code +'"');
+        err.code = code;
+        err.cmd = cmd;
+      }
+      if (cb) cb(err);
+    });
+  };
+
+  // execute multiple commands in series
+  series(cmds, cb){
+    var ex = this.exec;
+    var execNext = function(){
+      ex(cmds.shift(), function(err){
+        if (err) {
+          cb(err);
+        } else {
+          if (cmds.length) execNext();
+          else cb(null);
+        }
+      });
+    };
+    execNext();
+  };
+
+  update(message){
+    if (this.checkOwner(message)) {
+      this.series([
+        'git fetch',
+        'git reset --hard origin/master',
+        'npm install',
+        'pm2 restart all'
+      ], function(err){
+        message.channel.sendEmbed({description: ':white_check_mark: SUCCESS: Use !version to check changelog',color: config.decimalColour});
+      });
+    }else {
+      message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command`,color: config.decimalColour});
     }
   }
 
