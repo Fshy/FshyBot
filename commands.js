@@ -440,7 +440,7 @@ class Commands {
   };
 
   // execute multiple commands in series
-  series(cmds, cb){
+  series(message,messageID,cmds, cb){
     var ex = this.exec;
     var execNext = function(){
       ex(cmds.shift(), function(err){
@@ -448,7 +448,11 @@ class Commands {
           cb(err);
         } else {
           if (cmds.length) execNext();
-          else cb(null);
+          else {
+            messageID.delete();
+            message.channel.sendEmbed({description: `Successfully Updated!`,color: config.decimalColour});
+            cb(null);
+          }
         }
       });
     };
@@ -457,7 +461,8 @@ class Commands {
 
   update(message){
     if (this.checkOwner(message)) {
-      this.series([
+      var messageID = message.channel.sendEmbed({description: `Updating..`,color: config.decimalColour});
+      this.series(message,messageID,[
         'git fetch',
         'git reset --hard origin/master',
         'npm install',
