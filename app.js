@@ -6,6 +6,7 @@ const Discord   = require('discord.js');
 const music     = require('discord.js-music-v11');
 const firebase  = require("firebase");
 const snoowrap  = require('snoowrap');
+const math      = require('mathjs');
 const config    = require('./config.json');
 const version   = require('./package.json').version;
 const commands  = require('./commands');
@@ -78,6 +79,7 @@ client.on('message', (message)=>{
     // Misc
     case 'btc':         commands.btc(message);                    break;
     case 'eth':         commands.eth(message);                    break;
+    case 'calc':        commands.calc(math,args,message);         break;
     case 'r':           commands.rslash(reddit,message,args);     break;
     case 'roll':        commands.roll(args,message);              break;
 

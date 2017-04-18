@@ -23,39 +23,45 @@ class Commands {
 
   help(client,message) {
     var h = `
+      -- General
       **!rules**\t- Displays the guild rules
       **!help**\t- Displays all available commands
       **!ping**\t- Displays response time to server
       **!uptime**\t- Displays time since launch
       **!version**\t- Checks for updates to the bot
 
-      **!update**\t- [ADMIN] Updates to the master branch, IMPORTANT: Requires pm2 to restart client
-      **!setname    [name]**\t- [ADMIN] Sets the username of the bot, limited to 2 requests/hr
-      **!setgame    [game]**\t- [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
-      **!setavatar  [image url]**\t- [ADMIN] Sets the avatar of te bot from an image url
-      **!setstatus  [status]**\t- [ADMIN] Sets the status of the bot
+      -- Admin
+      **!update**\t- Updates to the master branch
+      **!setname    [name]**\t- Sets the username of the bot
+      **!setgame    [game]**\t- Sets the "Playing" text for the bot
+      **!setavatar  [image url]**\t- Sets the avatar of the bot
+      **!setstatus  [status]**\t- Sets the status of the bot
 
-      **!play [title/link]**\t- Searches and queues the given term/link for playback
+      -- Music
+      **!play [title/link]**\t- Searches and queues the given term/link
       **!playlist [playlistId]**\t- Queues all videos from a youtube playlist
-      **!skip [number]**\t- Skip some number of songs or 1 song if a number is not specified
+      **!skip [number]**\t- Skip some number of songs or 1 song if not specified
       **!queue**\t- Display the current queue
       **!leave**\t- Clears the song queue and leaves the channel
 
-      **!lewd [search term]**\t- Uploads a random NSFW image of the given search term
-      **!sfw  [search term]**\t- Uploads a random SFW image of the given search term
-      **!tags [search term]**\t- Searches Danbooru for possible related search tags
+      -- Anime/NSFW
+      **!lewd [search term]**\t- Uploads a random NSFW image of the term
+      **!sfw  [search term]**\t- Uploads a random SFW image of the term
+      **!tags [search term]**\t- Searches Danbooru for related search tags
       **!2B [nsfw]**\t- Uploads a 2B image, or a NSFW version if supplied
 
+      -- Misc
       **!btc**\t- Displays current Bitcoin spot price
       **!eth**\t- Displays current Ethereum spot price
-      **!r    [subreddit]**\t- Uploads a random image from the frontpage of a given subreddit
-      **!roll [sides] [num]**\t- Rolls an n-sided die, m times and displays the result
+      **!calc [expression]**\t- Evaluates a given expression
+      **!r    [subreddit]**\t- Uploads a random image from a given subreddit
+      **!roll [n] [m]**\t- Rolls an n-sided die, m times and displays the result
 
       For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)`;
       var embed = new Discord.RichEmbed()
-        .setTitle(`Commands List:`)
+        .setTitle(`Commands:`)
         .setDescription(h)
-        .setImage(`http://i.imgur.com/a96NGOY.png`)
+        .setImage('http://i.imgur.com/a96NGOY.png')
         .setFooter(`Updated at`)
         .setTimestamp()
         .setColor(config.decimalColour);
@@ -424,6 +430,19 @@ class Commands {
         .setFooter(`Disclaimer: Purchases may be revoked at Admin discretion`);
       message.channel.sendEmbed(embed);
     });
+  }
+
+  calc(math,args,message){
+    var expr = args.join(' ');
+    if (args[0]) {
+      try {
+        message.channel.sendEmbed({description: `${expr} = ${math.eval(expr)}`,color: config.decimalColour});
+      } catch (e) {
+        message.channel.sendEmbed({description: `ERROR: ${e.message}`,color: config.decimalColour});
+      }
+    }else {
+      message.channel.sendEmbed({description: `ERROR: Enter an expression to evaluate`,color: config.decimalColour});
+    }
   }
 
 }

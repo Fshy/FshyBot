@@ -52,6 +52,7 @@
 <pre>
 !btc                    - Displays current Bitcoin spot price
 !eth                    - Displays current Ethereum spot price
+!calc [expression]      - Evaluates a given expression
 !r    [subreddit]       - Uploads a random image from frontpage of a given subreddit
 !roll [sides] [num]     - Rolls an n-sided die, m times and displays the result
 </pre>
