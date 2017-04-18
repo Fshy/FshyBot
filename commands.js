@@ -448,11 +448,7 @@ class Commands {
           cb(err);
         } else {
           if (cmds.length) execNext();
-          else {
-            messageID.delete();
-            message.channel.sendEmbed({description: `Successfully Updated!`,color: config.decimalColour});
-            cb(null);
-          }
+          else cb(null);
         }
       });
     };
@@ -468,7 +464,12 @@ class Commands {
         'npm install',
         'pm2 restart all'
       ], function(err){
-        message.channel.sendEmbed({description: `ERROR: ${err.message}`,color: config.decimalColour});
+        if (err) {
+          message.channel.sendEmbed({description: `ERROR: ${err.message}`,color: config.decimalColour});
+        }else {
+          messageID.delete();
+          message.channel.sendEmbed({description: `Successfully Updated!`,color: config.decimalColour});
+        }
       });
     }else {
       message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command`,color: config.decimalColour});
