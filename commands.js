@@ -440,7 +440,7 @@ class Commands {
   };
 
   // execute multiple commands in series
-  series(message,messageID,cmds, cb){
+  series(cmds, cb){
     var ex = this.exec;
     var execNext = function(){
       ex(cmds.shift(), function(err){
@@ -457,23 +457,39 @@ class Commands {
 
   update(message){
     if (this.checkOwner(message)) {
-      var messageID = message.channel.sendEmbed({description: `Updating..`,color: config.decimalColour});
-      this.series(message,messageID,[
+      message.channel.sendEmbed({description: `Updating...`,color: config.decimalColour});
+      this.series([
         'git fetch',
         'git reset --hard origin/master',
         'npm install',
         'pm2 restart all'
       ], function(err){
         if (err) {
-          message.channel.sendEmbed({description: `ERROR: ${err.message}`,color: config.decimalColour});
-        }else {
-          messageID.delete();
-          message.channel.sendEmbed({description: `Successfully Updated!`,color: config.decimalColour});
+          console.log(err.message);
         }
       });
     }else {
       message.channel.sendEmbed({description: `ERROR: Insufficient permissions to perform that command`,color: config.decimalColour});
     }
+  }
+
+  chatbot(args,message){
+    var expr = args.join(' ');
+    request({url:`https://jeannie.p.mashape.com/api?input=${expr}`,headers: {'X-Mashape-Key': config.mashape.jeannie,'Accept': 'application/json'}}, function (error, response, body) {
+      response = JSON.parse(body);
+      message.channel.sendEmbed({description: response.output[0].actions.say.text,color: config.decimalColour});
+
+      // if (error!=null) {
+      //   message.channel.sendEmbed({description: 'ERROR: Could not access repository',color: config.decimalColour});
+      // }else {
+      //   if (response.version!=version) {
+      //     message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Use **!update** to fetch master branch and restart bot | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: config.decimalColour});
+      //   }else {
+      //     message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: config.decimalColour});
+      //   }
+      // }
+      // console.log(response.output[0].actions.say.text);
+    });
   }
 
 }

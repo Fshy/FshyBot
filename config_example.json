@@ -23,5 +23,8 @@
     "projectId":          "FIREBASE_PROJECT_ID",
     "storageBucket":      "FIREBASE_STORAGE_BUCKET",
     "messagingSenderId":  "FIREBASE_SENDER_ID"
+  },
+  "mashape": {
+    "jeannie":            "JEANNIE_API_KEY"
   }
 }

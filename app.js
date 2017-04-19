@@ -32,7 +32,7 @@ client.on('ready', () => {
 
 client.on('message', (message)=>{
   if(message.author.bot && !message.content.startsWith(`${config.prefix}play`)) return;
-  if(!message.content.startsWith(config.prefix)) return;
+  if(!message.content.startsWith(config.prefix) && !message.content.startsWith('2B') && !message.content.startsWith('2b')) return;
   console.log(`-- ${message.author.username}: ${message.content}`);
 
   let command = message.content.split(/\s+/g)[0].slice(config.prefix.length);
@@ -68,8 +68,8 @@ client.on('message', (message)=>{
     case 'lewd':        commands.danbooru(args,'e',100,message);  break;
     case 'sfw':         commands.danbooru(args,'s',100,message);  break;
     case 'tags':        commands.danbooruTags(args,message);      break;
-    case '2B':
-    case '2b':          commands.img2B(args,message);             break;
+    // case '2B':
+    // case '2b':          commands.img2B(args,message);             break;
 
     // Points System
     case 'gbp':         commands.getGbp(userDB,message);          break;
@@ -80,6 +80,8 @@ client.on('message', (message)=>{
     case 'btc':         commands.btc(message);                    break;
     case 'eth':         commands.eth(message);                    break;
     case 'calc':        commands.calc(math,args,message);         break;
+    case 'b':
+    case 'B':           commands.chatbot(args,message);           break;
     case 'r':           commands.rslash(reddit,message,args);     break;
     case 'roll':        commands.roll(args,message);              break;
 
