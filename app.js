@@ -68,8 +68,8 @@ client.on('message', (message)=>{
     case 'lewd':        commands.danbooru(args,'e',100,message);  break;
     case 'sfw':         commands.danbooru(args,'s',100,message);  break;
     case 'tags':        commands.danbooruTags(args,message);      break;
-    // case '2B':
-    // case '2b':          commands.img2B(args,message);             break;
+    case '2B':
+    case '2b':          commands.img2B(args,message);             break;
 
     // Points System
     case 'gbp':         commands.getGbp(userDB,message);          break;

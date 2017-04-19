@@ -1,6 +1,6 @@
 [![2b1](http://i.imgur.com/hftWBMJ.jpg)](http://arc.moe)
-[![2b2](http://i.imgur.com/uBZlAzC.jpg)](http://discord.arc.moe)
-[![2b3](http://i.imgur.com/sY7kVJA.jpg)](#installation)
+[![2b2](http://i.imgur.com/W87etD2.jpg)](https://discordapp.com/oauth2/authorize?permissions=8&scope=bot&client_id=291311819354800150)
+[![2b3](http://i.imgur.com/1WetvDx.jpg)](#installation)
 
 [![Discord](https://discordapp.com/api/guilds/290982567564279809/embed.png)](http://discord.arc.moe/)
 [![AppVeyor](https://img.shields.io/appveyor/ci/Fshy/FshyBot.svg?style=flat-square)](https://ci.appveyor.com/project/Fshy/fshybot)
@@ -55,6 +55,18 @@
 !calc [expression]      - Evaluates a given expression
 !r    [subreddit]       - Uploads a random image from frontpage of a given subreddit
 !roll [sides] [num]     - Rolls an n-sided die, m times and displays the result
+</pre>
+
+<h5>Chatbot</h5>
+
+<pre>
+2B answers her callsign in response to the user
+Examples:
+  Fshy: 2B How are you?
+  2B:   Great! how about you?
+
+  Fshy: 2B What's the time?
+  2B:   It is 1:00 A.M.
 </pre>
 
 <hr>
@@ -118,7 +130,7 @@ It's recommended however, to run scripts using a process manager such as [PM2](h
 $ npm install pm2 -g
 
 #Launch using pm2
-$ pm2 start app.js --name="fshybot"
+$ pm2 start app.js --name "2B"
 
 # Configure pm2 to launch on startup
 $ pm2 startup

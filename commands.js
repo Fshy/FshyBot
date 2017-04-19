@@ -24,46 +24,48 @@ class Commands {
   help(client,message) {
     var h = `
       -- General
-      **!rules**\t- Displays the guild rules
-      **!help**\t- Displays all available commands
-      **!ping**\t- Displays response time to server
-      **!uptime**\t- Displays time since launch
-      **!version**\t- Checks for updates to the bot
+      **!rules** - Displays the guild rules
+      **!help** - Displays all available commands
+      **!ping** - Displays response time to server
+      **!uptime** - Displays time since launch
+      **!version** - Checks for updates to the bot
 
       -- Admin
-      **!update**\t- Updates to the master branch
-      **!setname    [name]**\t- Sets the username of the bot
-      **!setgame    [game]**\t- Sets the "Playing" text for the bot
-      **!setavatar  [image url]**\t- Sets the avatar of the bot
-      **!setstatus  [status]**\t- Sets the status of the bot
+      **!update** - Updates to the master branch
+      **!setname    [name]** - Sets the username of the bot
+      **!setgame    [game]** - Sets the "Playing" text for the bot
+      **!setavatar  [image url]** - Sets the avatar of the bot
+      **!setstatus  [status]** - Sets the status of the bot
 
       -- Music
-      **!play [title/link]**\t- Searches and queues the given term/link
-      **!playlist [playlistId]**\t- Queues all videos from a youtube playlist
-      **!skip [number]**\t- Skip some number of songs or 1 song if not specified
-      **!queue**\t- Display the current queue
-      **!leave**\t- Clears the song queue and leaves the channel
+      **!play [title/link]** - Searches and queues the given term/link
+      **!playlist [playlistId]** - Queues all videos from a youtube playlist
+      **!skip [number]** - Skip some number of songs or 1 song if not specified
+      **!queue** - Display the current queue
+      **!leave** - Clears the song queue and leaves the channel
 
       -- Anime/NSFW
-      **!lewd [search term]**\t- Uploads a random NSFW image of the term
-      **!sfw  [search term]**\t- Uploads a random SFW image of the term
-      **!tags [search term]**\t- Searches Danbooru for related search tags
-      **!2B [nsfw]**\t- Uploads a 2B image, or a NSFW version if supplied
+      **!lewd [search term]** - Uploads a random NSFW image of the term
+      **!sfw  [search term]** - Uploads a random SFW image of the term
+      **!tags [search term]** - Searches Danbooru for related search tags
+      **!2B [nsfw]** - Uploads a 2B image, or a NSFW version if supplied
 
       -- Misc
-      **!btc**\t- Displays current Bitcoin spot price
-      **!eth**\t- Displays current Ethereum spot price
-      **!calc [expression]**\t- Evaluates a given expression
-      **!r    [subreddit]**\t- Uploads a random image from a given subreddit
-      **!roll [n] [m]**\t- Rolls an n-sided die, m times and displays the result
+      **!btc** - Displays current Bitcoin spot price
+      **!eth** - Displays current Ethereum spot price
+      **!calc [expression]** - Evaluates a given expression
+      **!r    [subreddit]** - Uploads a random image from a given subreddit
+      **!roll [n] [m]** - Rolls an n-sided die, m times and displays the result
+
+      -- Chatbot
+      2B answers her callsign in response to the user
+      Eg. 2B How are you? | 2B What's the time?
 
       For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)`;
       var embed = new Discord.RichEmbed()
         .setTitle(`Commands:`)
         .setDescription(h)
         .setImage('http://i.imgur.com/a96NGOY.png')
-        .setFooter(`Updated at`)
-        .setTimestamp()
         .setColor(config.decimalColour);
       message.channel.sendEmbed(embed);
       message.delete();
@@ -476,19 +478,12 @@ class Commands {
   chatbot(args,message){
     var expr = args.join(' ');
     request({url:`https://jeannie.p.mashape.com/api?input=${expr}`,headers: {'X-Mashape-Key': config.mashape.jeannie,'Accept': 'application/json'}}, function (error, response, body) {
-      response = JSON.parse(body);
-      message.channel.sendEmbed({description: response.output[0].actions.say.text,color: config.decimalColour});
-
-      // if (error!=null) {
-      //   message.channel.sendEmbed({description: 'ERROR: Could not access repository',color: config.decimalColour});
-      // }else {
-      //   if (response.version!=version) {
-      //     message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Use **!update** to fetch master branch and restart bot | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: config.decimalColour});
-      //   }else {
-      //     message.channel.sendEmbed({description: `Currently Running v${version}\nNightly Build: v${response.version}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,color: config.decimalColour});
-      //   }
-      // }
-      // console.log(response.output[0].actions.say.text);
+      if (error!=null) {
+        message.channel.sendEmbed({description: 'ERROR: Could not access API',color: config.decimalColour});
+      }else {
+        response = JSON.parse(body);
+        message.channel.sendEmbed({description: response.output[0].actions.say.text,color: config.decimalColour});
+      }
     });
   }
 
