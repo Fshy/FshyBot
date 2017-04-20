@@ -30,6 +30,20 @@ client.on('ready', () => {
   },300000);
 });
 
+client.on('guildCreate', (guild)=>{
+  var embed = new Discord.RichEmbed()
+    .setTitle(`// ${config.name} Online and listening for input`)
+    .setDescription(`Thanks for adding me to your server!
+Please have a look at my command list using **!help**
+or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
+
+Currently running v${version} on a Linux EC2 Instance in the US-East
+My latency to your server is ${client.ping}ms`)
+    .setThumbnail('http://i.imgur.com/4D1IKh8.png')
+    .setColor(config.decimalColour);
+  guild.defaultChannel.sendEmbed(embed);
+});
+
 client.on('message', (message)=>{
   if(message.author.bot && !message.content.startsWith(`${config.prefix}play`)) return;
   if(!message.content.startsWith(config.prefix) && !message.content.startsWith('2B') && !message.content.startsWith('2b')) return;
