@@ -1,7 +1,6 @@
 /*jshint esversion: 6 */
 
 const request   = require('request');
-const exec      = require('child_process').exec;
 const Discord   = require('discord.js');
 const music     = require('discord.js-music-v11');
 const firebase  = require("firebase");
