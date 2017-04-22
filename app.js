@@ -43,6 +43,14 @@ My latency to your server is ${client.ping}ms`)
   guild.defaultChannel.sendEmbed(embed);
 });
 
+client.on('guildMemberAdd', (member) => {
+  var embed = new Discord.RichEmbed()
+    .setDescription(`${member.user.username} has joined the server.\n@everyone please welcome them to ${member.guild.name}`)
+    .setImage('https://i.imgur.com/v177BWr.gif')
+    .setColor(config.decimalColour);
+  member.guild.defaultChannel.sendEmbed(embed);
+});
+
 client.on('message', (message)=>{
   if(message.author.bot && !message.content.startsWith(`${config.prefix}play`)) return;
   if(!message.content.startsWith(config.prefix) && !message.content.startsWith('2B') && !message.content.startsWith('2b')) return;
