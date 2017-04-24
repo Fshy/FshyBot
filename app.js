@@ -37,7 +37,7 @@ Please have a look at my command list using **!help**
 or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
 
 Currently running v${version} on a Linux EC2 Instance in the US-East
-My latency to your server is ${client.ping}ms`)
+My latency to your server is ${Math.round(client.ping)}ms`)
     .setThumbnail('http://i.imgur.com/4D1IKh8.png')
     .setColor(config.decimalColour);
   guild.defaultChannel.sendEmbed(embed);

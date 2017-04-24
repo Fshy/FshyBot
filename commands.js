@@ -72,7 +72,7 @@ class Commands {
   }
 
   ping(client,message){
-    message.channel.sendEmbed({description: `Response time to discord server: ${client.ping}ms`,color: config.decimalColour});
+    message.channel.sendEmbed({description: `Response time to discord server: ${Math.round(client.ping)}ms`,color: config.decimalColour});
   }
 
   version(version,message) {
