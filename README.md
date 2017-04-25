@@ -20,7 +20,7 @@
 
 <h5>Admin</h5>
 <pre>
-!update                 - [ADMIN] Updates to the master branch, IMPORTANT: Requires pm2 to restart client
+!update                 - [OWNER] Updates to the master branch, IMPORTANT: Linux Only / Requires PM2
 !setname    [name]      - [ADMIN] Sets the username of the bot, limited to 2 requests/hr
 !setgame    [game]      - [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
 !setavatar  [image url] - [ADMIN] Sets the avatar of te bot from an image url
