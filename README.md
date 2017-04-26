@@ -123,7 +123,7 @@ With a working config file in place, we're ready to start the script from the te
 $ node app.js
 ```
 
-It's recommended however, to run scripts using a process manager such as [PM2](https://github.com/Unitech/pm2). This ensures your bot automatically restarts in case of a crash. We can also configure pm2 to launch on startup.
+It's recommended however, to run scripts using a process manager such as [PM2](https://github.com/Unitech/pm2). This ensures your bot automatically restarts in case of a crash. This also allows us to use the !update command to fetch new builds.
 
 ```shell
 #Install pm2
