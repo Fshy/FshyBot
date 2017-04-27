@@ -2,7 +2,7 @@
 
 const request   = require('request');
 const Discord   = require('discord.js');
-const music     = require('discord.js-music-v11');
+const ytdl      = require('ytdl-core');
 const firebase  = require("firebase");
 const snoowrap  = require('snoowrap');
 const math      = require('mathjs');
@@ -16,7 +16,6 @@ const userDB    = database.ref('users');
 const client    = new Discord.Client();
 const reddit    = new snoowrap(config.reddit);
 
-music(client);
 client.login(config.token);
 
 client.on('ready', () => {
@@ -77,13 +76,11 @@ client.on('message', (message)=>{
     case 'setstatus':   commands.setStatus(client,args,message);  break;
 
     // Music
-    case 'play':
-    case 'skip':
-    case 'queue':
-    case 'pause':
-    case 'resume':
-    case 'leave':                                                 break;
-    case 'playlist':    commands.playlist(args,message);          break;
+    case 'play':        commands.play(ytdl,client,args,message);  break;
+    case 'stop':        commands.stop(client,args,message);       break;
+    case 'pause':       commands.pause(client,args,message);      break;
+    case 'resume':      commands.resume(client,args,message);     break;
+    // case 'playlist':    commands.playlist(args,message);          break;
 
     // Anime/NSFW
     case 'lewd':        commands.danbooru(args,'e',100,message);  break;
@@ -107,7 +104,7 @@ client.on('message', (message)=>{
     case 'roll':        commands.roll(args,message);              break;
 
     // Default
-    default:            message.channel.sendEmbed({description: 'A-Are you talking to me? Because that\'s not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.',color: config.decimalColour});
+    default:            message.channel.sendEmbed({description: `A-Are you talking to me? Because that's not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.`,color: config.decimalColour});
   }
 
 });

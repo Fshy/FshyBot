@@ -487,6 +487,88 @@ class Commands {
     });
   }
 
+  play(ytdl,client,args,message){
+    const voiceChannel = message.member.voiceChannel;
+    if (!voiceChannel) {
+      message.channel.sendEmbed({description: 'ERROR: Please join a voice channel first',color: config.decimalColour});
+    }else {
+      let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      let match = args[0].match(regExp);
+      if (match) {
+        let stream = ytdl(match[2], {
+          filter : 'audioonly'
+        });
+        let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+        if (vconnec) {
+          let dispatch = vconnec.player.dispatcher;
+          dispatch.end();
+        }
+        voiceChannel.join().then(connnection => {
+          message.channel.sendEmbed({description: ':headphones: Starting Playback',color: config.decimalColour});
+          const dispatcher = connnection.playStream(stream, {passes:2});
+          dispatcher.on('end', () => {voiceChannel.leave()});
+        });
+      }else {
+        let expr = args.join('+');
+        request(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${expr}&type=video&key=${config.youtube.apiKey}`, function (error, response, body) {
+          if (error!=null) {
+            message.channel.sendEmbed({description: 'ERROR: Could not access API',color: config.decimalColour});
+          }else {
+            response = JSON.parse(body);
+            let res = response.items[0];
+            let stream = ytdl(res.id.videoId, {
+              filter : 'audioonly'
+            });
+            let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+            if (vconnec) {
+              let dispatch = vconnec.player.dispatcher;
+              dispatch.end();
+            }
+            voiceChannel.join().then(connnection => {
+              var embed = new Discord.RichEmbed()
+                .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
+                .setThumbnail(res.snippet.thumbnails.default.url)
+                .setColor(config.decimalColour);
+              message.channel.sendEmbed(embed);
+              const dispatcher = connnection.playStream(stream, {passes:2});
+              dispatcher.on('end', () => {voiceChannel.leave()});
+            });
+          }
+        });
+      }
+    }
+  }
+
+  stop(client,args,message){
+    let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+    if (vconnec) {
+      let dispatch = vconnec.player.dispatcher;
+      dispatch.end();
+      message.channel.sendEmbed({description: `:mute: ${message.author.username} Stopped Playback`,color: config.decimalColour});
+      dispatch.on('end', () => {
+        vconnec.channel.leave()
+      });
+    }
+  }
+
+  pause(client,args,message){
+    let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+    if (vconnec) {
+      let dispatch = vconnec.player.dispatcher;
+      dispatch.pause();
+      message.channel.sendEmbed({description: `:speaker: ${message.author.username} Paused Playback`,color: config.decimalColour});
+    }
+  }
+
+  resume(client,args,message){
+    let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+    if (vconnec) {
+      let dispatch = vconnec.player.dispatcher;
+      dispatch.resume();
+      message.channel.sendEmbed({description: `:loud_sound: ${message.author.username} Resumed Playback`,color: config.decimalColour});
+    }
+  }
+
 }
 
 module.exports = new Commands();
