@@ -479,7 +479,7 @@ class Commands {
     var expr = args.join(' ');
     request({url:`https://jeannie.p.mashape.com/api?input=${expr}`,headers: {'X-Mashape-Key': config.mashape.jeannie,'Accept': 'application/json'}}, function (error, response, body) {
       if (error!=null) {
-        message.channel.sendEmbed({description: 'ERROR: Could not access API',color: config.decimalColour});
+        message.channel.sendEmbed({description: 'ERROR: Could not access Jeannie API',color: config.decimalColour});
       }else {
         response = JSON.parse(body);
         message.channel.sendEmbed({description: response.output[0].actions.say.text,color: config.decimalColour});
@@ -495,24 +495,39 @@ class Commands {
       let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
       let match = args[0].match(regExp);
       if (match) {
-        let stream = ytdl(match[2], {
-          filter : 'audioonly'
+        request(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${match[2]}&key=${config.youtube.apiKey}`, function (error, response, body) {
+          if (error!=null) {
+            message.channel.sendEmbed({description: 'ERROR: Could not access YouTube API',color: config.decimalColour});
+          }else {
+            response = JSON.parse(body);
+            let res = response.items[0];
+            let stream = ytdl(match[2], {
+              filter : 'audioonly'
+            });
+            let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+            if (vconnec) {
+              let dispatch = vconnec.player.dispatcher;
+              dispatch.end();
+            }
+            voiceChannel.join().then(connnection => {
+              var embed = new Discord.RichEmbed()
+                .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
+                .setThumbnail(res.snippet.thumbnails.default.url)
+                .setColor(config.decimalColour);
+              const dispatcher = connnection.playStream(stream, {passes:2});
+              message.channel.sendEmbed(embed);
+              dispatcher.on('end', () => {
+                voiceChannel.leave();
+              });
+            });
+          }
         });
-        let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
-        if (vconnec) {
-          let dispatch = vconnec.player.dispatcher;
-          dispatch.end();
-        }
-        voiceChannel.join().then(connnection => {
-          message.channel.sendEmbed({description: ':headphones: Starting Playback',color: config.decimalColour});
-          const dispatcher = connnection.playStream(stream, {passes:2});
-          dispatcher.on('end', () => {voiceChannel.leave()});
-        });
+
       }else {
         let expr = args.join('+');
-        request(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${expr}&type=video&key=${config.youtube.apiKey}`, function (error, response, body) {
+        request(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${expr}&type=video&videoCategoryId=10&key=${config.youtube.apiKey}`, function (error, response, body) {
           if (error!=null) {
-            message.channel.sendEmbed({description: 'ERROR: Could not access API',color: config.decimalColour});
+            message.channel.sendEmbed({description: 'ERROR: Could not access YouTube API',color: config.decimalColour});
           }else {
             response = JSON.parse(body);
             let res = response.items[0];
@@ -529,9 +544,11 @@ class Commands {
                 .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
                 .setThumbnail(res.snippet.thumbnails.default.url)
                 .setColor(config.decimalColour);
-              message.channel.sendEmbed(embed);
               const dispatcher = connnection.playStream(stream, {passes:2});
-              dispatcher.on('end', () => {voiceChannel.leave()});
+              message.channel.sendEmbed(embed);
+              dispatcher.on('end', () => {
+                voiceChannel.leave();
+              });
             });
           }
         });
