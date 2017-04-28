@@ -596,7 +596,7 @@ class Commands {
     }
   }
 
-  leave(client){
+  leave(client,message){
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;

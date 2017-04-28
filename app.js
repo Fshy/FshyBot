@@ -81,7 +81,7 @@ client.on('message', (message)=>{
     case 'stop':        return commands.stop(client,message);
     case 'pause':       return commands.pause(client,message);
     case 'resume':      return commands.resume(client,message);
-    case 'leave':       return commands.leave(client);
+    case 'leave':       return commands.leave(client,message);
     case 'stream':      return commands.stream(client,args,message);
     case 'radio':       return commands.radio(client,args,message);
     // case 'playlist':    commands.playlist(args,message);          break;
