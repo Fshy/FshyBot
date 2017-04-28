@@ -28,11 +28,13 @@
     "jeannie":            "JEANNIE_API_KEY"
   },
   "radio": [
-    {"title":"EDM Radio",           "genre":"Electronic", "url":"http://s1.edmradio.ru:8000/live"},
-    {"title":"Progressive.Beats",   "genre":"HipHop/R&B", "url":"http://radio.progressivebeats.org:8050/"},
-    {"title":"Hip-Hop Request",     "genre":"HipHop/R&B", "url":"http://149.56.175.167:5461/"},
-    {"title":".977 Hip Hop/RNB",    "genre":"HipHop/R&B", "url":"http://19353.live.streamtheworld.com:3690/977_JAMZ_SC"},
-    {"title":"Boom Champions 94.1", "genre":"HipHop/R&B", "url":"http://www.ttaccount.com:8080/94.mp3"},
-    {"title":"Listen.moe",          "genre":"Anime",      "url":"https://listen.moe/stream"}
+    {"title":"EDM Radio",               "genre":"Electronic",   "url":"http://s1.edmradio.ru:8000/live"},
+    {"title":"Listen.moe",              "genre":"Anime",        "url":"https://listen.moe/stream"},
+    {"title":"Progressive.Beats",       "genre":"HipHop/R&B",   "url":"http://radio.progressivebeats.org:8050/"},
+    {"title":"Hip-Hop Request",         "genre":"HipHop/R&B",   "url":"http://149.56.175.167:5461/"},
+    {"title":".977 Hip Hop/RNB",        "genre":"HipHop/R&B",   "url":"http://19353.live.streamtheworld.com:3690/977_JAMZ_SC"},
+    {"title":"Radio ROKS Rock Ballads", "genre":"Classic Hits", "url":"http://online-radioroks2.tavrmedia.ua/RadioROKS_Ballads"},
+    {"title":"SLAM 100.5",              "genre":"Local",        "url":"http://media.guardian.co.tt:8000/slam100.5"},
+    {"title":"Boom Champions 94.1",     "genre":"Local",        "url":"http://www.ttaccount.com:8080/94.mp3"}
   ]
 }

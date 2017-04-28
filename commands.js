@@ -626,19 +626,25 @@ class Commands {
   radio(client,args,message){
     if (args[0]) {
       var choice = parseInt(args[0])-1;
-      if (choice<config.radio.length && choice<10) {
+      if (choice<config.radio.length) {
         this.stream(client,[config.radio[choice].url],message);
-        message.channel.sendEmbed({description: `:headphones: Now Streaming: ${config.radio[choice].title}`,color: config.decimalColour});
       }else {
         message.channel.sendEmbed({description: `ERROR: Selection does not exist`,color: config.decimalColour});
       }
     }else {
-      var emojis = ['one','two','three','four','five','six','seven','eight','nine','ten'];
-      var desc = '';
-      for (var i = 0; i < config.radio.length && i<10; i++) {
-        desc+=`:${emojis[i]}: **!radio ${i+1}** | ${config.radio[i].title} - **${config.radio[i].genre}**\n\n`;
+      var desc = [];
+      for (var i = 0; i < config.radio.length; i++) {
+        if (i===0) {
+          desc.push({name:'Command',        value:`!radio ${i+1}`,            inline:true});
+          desc.push({name:'Radio Station',  value:`${config.radio[i].title}`, inline:true});
+          desc.push({name:'Genre',          value:`${config.radio[i].genre}`, inline:true});
+        }else {
+          desc.push({name:'­', value:`!radio ${i+1}`,             inline:true});
+          desc.push({name:'­', value:`${config.radio[i].title}`,  inline:true});
+          desc.push({name:'­', value:`${config.radio[i].genre}`,  inline:true});
+        }
       }
-      message.channel.sendEmbed({description: desc,color: config.decimalColour});
+      message.channel.sendEmbed({title: `:radio: Programmed Stations:`, description:'\n', fields: desc, color: config.decimalColour});
     }
   }
 
