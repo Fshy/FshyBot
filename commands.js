@@ -556,15 +556,43 @@ class Commands {
     }
   }
 
+  stream(client,args,message){
+    const voiceChannel = message.member.voiceChannel;
+    if (!voiceChannel) {
+      message.channel.sendEmbed({description: 'ERROR: Please join a voice channel first',color: config.decimalColour});
+    }else {
+      if (args[0]) {
+        let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+        if (vconnec) {
+          let dispatch = vconnec.player.dispatcher;
+          dispatch.end();
+        }
+        if (args[0].startsWith('https')) {
+          require('https').get(args[0], (res) => {
+            voiceChannel.join().then(connnection => {
+              connnection.playStream(res, {passes:2});
+            });
+          });
+        }else {
+          require('http').get(args[0], (res) => {
+            voiceChannel.join().then(connnection => {
+              connnection.playStream(res, {passes:2});
+            });
+          });
+        }
+      }else {
+        message.channel.sendEmbed({description: 'ERROR: Please specify the stream url as a parameter',color: config.decimalColour});
+      }
+    }
+  }
+
   stop(client,args,message){
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
       dispatch.end();
       message.channel.sendEmbed({description: `:mute: ${message.author.username} Stopped Playback`,color: config.decimalColour});
-      dispatch.on('end', () => {
-        vconnec.channel.leave()
-      });
+      vconnec.channel.leave();
     }
   }
 
@@ -583,6 +611,25 @@ class Commands {
       let dispatch = vconnec.player.dispatcher;
       dispatch.resume();
       message.channel.sendEmbed({description: `:loud_sound: ${message.author.username} Resumed Playback`,color: config.decimalColour});
+    }
+  }
+
+  radio(client,args,message){
+    if (args[0]) {
+      var choice = parseInt(args[0])-1;
+      if (choice<config.radio.length && choice<10) {
+        this.stream(client,[config.radio[choice].url],message);
+        message.channel.sendEmbed({description: `:headphones: Now Streaming: ${config.radio[choice].title}`,color: config.decimalColour});
+      }else {
+        message.channel.sendEmbed({description: `ERROR: Selection does not exist`,color: config.decimalColour});
+      }
+    }else {
+      var emojis = ['one','two','three','four','five','six','seven','eight','nine','ten'];
+      var desc = '';
+      for (var i = 0; i < config.radio.length && i<10; i++) {
+        desc+=`:${emojis[i]}: **!radio ${i+1}** | ${config.radio[i].title} - **${config.radio[i].genre}**\n\n`;
+      }
+      message.channel.sendEmbed({description: desc,color: config.decimalColour});
     }
   }
 

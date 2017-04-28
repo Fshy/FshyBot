@@ -2,6 +2,7 @@
 
 const request   = require('request');
 const Discord   = require('discord.js');
+const fs        = require('fs');
 const ytdl      = require('ytdl-core');
 const firebase  = require("firebase");
 const snoowrap  = require('snoowrap');
@@ -60,51 +61,54 @@ client.on('message', (message)=>{
 
   switch (command) {
     // General
-    case 'rules':       commands.rules(client,message);           break;
-    case 'help':        commands.help(client,message);            break;
-    case 'ping':        commands.ping(client,message);            break;
-    case 'uptime':      commands.uptime(client,message);          break;
-    case 'version':     commands.version(version,message);        break;
+    case 'rules':       return commands.rules(client,message);
+    case 'help':        return commands.help(client,message);
+    case 'ping':        return commands.ping(client,message);
+    case 'uptime':      return commands.uptime(client,message);
+    case 'version':     return commands.version(version,message);
 
     // Owner Commands
-    case 'update':      commands.update(message);                 break;
+    case 'update':      return commands.update(message);
 
     // Admin Commands
-    case 'setname':     commands.setName(client,args,message);    break;
-    case 'setgame':     commands.setGame(client,args,message);    break;
-    case 'setavatar':   commands.setAvatar(client,args,message);  break;
-    case 'setstatus':   commands.setStatus(client,args,message);  break;
+    case 'setname':     return commands.setName(client,args,message);
+    case 'setgame':     return commands.setGame(client,args,message);
+    case 'setavatar':   return commands.setAvatar(client,args,message);
+    case 'setstatus':   return commands.setStatus(client,args,message);
 
     // Music
-    case 'play':        commands.play(ytdl,client,args,message);  break;
-    case 'stop':        commands.stop(client,args,message);       break;
-    case 'pause':       commands.pause(client,args,message);      break;
-    case 'resume':      commands.resume(client,args,message);     break;
+    case 'play':        return commands.play(ytdl,client,args,message);
+    case 'stop':        return commands.stop(client,args,message);
+    case 'pause':       return commands.pause(client,args,message);
+    case 'resume':      return commands.resume(client,args,message);
+    case 'stream':      return commands.stream(client,args,message);
+    case 'radio':       return commands.radio(client,args,message);
     // case 'playlist':    commands.playlist(args,message);          break;
 
     // Anime/NSFW
-    case 'lewd':        commands.danbooru(args,'e',100,message);  break;
-    case 'sfw':         commands.danbooru(args,'s',100,message);  break;
-    case 'tags':        commands.danbooruTags(args,message);      break;
+    case 'weeb':        return commands.stream(client,['https://listen.moe/stream'],message);
+    case 'lewd':        return commands.danbooru(args,'e',100,message);
+    case 'sfw':         return commands.danbooru(args,'s',100,message);
+    case 'tags':        return commands.danbooruTags(args,message);
     case '2B':
-    case '2b':          commands.img2B(args,message);             break;
+    case '2b':          return commands.img2B(args,message);
 
     // Points System
-    case 'gbp':         commands.getGbp(userDB,message);          break;
-    case 'shop':        commands.displayShop(userDB,message);     break;
-    case 'bet':         commands.betGbp(userDB,args,message);     break;
+    case 'gbp':         return commands.getGbp(userDB,message);
+    case 'shop':        return commands.displayShop(userDB,message);
+    case 'bet':         return commands.betGbp(userDB,args,message);
 
     // Misc
-    case 'btc':         commands.btc(message);                    break;
-    case 'eth':         commands.eth(message);                    break;
-    case 'calc':        commands.calc(math,args,message);         break;
+    case 'btc':         return commands.btc(message);
+    case 'eth':         return commands.eth(message);
+    case 'calc':        return commands.calc(math,args,message);
     case 'b':
-    case 'B':           commands.chatbot(args,message);           break;
-    case 'r':           commands.rslash(reddit,message,args);     break;
-    case 'roll':        commands.roll(args,message);              break;
+    case 'B':           return commands.chatbot(args,message);
+    case 'r':           return commands.rslash(reddit,message,args);
+    case 'roll':        return commands.roll(args,message);
 
     // Default
-    default:            message.channel.sendEmbed({description: `A-Are you talking to me? Because that's not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.`,color: config.decimalColour});
+    default:            return message.channel.sendEmbed({description: `A-Are you talking to me? Because that's not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.`,color: config.decimalColour});
   }
 
 });
