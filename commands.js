@@ -586,7 +586,7 @@ class Commands {
     }
   }
 
-  stop(client,args,message){
+  stop(client,message){
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
@@ -596,7 +596,16 @@ class Commands {
     }
   }
 
-  pause(client,args,message){
+  leave(client){
+    let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+    if (vconnec) {
+      let dispatch = vconnec.player.dispatcher;
+      dispatch.end();
+      vconnec.channel.leave();
+    }
+  }
+
+  pause(client,message){
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
@@ -605,7 +614,7 @@ class Commands {
     }
   }
 
-  resume(client,args,message){
+  resume(client,message){
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;

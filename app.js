@@ -78,15 +78,15 @@ client.on('message', (message)=>{
 
     // Music
     case 'play':        return commands.play(ytdl,client,args,message);
-    case 'stop':        return commands.stop(client,args,message);
-    case 'pause':       return commands.pause(client,args,message);
-    case 'resume':      return commands.resume(client,args,message);
+    case 'stop':        return commands.stop(client,message);
+    case 'pause':       return commands.pause(client,message);
+    case 'resume':      return commands.resume(client,message);
+    case 'leave':       return commands.leave(client);
     case 'stream':      return commands.stream(client,args,message);
     case 'radio':       return commands.radio(client,args,message);
     // case 'playlist':    commands.playlist(args,message);          break;
 
     // Anime/NSFW
-    case 'weeb':        return commands.stream(client,['https://listen.moe/stream'],message);
     case 'lewd':        return commands.danbooru(args,'e',100,message);
     case 'sfw':         return commands.danbooru(args,'s',100,message);
     case 'tags':        return commands.danbooruTags(args,message);
