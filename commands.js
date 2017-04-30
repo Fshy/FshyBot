@@ -90,6 +90,20 @@ class Commands {
     });
   }
 
+  stats(version,client,message){
+    var embed = new Discord.RichEmbed()
+      .setTitle(`2B | FshyBot Statistics:`)
+      .setDescription(`Currently serving **${client.users.size}** user${client.users.size>1 ? 's':''} on **${client.guilds.size}** guild${client.guilds.size>1 ? 's':''}`)
+      .addField(`Ping`,`${Math.round(client.ping)}ms`,true)
+      .addField(`Uptime`,`${parseInt(client.uptime/86400000)}:${parseInt(client.uptime/3600000)%24}:${parseInt(client.uptime/60000)%60}:${parseInt(client.uptime/1000)%60}`,true)
+      .addField(`Build`,`v${version}`,true)
+      .addField(`Memory Usage`,`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,true)
+      .addField(`Platform`,`${process.platform}`,true)
+      .addField(`Architecture`,`${process.arch}`,true)
+      .setColor(config.decimalColour);
+    message.channel.sendEmbed(embed);
+  }
+
   uptime(client,message) {
     var time = client.uptime;
     time = parseInt(time/1000);

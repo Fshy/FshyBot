@@ -32,12 +32,13 @@ client.on('ready', () => {
 client.on('guildCreate', (guild)=>{
   var embed = new Discord.RichEmbed()
     .setTitle(`// ${config.name} Online and listening for input`)
-    .setDescription(`Thanks for adding me to your server!
-Please have a look at my command list using **!help**
-or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
+    .setDescription(`
+      Thanks for adding me to your server!
+      Please have a look at my command list using **!help**
+      or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
 
-Currently running v${version} on a Linux EC2 Instance in the US-East
-My latency to your server is ${Math.round(client.ping)}ms`)
+      Currently running v${version} on a ${process.platform}-${process.arch} platform
+      My latency to your server is ${Math.round(client.ping)}ms`)
     .setThumbnail('http://i.imgur.com/4D1IKh8.png')
     .setColor(config.decimalColour);
   guild.defaultChannel.sendEmbed(embed);
@@ -63,6 +64,7 @@ client.on('message', (message)=>{
     // General
     case 'rules':       return commands.rules(client,message);
     case 'help':        return commands.help(client,message);
+    case 'stats':      return commands.stats(version,client,message);
     case 'ping':        return commands.ping(client,message);
     case 'uptime':      return commands.uptime(client,message);
     case 'version':     return commands.version(version,message);
