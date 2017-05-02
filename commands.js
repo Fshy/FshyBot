@@ -662,6 +662,17 @@ class Commands {
     }
   }
 
+  fivem(message){
+    const server = require('fivereborn-query');
+    server.query(config.fiveM.ip, 30120, (err, data) => {
+      if (!err) {
+        message.channel.sendEmbed({description: `:white_check_mark: Server is Online\nHostname: ${data.hostname}\nIP Address: ${config.fiveM.ip}\nPort: 30120\nConnected: ${data.clients}/${data.maxclients}`,color: config.decimalColour});
+      } else {
+        message.channel.sendEmbed({description: `ERROR: Server is currently offline`,color: config.decimalColour});
+      }
+    })
+  }
+
 }
 
 module.exports = new Commands();

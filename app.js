@@ -101,6 +101,7 @@ client.on('message', (message)=>{
     case 'bet':         return commands.betGbp(userDB,args,message);
 
     // Misc
+    case 'fivem':       return commands.fivem(message);
     case 'btc':         return commands.btc(message);
     case 'eth':         return commands.eth(message);
     case 'calc':        return commands.calc(math,args,message);

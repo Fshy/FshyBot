@@ -27,6 +27,9 @@
   "mashape": {
     "jeannie":            "JEANNIE_API_KEY"
   },
+  "fiveM":{
+    "ip":                 "arc.moe"
+  },
   "radio": [
     {"title":"Listen.moe",              "genre":"Anime",        "url":"https://listen.moe/stream"},
     {"title":"EDM Radio",               "genre":"Electronic",   "url":"http://s1.edmradio.ru:8000/live"},

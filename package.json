@@ -1,12 +1,13 @@
 {
   "name": "fshybot",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "Discord Bot",
   "main": "app.js",
   "dependencies": {
     "discord.js": "^11.0.0",
     "ffmpeg-binaries": "^3.2.2",
     "firebase": "^3.9.0",
+    "fivereborn-query": "^1.0.4",
     "mathjs": "^3.12.1",
     "node-opus": "^0.2.6",
     "request": "^2.81.0",
