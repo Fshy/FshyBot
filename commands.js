@@ -673,6 +673,24 @@ class Commands {
     })
   }
 
+  smug(message){
+    request(`http://arc.moe/smug`, function (error, response, body) {
+      body = JSON.parse(body);
+      if (error!=null) {
+        message.channel.sendEmbed({description: 'ERROR: Could not access arc.moe resource',color: config.decimalColour});
+      }else {
+        var random = Math.floor(Math.random() * body.length);//Picks one randomly to post
+        if (body[random]) {
+          var embed = new Discord.RichEmbed().setImage(`${body[random]}`).setColor(config.decimalColour);
+          message.channel.sendEmbed(embed);
+        }else {
+          var suggestions = `ERROR: Could not find the image requested`;
+          message.channel.sendEmbed({description: suggestions,color: config.decimalColour});
+        }
+      }
+    });
+  }
+
 }
 
 module.exports = new Commands();

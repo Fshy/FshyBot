@@ -64,7 +64,7 @@ client.on('message', (message)=>{
     // General
     case 'rules':       return commands.rules(client,message);
     case 'help':        return commands.help(client,message);
-    case 'stats':      return commands.stats(version,client,message);
+    case 'stats':       return commands.stats(version,client,message);
     case 'ping':        return commands.ping(client,message);
     case 'uptime':      return commands.uptime(client,message);
     case 'version':     return commands.version(version,message);
@@ -94,6 +94,7 @@ client.on('message', (message)=>{
     case 'tags':        return commands.danbooruTags(args,message);
     case '2B':
     case '2b':          return commands.img2B(args,message);
+    case 'smug':        return commands.smug(message);
 
     // Points System
     case 'gbp':         return commands.getGbp(userDB,message);
