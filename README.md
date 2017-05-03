@@ -11,10 +11,9 @@
 
 <h5>General</h5>
 <pre>
-!rules                  - Displays the guild rules
 !help                   - Displays all available commands
 !ping                   - Displays response time to server
-!uptime                 - Displays time since launch
+!stats                  - Displays bot usage statistics
 !version                - Checks for updates to the bot
 </pre>
 
@@ -31,16 +30,19 @@
 <h5>Music</h5>
 
 <pre>
-!play     [title/link]  - Searches and queues the given term link for playback
-!playlist [playlistID]  - Queues all videos from a youtube playlist
-!skip     [number]      - Skip some number of songs or 1 song if a number is not specified
-!queue                  - Display the current queue
-!leave                  - Clears the song queue and leaves the channel
+!play   [search/link]   - Searches and queues the given term link for playback
+!stop                   - Stops the current song and leaves the channel
+!pause                  - Pauses playback of the current song
+!resume                 - Resumes playback of the current song
+!leave                  - Stops any playback and leaves the channel
+!stream [url]           - Plays a given audio stream, or file from direct URL
+!radio                  - Displays some available preprogrammed radio streams
 </pre>
 
 <h5>Anime/NSFW</h5>
 
 <pre>
+!smug                   - Posts a random smug reaction image
 !lewd [search term]     - Uploads a random NSFW image from Danbooru, of the given search term
 !sfw  [search term]     - Uploads a random SFW image from Danbooru, of the given search term
 !tags [search term]     - Searches Danbooru for possible related search tags

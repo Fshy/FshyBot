@@ -4,33 +4,15 @@ const config    = require('./config.json');
 
 class Commands {
 
-  rules(client,message) {
-    var r = `
-      1. This is an assignment-free zone
-      2. If your mic echoes, you're fucking banned
-      ~~3. No loitering in the lobby~~
-      ~~4. No asking for Server Icons~~
-      ~~5. If you have to ask for icons, ask Fshy~~
-      6. Don't be a faggot
-      7. Get Gud`;
-      var embed = new Discord.RichEmbed()
-        .setTitle(`Rules:`)
-        .setDescription(r)
-        .setColor(config.decimalColour);
-      message.channel.sendEmbed(embed);
-      message.delete();
-  }
-
   help(client,message) {
     var h = `
       -- General
-      **!rules** - Displays the guild rules
       **!help** - Displays all available commands
       **!ping** - Displays response time to server
-      **!uptime** - Displays time since launch
+      **!stats** - Displays bot usage statistics
       **!version** - Checks for updates to the bot
 
-      -- Admin
+      -- Owner/Admin
       **!update** - Updates to the master branch
       **!setname    [name]** - Sets the username of the bot
       **!setgame    [game]** - Sets the "Playing" text for the bot
@@ -39,12 +21,15 @@ class Commands {
 
       -- Music
       **!play [title/link]** - Searches and queues the given term/link
-      **!playlist [playlistId]** - Queues all videos from a youtube playlist
-      **!skip [number]** - Skip some number of songs or 1 song if not specified
-      **!queue** - Display the current queue
-      **!leave** - Clears the song queue and leaves the channel
+      **!stop** - Stops the current song and leaves the channel
+      **!pause** - Pauses playback of the current song
+      **!resume** - Resumes playback of the current song
+      **!leave** - Stops any playback and leaves the channel
+      **!stream [url]** - Plays a given audio stream, or file from direct URL
+      **!radio** - Displays some available preprogrammed radio streams
 
       -- Anime/NSFW
+      **!smug** - Posts a random smug reaction image
       **!lewd [search term]** - Uploads a random NSFW image of the term
       **!sfw  [search term]** - Uploads a random SFW image of the term
       **!tags [search term]** - Searches Danbooru for related search tags
@@ -104,64 +89,24 @@ class Commands {
     message.channel.sendEmbed(embed);
   }
 
-  uptime(client,message) {
-    var time = client.uptime;
-    time = parseInt(time/1000);
-    var seconds = time % 60;
-    time = parseInt(time/60);
-    var minutes = time % 60;
-    time = parseInt(time/60);
-    var hours = time % 24;
-    time = parseInt(time/24);
-    var days = time;
-    message.channel.sendEmbed({description: `Uptime: ${days} days ${hours} hrs ${minutes} mins ${seconds} sec`,color: config.decimalColour});
-  }
-
   btc(message) {
-    request('https://coinmarketcap-nexuist.rhcloud.com/api/btc', function (error, response, body) {
+    request('https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD', function (error, response, body) {
       response = JSON.parse(body);
-      var change='';
       if (error!=null) {
-        message.channel.sendEmbed({description: 'ERROR: Could not access coinmarketcap API',color: config.decimalColour});
+        message.channel.sendEmbed({description: 'ERROR: Could not access cryptocompare API',color: config.decimalColour});
       }else {
-        if (response.change<0) {
-          change = '▼';
-        }else {
-          change = '▲';
-        }
-        message.channel.sendEmbed({description: `Current BTC Price: $${response.price.usd.toFixed(2)}\nChange: ${change}$${response.change}`,color: config.decimalColour});
+        message.channel.sendEmbed({description: `Current BTC Price: $${response.USD.toFixed(2)}`,color: config.decimalColour});
       }
     });
   }
 
   eth(message) {
-    request('https://coinmarketcap-nexuist.rhcloud.com/api/eth', function (error, response, body) {
+    request('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD', function (error, response, body) {
       response = JSON.parse(body);
-      var change='';
       if (error!=null) {
-        message.channel.sendEmbed({description: 'ERROR: Could not access coinmarketcap API',color: config.decimalColour});
+        message.channel.sendEmbed({description: 'ERROR: Could not access cryptocompare API',color: config.decimalColour});
       }else {
-        if (response.change<0) {
-          change = '▼';
-        }else {
-          change = '▲';
-        }
-        message.channel.sendEmbed({description: `Current ETH Price: $${response.price.usd.toFixed(2)}\nChange: ${change}$${response.change}`,color: config.decimalColour});
-      }
-    });
-  }
-
-  playlist(args,message) {
-    var list = args[0];
-    request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key=${config.youtube.apiKey}&maxResults=50&playlistId=${list}`, function (error, response, body) {
-      body = JSON.parse(body);
-      if (error!=null) {
-        message.channel.sendEmbed({description: 'ERROR: Could not access YouTube API',color: config.decimalColour});
-      }else {
-        message.member.voiceChannel.join();
-        for (var i = 0; i < body.items.length; i++) {
-          message.channel.sendMessage(`!play ${body.items[i].snippet.resourceId.videoId}`).then(message => message.delete());
-        }
+        message.channel.sendEmbed({description: `Current ETH Price: $${response.USD.toFixed(2)}`,color: config.decimalColour});
       }
     });
   }

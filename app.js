@@ -21,12 +21,12 @@ client.login(config.token);
 
 client.on('ready', () => {
   client.user.setGame(config.game);
-  console.log(`\n// ${config.name} Online and listening for input`);
-  client.setInterval(function () {
-    for(var guild of client.guilds)
-      commands.addGbp(userDB,guild[1]);
-    console.log('Added +1 GBP to all Online Users');
-  },300000);
+  console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
+  // client.setInterval(function () {
+  //   for(var guild of client.guilds)
+  //     commands.addGbp(userDB,guild[1]);
+  //   console.log('Added +1 GBP to all Online Users');
+  // },300000);
 });
 
 client.on('guildCreate', (guild)=>{
@@ -53,20 +53,18 @@ client.on('guildMemberAdd', (member) => {
 });
 
 client.on('message', (message)=>{
-  if(message.author.bot && !message.content.startsWith(`${config.prefix}play`)) return;
+  if(message.author.bot) return;
   if(!message.content.startsWith(config.prefix) && !message.content.startsWith('2B') && !message.content.startsWith('2b')) return;
-  console.log(`-- ${message.author.username}: ${message.content}`);
+  console.log(`\x1b[36m[${message.guild}] \x1b[1m${message.author.username}: \x1b[0m${message.content}`);
 
   let command = message.content.split(/\s+/g)[0].slice(config.prefix.length);
   let args    = message.content.split(/\s+/g).slice(1);
 
   switch (command) {
     // General
-    case 'rules':       return commands.rules(client,message);
     case 'help':        return commands.help(client,message);
-    case 'stats':       return commands.stats(version,client,message);
     case 'ping':        return commands.ping(client,message);
-    case 'uptime':      return commands.uptime(client,message);
+    case 'stats':       return commands.stats(version,client,message);
     case 'version':     return commands.version(version,message);
 
     // Owner Commands
@@ -86,7 +84,6 @@ client.on('message', (message)=>{
     case 'leave':       return commands.leave(client,message);
     case 'stream':      return commands.stream(client,args,message);
     case 'radio':       return commands.radio(client,args,message);
-    // case 'playlist':    commands.playlist(args,message);          break;
 
     // Anime/NSFW
     case 'lewd':        return commands.danbooru(args,'e',100,message);
@@ -96,13 +93,7 @@ client.on('message', (message)=>{
     case '2b':          return commands.img2B(args,message);
     case 'smug':        return commands.smug(message);
 
-    // Points System
-    case 'gbp':         return commands.getGbp(userDB,message);
-    case 'shop':        return commands.displayShop(userDB,message);
-    case 'bet':         return commands.betGbp(userDB,args,message);
-
     // Misc
-    case 'fivem':       return commands.fivem(message);
     case 'btc':         return commands.btc(message);
     case 'eth':         return commands.eth(message);
     case 'calc':        return commands.calc(math,args,message);
@@ -110,9 +101,10 @@ client.on('message', (message)=>{
     case 'B':           return commands.chatbot(args,message);
     case 'r':           return commands.rslash(reddit,message,args);
     case 'roll':        return commands.roll(args,message);
+    // case 'fivem':       return commands.fivem(message);
 
     // Default
-    default:            return message.channel.sendEmbed({description: `A-Are you talking to me? Because that's not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.`,color: config.decimalColour});
+    // default:            return message.channel.sendEmbed({description: `A-Are you talking to me? Because that's not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.`,color: config.decimalColour});
   }
 
 });
