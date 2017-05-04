@@ -5,7 +5,7 @@
   "game":                 "NieR: Automata",
   "adminRoleID":          "DISCORD_ROLE_ID",
   "ownerID":              "DISCORD_USER_ID",
-  "decimalColour":        "15514833",
+  "hexColour":            "#ECBCD1",
   "youtube":{
     "apiKey":             "YOUTUBE_API_KEY"
   },
@@ -31,13 +31,13 @@
     "ip":                 "arc.moe"
   },
   "radio": [
-    {"title":"Listen.moe",              "genre":"Anime",        "url":"https://listen.moe/stream"},
-    {"title":"EDM Radio",               "genre":"Electronic",   "url":"http://s1.edmradio.ru:8000/live"},
-    {"title":"Progressive.Beats",       "genre":"Electronic",   "url":"http://radio.progressivebeats.org:8050/"},
-    {"title":"Hip-Hop Request",         "genre":"HipHop/R&B",   "url":"http://149.56.175.167:5461/"},
-    {"title":".977 Hip Hop/RNB",        "genre":"HipHop/R&B",   "url":"http://19353.live.streamtheworld.com:3690/977_JAMZ_SC"},
-    {"title":"Radio ROKS Rock Ballads", "genre":"Classic Hits", "url":"http://online-radioroks2.tavrmedia.ua/RadioROKS_Ballads"},
-    {"title":"SLAM 100.5",              "genre":"Local",        "url":"http://media.guardian.co.tt:8000/slam100.5"},
-    {"title":"Boom Champions 94.1",     "genre":"Local",        "url":"http://www.ttaccount.com:8080/94.mp3"}
+    {"title":"Listen.moe",              "genre":"Anime",        "url":"https://listen.moe/stream",                                "thumb":"https://i.imgur.com/TcFQDxr.png"},
+    {"title":"EDM Radio",               "genre":"Electronic",   "url":"http://s1.edmradio.ru:8000/live",                          "thumb":"https://i.imgur.com/meevIXU.jpg"},
+    {"title":"Progressive.Beats",       "genre":"Electronic",   "url":"http://radio.progressivebeats.org:8050/",                  "thumb":"https://i.imgur.com/c34YCD5.png"},
+    {"title":"Hip-Hop Request",         "genre":"HipHop/R&B",   "url":"http://149.56.175.167:5461/",                              "thumb":"https://i.imgur.com/0sKDPOL.jpg"},
+    {"title":".977 Hip Hop/RNB",        "genre":"HipHop/R&B",   "url":"http://19353.live.streamtheworld.com:3690/977_JAMZ_SC",    "thumb":"https://i.imgur.com/jpCKuz6.png"},
+    {"title":"Radio ROKS Rock Ballads", "genre":"Classic Hits", "url":"http://online-radioroks2.tavrmedia.ua/RadioROKS_Ballads",  "thumb":"https://i.imgur.com/IB0pAjG.jpg"},
+    {"title":"SLAM 100.5",              "genre":"Local",        "url":"http://media.guardian.co.tt:8000/slam100.5",               "thumb":"https://i.imgur.com/eqpqd84.png"},
+    {"title":"Boom Champions 94.1",     "genre":"Local",        "url":"http://www.ttaccount.com:8080/94.mp3",                     "thumb":"https://i.imgur.com/nA1wg3X.jpg"}
   ]
 }

@@ -10,6 +10,7 @@ const math      = require('mathjs');
 const config    = require('./config.json');
 const version   = require('./package.json').version;
 const commands  = require('./commands');
+const lib       = require('./lib');
 
 firebase.initializeApp(config.firebase);
 const database  = firebase.database();
@@ -22,15 +23,14 @@ client.login(config.token);
 client.on('ready', () => {
   client.user.setGame(config.game);
   console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
-  // client.setInterval(function () {
-  //   for(var guild of client.guilds)
-  //     commands.addGbp(userDB,guild[1]);
-  //   console.log('Added +1 GBP to all Online Users');
-  // },300000);
+  client.setInterval(function () {
+    var d = new Date(Date.now());
+    console.log(`\n\x1b[32m[${d.getDate()}/${(d.getMonth()+1)}/${d.getFullYear()} | ${d.toLocaleTimeString()}]\x1b[0m Memory: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB | Ping: ${Math.round(client.ping)}ms`);
+  },300000);
 });
 
 client.on('guildCreate', (guild)=>{
-  var embed = new Discord.RichEmbed()
+  guild.defaultChannel.send({embed:new Discord.RichEmbed()
     .setTitle(`// ${config.name} Online and listening for input`)
     .setDescription(`
       Thanks for adding me to your server!
@@ -40,16 +40,14 @@ client.on('guildCreate', (guild)=>{
       Currently running v${version} on a ${process.platform}-${process.arch} platform
       My latency to your server is ${Math.round(client.ping)}ms`)
     .setThumbnail('http://i.imgur.com/4D1IKh8.png')
-    .setColor(config.decimalColour);
-  guild.defaultChannel.sendEmbed(embed);
+    .setColor(config.hexColour)});
 });
 
 client.on('guildMemberAdd', (member) => {
-  var embed = new Discord.RichEmbed()
+  member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
     .setDescription(`${member.user.username} has joined the server.\n@everyone please welcome them to ${member.guild.name}`)
     .setImage('https://i.imgur.com/v177BWr.gif')
-    .setColor(config.decimalColour);
-  member.guild.defaultChannel.sendEmbed(embed);
+    .setColor(config.hexColour)});
 });
 
 client.on('message', (message)=>{
@@ -62,10 +60,10 @@ client.on('message', (message)=>{
 
   switch (command) {
     // General
-    case 'help':        return commands.help(client,message);
+    case 'help':        return commands.help(message);
     case 'ping':        return commands.ping(client,message);
     case 'stats':       return commands.stats(version,client,message);
-    case 'version':     return commands.version(version,message);
+    case 'version':     return commands.ver(version,message);
 
     // Owner Commands
     case 'update':      return commands.update(message);
@@ -86,25 +84,25 @@ client.on('message', (message)=>{
     case 'radio':       return commands.radio(client,args,message);
 
     // Anime/NSFW
-    case 'lewd':        return commands.danbooru(args,'e',100,message);
-    case 'sfw':         return commands.danbooru(args,'s',100,message);
+    case 'lewd':        return commands.danbooru(args,`e`,100,message);
+    case 'sfw':         return commands.danbooru(args,`s`,100,message);
     case 'tags':        return commands.danbooruTags(args,message);
-    case '2B':
-    case '2b':          return commands.img2B(args,message);
+    case '2b':
+    case '2B':          return commands.img2B(args,message);
     case 'smug':        return commands.smug(message);
 
     // Misc
-    case 'btc':         return commands.btc(message);
-    case 'eth':         return commands.eth(message);
+    case 'btc':         return commands.coin(`BTC`,message);
+    case 'eth':         return commands.coin(`ETH`,message);
     case 'calc':        return commands.calc(math,args,message);
     case 'b':
     case 'B':           return commands.chatbot(args,message);
     case 'r':           return commands.rslash(reddit,message,args);
     case 'roll':        return commands.roll(args,message);
-    // case 'fivem':       return commands.fivem(message);
+    case 'fivem':       return commands.fivem(message);
 
     // Default
-    // default:            return message.channel.sendEmbed({description: `A-Are you talking to me? Because that's not a command I understand..\nReference !help to see what I can do, or adjust the prefix I listen for.`,color: config.decimalColour});
+    // default:            return message.channel.send(lib.embed(`A-Are you talking to me? Because that's not a command I understand..\nReference !help to see what I can do, or use !setprefix.`));
   }
 
 });
