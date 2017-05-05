@@ -6,43 +6,40 @@ const lib       = require('./lib');
 // Methods to export
 class Commands {
 
-  help(message) {
+  help(guildPrefix,message) {
     var desc = `
       -- General
-      **!help** - Displays all available commands
-      **!ping** - Displays response time to server
-      **!stats** - Displays bot usage statistics
-      **!version** - Checks for updates to the bot
+      **${guildPrefix}help** - Displays all available commands
+      **${guildPrefix}ping** - Displays response time to server
+      **${guildPrefix}stats** - Displays bot usage statistics
+      **${guildPrefix}version** - Checks for updates to the bot
 
-      -- Owner/Admin
-      **!update** - Updates to the master branch
-      **!setname    [name]** - Sets the username of the bot
-      **!setgame    [game]** - Sets the "Playing" text for the bot
-      **!setavatar  [image url]** - Sets the avatar of the bot
-      **!setstatus  [status]** - Sets the status of the bot
+      -- Admin
+      Requires user to have a role titled "Admin"
+      **${guildPrefix}setprefix [newprefix]** - Sets the prefix that the bot listens to
 
       -- Music
-      **!play [title/link]** - Searches and queues the given term/link
-      **!stop** - Stops the current song and leaves the channel
-      **!pause** - Pauses playback of the current song
-      **!resume** - Resumes playback of the current song
-      **!leave** - Stops any playback and leaves the channel
-      **!stream [url]** - Plays a given audio stream, or file from direct URL
-      **!radio** - Displays some available preprogrammed radio streams
+      **${guildPrefix}play [title/link]** - Searches and queues the given term/link
+      **${guildPrefix}stop** - Stops the current song and leaves the channel
+      **${guildPrefix}pause** - Pauses playback of the current song
+      **${guildPrefix}resume** - Resumes playback of the current song
+      **${guildPrefix}leave** - Stops any playback and leaves the channel
+      **${guildPrefix}stream [url]** - Plays a given audio stream, or file from direct URL
+      **${guildPrefix}radio** - Displays some available preprogrammed radio streams
 
       -- Anime/NSFW
-      **!smug** - Posts a random smug reaction image
-      **!lewd [search term]** - Uploads a random NSFW image of the term
-      **!sfw  [search term]** - Uploads a random SFW image of the term
-      **!tags [search term]** - Searches Danbooru for related search tags
-      **!2B [nsfw]** - Uploads a 2B image, or a NSFW version if supplied
+      **${guildPrefix}smug** - Posts a random smug reaction image
+      **${guildPrefix}lewd [search term]** - Uploads a random NSFW image of the term
+      **${guildPrefix}sfw  [search term]** - Uploads a random SFW image of the term
+      **${guildPrefix}tags [search term]** - Searches Danbooru for related search tags
+      **${guildPrefix}2B [nsfw]** - Uploads a 2B image, or a NSFW version if supplied
 
       -- Misc
-      **!btc** - Displays current Bitcoin spot price
-      **!eth** - Displays current Ethereum spot price
-      **!calc [expression]** - Evaluates a given expression
-      **!r    [subreddit]** - Uploads a random image from a given subreddit
-      **!roll [n] [m]** - Rolls an n-sided die, m times and displays the result
+      **${guildPrefix}btc** - Displays current Bitcoin spot price
+      **${guildPrefix}eth** - Displays current Ethereum spot price
+      **${guildPrefix}calc [expression]** - Evaluates a given expression
+      **${guildPrefix}r    [subreddit]** - Uploads a random image from a given subreddit
+      **${guildPrefix}roll [n] [m]** - Rolls an n-sided die, m times and displays the result
 
       -- Chatbot
       2B answers her callsign in response to the user
@@ -60,14 +57,14 @@ class Commands {
     message.channel.send(lib.embed(`Response time to discord server: ${Math.round(client.ping)}ms`));
   }
 
-  ver(version,message) {
+  ver(version,guildPrefix,message) {
     request('https://raw.githubusercontent.com/Fshy/FshyBot/master/package.json', function (error, response, body) {
       response = JSON.parse(body);
       if (error!=null) {
-        message.channel.send(lib.embed(`ERROR: Could not access repository`));
+        message.channel.send(lib.embed(`**ERROR:** Could not access repository`));
       }else {
         if (response.version!=version) {
-          message.channel.send(lib.embed(`Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Use **!update** to fetch master branch and restart bot | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`));
+          message.channel.send(lib.embed(`Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Use **${guildPrefix}update** to fetch master branch and restart bot | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`));
         }else {
           message.channel.send(lib.embed(`Currently Running v${version}\nNightly Build: v${response.version}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`));
         }
@@ -92,7 +89,7 @@ class Commands {
     request(`https://min-api.cryptocompare.com/data/price?fsym=${currency}&tsyms=USD`, function (error, response, body) {
       response = JSON.parse(body);
       if (error!=null) {
-        message.channel.send(lib.embed(`ERROR: Could not access cryptocompare API`));
+        message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`));
       }else {
         message.channel.send(lib.embed(`Current ${currency} Price: $${response.USD.toFixed(2)}`));
       }
@@ -127,7 +124,7 @@ class Commands {
     request(`http://danbooru.donmai.us/posts.json?tags=*${tag}*+rating%3A${rating}+limit%3A${amount}`, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
-        message.channel.send(lib.embed(`ERROR: Could not access Danbooru API`));
+        message.channel.send(lib.embed(`**ERROR:** Could not access Danbooru API`));
       }else {
         var random = Math.floor(Math.random() * body.length);//Picks one randomly to post
         if (body[random]) {
@@ -136,7 +133,7 @@ class Commands {
             .setDescription(`[Source](${body[random].source})`)
             .setColor(config.hexColour)});
         }else {
-          message.channel.send(lib.embed(`ERROR: Could not find any posts matching ${tag}\nTry using the ${config.prefix}tags [search term] command to narrow down the search`));
+          message.channel.send(lib.embed(`**ERROR:** Could not find any posts matching ${tag}\nTry using the ${config.prefix}tags [search term] command to narrow down the search`));
         }
       }
     });
@@ -160,7 +157,7 @@ class Commands {
     });
   }
 
-  rslash(reddit,message,args) {
+  rslash(reddit,guildPrefix,message,args) {
     if (args[0]) {
       reddit.getSubreddit(args[0]).getHot().then(function (data) {
         if (data) {
@@ -180,11 +177,11 @@ class Commands {
             message.channel.send(lib.embed(`Sorry, no images could be found on r/${args[0]}`));
           }
         }else {
-          message.channel.send(lib.embed(`ERROR: Could not retrieve subreddit data`));
+          message.channel.send(lib.embed(`**ERROR:** Could not retrieve subreddit data`));
         }
       });
     }else {
-      message.channel.send(lib.embed(`ERROR: No subreddit specified | Use !r [subreddit]`));
+      message.channel.send(lib.embed(`**ERROR:** No subreddit specified | Use ${guildPrefix}r [subreddit]`));
     }
   }
 
@@ -196,20 +193,20 @@ class Commands {
   }
 
   setName(client,args,message){
-    if (lib.checkRole(message)) {
+    if (lib.checkOwner(message)) {
       if (args[0]) {
         var name = args.join(' ');
         client.user.setUsername(name).then(message.channel.send(lib.embed(`Name successfully updated!`)));
       }else {
-        message.channel.send(lib.embed(`ERROR: Specify a string to change username to`));
+        message.channel.send(lib.embed(`**ERROR:** Specify a string to change username to`));
       }
     }else {
-      message.channel.send(lib.embed(`ERROR: Insufficient permissions to perform that command`));
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`));
     }
   }
 
   setGame(client,args,message){
-    if (lib.checkRole(message)) {
+    if (lib.checkOwner(message)) {
       if (args[0]) {
         var game = args.join(' ');
         client.user.setGame(game).then(message.channel.send(lib.embed(`Game successfully updated!`)));
@@ -217,132 +214,32 @@ class Commands {
         client.user.setGame(null).then(message.channel.send(lib.embed(`Game successfully cleared!`)));
       }
     }else {
-      message.channel.send(lib.embed(`ERROR: Insufficient permissions to perform that command`));
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`));
     }
   }
 
-  setStatus(client,args,message){
-    if (lib.checkRole(message)) {
+  setStatus(client,guildPrefix,args,message){
+    if (lib.checkOwner(message)) {
       if (args[0]==='online' || args[0]==='idle' || args[0]==='invisible' || args[0]==='dnd') {
         client.user.setStatus(args[0]).then(message.channel.send(lib.embed(`Status successfully updated!`)));
       }else {
-        message.channel.send(lib.embed(`ERROR: Incorrect syntax | Use !setstatus [status]\nStatuses: online, idle, invisible, dnd`));
+        message.channel.send(lib.embed(`**ERROR:** Incorrect syntax | Use ${guildPrefix}setstatus [status]\nStatuses: online, idle, invisible, dnd`));
       }
     }else {
-      message.channel.send(lib.embed(`ERROR: Insufficient permissions to perform that command`));
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`));
     }
   }
 
   setAvatar(client,args,message){
-    if (lib.checkRole(message)) {
+    if (lib.checkOwner(message)) {
       if ((/\.(jpe?g|png|gif|bmp)$/i).test(args[0])) {
         client.user.setAvatar(args[0]).then(message.channel.send(lib.embed(`Avatar successfully updated!`)));
       }else {
-        message.channel.send(lib.embed(`ERROR: That's not an image filetype I recognize | Try: .jpg .png .gif .bmp`));
+        message.channel.send(lib.embed(`**ERROR:** That's not an image filetype I recognize | Try: .jpg .png .gif .bmp`));
       }
     }else {
-      message.channel.send(lib.embed(`ERROR: Insufficient permissions to perform that command`));
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`));
     }
-  }
-
-  getGbp(userDB,message){
-    userDB.once("value", (data) => {
-      var users = data.val();
-      if (users) {
-        var keys = Object.keys(users);
-        for (var i = 0; i < keys.length; i++) {
-          var key = keys[i];
-          if (users[key].id===message.author.id) {
-            message.channel.send(lib.embed(`:moneybag: ${message.author.username}'s Balance: ${users[key].gbp} GBP`));
-            return;
-          }
-        }
-      }
-      userDB.push({id: message.author.id,gbp: 1000});
-      message.channel.send(lib.embed(`Registered new user ${message.author.username} with 1000 GBP`));
-    });
-  }
-
-  addGbp(userDB,guild){
-    guild.fetchMembers().then(function (data) {
-      var onlineUsers = [];
-      for(var u of data.presences.keys()){
-        onlineUsers.push(u);
-      }
-      userDB.once("value", (data) => {
-        var users = data.val();
-        if (users) {
-          var keys = Object.keys(users);
-          for (var i = 0; i < keys.length; i++) {
-            var key = keys[i];
-            if (onlineUsers.includes(users[key].id)) {
-              var gbp = users[key].gbp + 1;
-              userDB.child(key).update({"gbp": gbp});
-            }
-          }
-        }
-      });
-    });
-  }
-
-  betGbp(userDB,args,message){
-    var wager = Number.parseInt(args[0]);
-    if (wager>0) {
-      var roll = Math.floor(Math.random() * 100) + 1;
-      userDB.once("value", (data) => {
-        var users = data.val();
-        if (users) {
-          var keys = Object.keys(users);
-          for (var i = 0; i < keys.length; i++) {
-            var key = keys[i];
-            if (users[key].id===message.author.id) {
-              if (users[key].gbp<wager) {
-                message.channel.send(lib.embed(`ERROR: Insufficient Funds | Your Balance: ${users[key].gbp}`));
-              }else {
-                if (roll<50) {
-                  userDB.child(key).update({"gbp": users[key].gbp - wager});
-                  message.channel.send(lib.embed(`:anger: Sorry, You Rolled ${roll}/100 | New Balance: ${users[key].gbp-wager}`));
-                }else {
-                  userDB.child(key).update({"gbp": users[key].gbp + wager});
-                  message.channel.send(lib.embed(`:dollar: Congrats! You Rolled ${roll}/100 | New Balance: ${users[key].gbp+wager}`));
-                }
-              }
-              return;
-            }
-          }
-        }
-        userDB.push({id: message.author.id,gbp: 1000});
-        message.channel.send(lib.embed(`Registered new user ${message.author.username} with 1000 GBP, try placing your wager again`));
-      });
-    }else {
-      message.channel.send(lib.embed(`ERROR: Specify an amount to wager using !bet [amount]`));
-    }
-  }
-
-  displayShop(userDB,message){
-    var bal = 0;
-    userDB.once("value", (data) => {
-      var users = data.val();
-      if (users) {
-        var keys = Object.keys(users);
-        for (var i = 0; i < keys.length; i++) {
-          var key = keys[i];
-          if (users[key].id===message.author.id) {
-            bal = users[key].gbp;
-          }
-        }
-      }
-      message.channel.send({embed:new Discord.RichEmbed()
-        .setTitle(`Points Shop | :moneybag: Balance: ${bal} GBP`)
-        .setImage(`http://i.imgur.com/5tk87o1.png`)
-        .setDescription(`Facilitates the purchasing of server perks`)
-        .addField(`:gay_pride_flag: Custom Name Colour - 5000 GBP`,
-          `!buy name [#hex colour code]`)
-        .addField(`:thinking: Custom Emoji Slot - 7500 GBP`,
-          `!buy emoji [image link]`)
-        .setColor(config.hexColour)
-        .setFooter(`Disclaimer: Purchases may be revoked at Admin discretion`)});
-    });
   }
 
   calc(math,args,message){
@@ -351,10 +248,10 @@ class Commands {
       try {
         message.channel.send(lib.embed(`${expr} = ${math.eval(expr)}`));
       } catch (e) {
-        message.channel.send(lib.embed(`ERROR: ${e.message}`));
+        message.channel.send(lib.embed(`**ERROR:** ${e.message}`));
       }
     }else {
-      message.channel.send(lib.embed(`ERROR: Enter an expression to evaluate`));
+      message.channel.send(lib.embed(`**ERROR:** Enter an expression to evaluate`));
     }
   }
 
@@ -372,7 +269,7 @@ class Commands {
         }
       });
     }else {
-      message.channel.send(lib.embed(`ERROR: Insufficient permissions to perform that command`));
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`));
     }
   }
 
@@ -380,7 +277,7 @@ class Commands {
     var expr = args.join(' ');
     request({url:`https://jeannie.p.mashape.com/api?input=${expr}`,headers: {'X-Mashape-Key': config.mashape.jeannie,'Accept': 'application/json'}}, function (error, response, body) {
       if (error!=null) {
-        message.channel.send(lib.embed(`ERROR: Could not access Jeannie API`));
+        message.channel.send(lib.embed(`**ERROR:** Could not access Jeannie API`));
       }else {
         response = JSON.parse(body);
         message.channel.send(lib.embed(response.output[0].actions.say.text));
@@ -391,14 +288,14 @@ class Commands {
   play(ytdl,client,args,message){
     const voiceChannel = message.member.voiceChannel;
     if (!voiceChannel) {
-      message.channel.send(lib.embed(`ERROR: Please join a voice channel first`));
+      message.channel.send(lib.embed(`**ERROR:** Please join a voice channel first`));
     }else {
       let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
       let match = args[0].match(regExp);
       if (match) {
         request(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${match[2]}&key=${config.youtube.apiKey}`, function (error, response, body) {
           if (error!=null) {
-            message.channel.send(lib.embed(`ERROR: Could not access YouTube API`));
+            message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`));
           }else {
             response = JSON.parse(body);
             let res = response.items[0];
@@ -427,7 +324,7 @@ class Commands {
         let expr = args.join('+');
         request(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${expr}&type=video&videoCategoryId=10&key=${config.youtube.apiKey}`, function (error, response, body) {
           if (error!=null) {
-            message.channel.send(lib.embed(`ERROR: Could not access YouTube API`));
+            message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`));
           }else {
             response = JSON.parse(body);
             let res = response.items[0];
@@ -458,7 +355,7 @@ class Commands {
   stream(client,args,message){
     const voiceChannel = message.member.voiceChannel;
     if (!voiceChannel) {
-      message.channel.send(lib.embed(`ERROR: Please join a voice channel first`));
+      message.channel.send(lib.embed(`**ERROR:** Please join a voice channel first`));
     }else {
       if (args[0]) {
         let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
@@ -480,7 +377,7 @@ class Commands {
           });
         }
       }else {
-        message.channel.send(lib.embed(`ERROR: Please specify the stream url as a parameter`));
+        message.channel.send(lib.embed(`**ERROR:** Please specify the stream url as a parameter`));
       }
     }
   }
@@ -522,7 +419,7 @@ class Commands {
     }
   }
 
-  radio(client,args,message){
+  radio(client,guildPrefix,args,message){
     if (args[0]) {
       var choice = parseInt(args[0])-1;
       if (choice<config.radio.length) {
@@ -532,17 +429,17 @@ class Commands {
           .setThumbnail(config.radio[choice].thumb)
           .setColor(config.hexColour)});
       }else {
-        message.channel.send(lib.embed(`ERROR: Selection does not exist`));
+        message.channel.send(lib.embed(`**ERROR:** Selection does not exist`));
       }
     }else {
       var desc = [];
       for (var i = 0; i < config.radio.length; i++) {
         if (i===0) {
-          desc.push({name:'Command',        value:`!radio ${i+1}`,            inline:true});
+          desc.push({name:'Command',        value:`${guildPrefix}radio ${i+1}`,            inline:true});
           desc.push({name:'Radio Station',  value:`${config.radio[i].title}`, inline:true});
           desc.push({name:'Genre',          value:`${config.radio[i].genre}`, inline:true});
         }else {
-          desc.push({name:'­', value:`!radio ${i+1}`,             inline:true});
+          desc.push({name:'­', value:`${guildPrefix}radio ${i+1}`,             inline:true});
           desc.push({name:'­', value:`${config.radio[i].title}`,  inline:true});
           desc.push({name:'­', value:`${config.radio[i].genre}`,  inline:true});
         }
@@ -557,7 +454,7 @@ class Commands {
       if (!err) {
         message.channel.send(lib.embed(`:white_check_mark: Server is Online\nHostname: ${data.hostname}\nIP Address: ${config.fiveM.ip}\nPort: 30120\nConnected: ${data.clients}/${data.maxclients}`));
       } else {
-        message.channel.send(lib.embed(`ERROR: Server is currently offline`));
+        message.channel.send(lib.embed(`**ERROR:** Server is currently offline`));
       }
     })
   }
@@ -566,7 +463,7 @@ class Commands {
     request(`http://arc.moe/smug`, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
-        message.channel.send(lib.embed('ERROR: Could not access arc.moe resource'));
+        message.channel.send(lib.embed('**ERROR:** Could not access arc.moe resource'));
       }else {
         var random = Math.floor(Math.random() * body.length);//Picks one randomly to post
         if (body[random]) {
@@ -574,10 +471,52 @@ class Commands {
             .setImage(`${body[random]}`)
             .setColor(config.hexColour)});
         }else {
-          message.channel.send(lib.embed(`ERROR: Could not find the image requested`));
+          message.channel.send(lib.embed(`**ERROR:** Could not find the image requested`));
         }
       }
     });
+  }
+
+  invite(client,message){
+    client.generateInvite(8).then(link => {
+      message.channel.send({embed:new Discord.RichEmbed()
+        .setDescription(`You can use this [LINK](${link}) to invite me to your server! :sparkling_heart:`)
+        .setColor(config.hexColour)});
+    });
+  }
+
+  setprefix(guildDB,guildsMap,guildPrefix,args,message){
+    if (message.guild.roles.exists('name', 'Admin')) {
+      var newprefix = args.join('');
+      if(newprefix){
+        var admins = message.guild.roles.find('name', 'Admin').members;
+        if (admins.has(message.author.id)) {
+          // set the prefix here
+          guildDB.once("value", (data) => {
+            var guilds = data.val();
+            if (guilds) {
+              var keys = Object.keys(guilds);
+              for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                if (guilds[key].id===message.guild.id) {
+                  guildDB.child(key).update({"prefix": newprefix});
+                  guildsMap.set(message.guild.id,{prefix:newprefix});
+                  message.channel.send(lib.embed(`**SUCCESS:** Now listening for the prefix: \`${newprefix}\``));
+                  break;
+                }
+              }
+            }
+          });
+          // end prefix
+        }else {
+          message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command\n**Required Role:** \`Admin\``));
+        }
+      }else {
+        message.channel.send(lib.embed(`**ERROR:** Failed to specify a parameter, i.e. ${guildPrefix}setprefix [newprefix]`));
+      }
+    }else {
+      message.channel.send(lib.embed(`**ERROR:** Guild must have a role titled \`Admin\` to use this command`));
+    }
   }
 
 }

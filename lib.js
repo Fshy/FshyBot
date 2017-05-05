@@ -7,16 +7,6 @@ class Lib {
     return ({embed:new Discord.RichEmbed().setDescription(text).setColor(config.hexColour)});
   }
 
-  checkRole(message){
-    var role = false;
-    role = message.guild.roles.get(config.adminRoleID);
-    if (role===undefined) {
-      return false;
-    }else {
-      return true;
-    }
-  }
-
   checkOwner(message){
     return (message.author.id===config.ownerID);
   }

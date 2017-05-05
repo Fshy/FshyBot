@@ -19,11 +19,17 @@
 
 <h5>Admin</h5>
 <pre>
-!update                 - [OWNER] Updates to the master branch, IMPORTANT: Linux Only / Requires PM2
-!setname    [name]      - [ADMIN] Sets the username of the bot, limited to 2 requests/hr
-!setgame    [game]      - [ADMIN] Sets the "Playing" text for the bot, leave blank to clear
-!setavatar  [image url] - [ADMIN] Sets the avatar of the bot from an image url
-!setstatus  [status]    - [ADMIN] Sets the status of the bot
+Requires user to have a role titled "Admin"
+!setprefix  [newprefix] - Sets the prefix that the bot listens to
+</pre>
+
+<h5>Owner</h5>
+<pre>
+!update                 - Updates to the master branch, IMPORTANT: Linux Only / Requires PM2
+!setname    [name]      - Sets the username of the bot, limited to 2 requests/hr
+!setgame    [game]      - Sets the "Playing" text for the bot, leave blank to clear
+!setavatar  [image url] - Sets the avatar of the bot from an image url
+!setstatus  [status]    - Sets the status of the bot
 </pre>
 
 
