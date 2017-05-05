@@ -50,7 +50,7 @@ client.on('ready', () => {
 
 client.on('guildCreate', (guild)=>{
   var guildPrefix = '!';
-  var toInsert = false;
+  var toInsert = true;
   guildDB.once("value", (data) => {
     var guilds = data.val();
     if (guilds) {
