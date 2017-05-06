@@ -88,12 +88,12 @@ client.on('guildCreate', (guild)=>{
   });
 });
 
-client.on('guildMemberAdd', (member) => {
-  member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
-    .setDescription(`${member.user.username} has joined the server.\n@everyone please welcome them to ${member.guild.name}`)
-    .setImage('https://i.imgur.com/v177BWr.gif')
-    .setColor(config.hexColour)});
-});
+// client.on('guildMemberAdd', (member) => {
+//   member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
+//     .setDescription(`${member.user.username} has joined the server.\n@everyone please welcome them to ${member.guild.name}`)
+//     .setImage('https://i.imgur.com/v177BWr.gif')
+//     .setColor(config.hexColour)});
+// });
 
 client.on('message', (message)=>{
   if(message.author.bot) return;
@@ -152,7 +152,7 @@ client.on('message', (message)=>{
     case 'fivem':       return commands.fivem(message);
 
     // Default
-    default:            return message.channel.send(lib.embed(`A-Are you talking to me? Because that's not a command I understand..\nReference \`${guildPrefix}help\` to see what I can do, or use \`${guildPrefix}setprefix\`.`));
+    // default:            return message.channel.send(lib.embed(`A-Are you talking to me? Because that's not a command I understand..\nReference \`${guildPrefix}help\` to see what I can do, or use \`${guildPrefix}setprefix\`.`));
   }
 
 });
