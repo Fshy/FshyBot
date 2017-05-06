@@ -13,9 +13,9 @@ class Commands {
       **${guildPrefix}ping** - Displays response time to server
       **${guildPrefix}stats** - Displays bot usage statistics
       **${guildPrefix}version** - Checks for updates to the bot
+      **${guildPrefix}invite** - Generates a link to invite 2B to your server
 
-      -- Admin
-      Requires user to have a role titled "Admin"
+      -- Admin | Requires user to have a role titled "Admin"
       **${guildPrefix}setprefix [newprefix]** - Sets the prefix that the bot listens to
 
       -- Music
@@ -26,6 +26,7 @@ class Commands {
       **${guildPrefix}leave** - Stops any playback and leaves the channel
       **${guildPrefix}stream [url]** - Plays a given audio stream, or file from direct URL
       **${guildPrefix}radio** - Displays some available preprogrammed radio streams
+      **${guildPrefix}np** - Displays Now Playing info for radio streams
 
       -- Anime/NSFW
       **${guildPrefix}smug** - Posts a random smug reaction image
@@ -160,7 +161,7 @@ class Commands {
   rslash(reddit,guildPrefix,message,args) {
     if (args[0]) {
       reddit.getSubreddit(args[0]).getHot().then(function (data) {
-        if (data) {
+        if (data[0]) {
           var urls = [];
           for (var i = 0; i < 10; i++) { //Top 10 sorted by Hot
             if ((/\.(jpe?g|png|gif|bmp)$/i).test(data[i].url)) { //If matches image file push to array
@@ -177,7 +178,7 @@ class Commands {
             message.channel.send(lib.embed(`Sorry, no images could be found on r/${args[0]}`));
           }
         }else {
-          message.channel.send(lib.embed(`**ERROR:** Could not retrieve subreddit data`));
+          message.channel.send(lib.embed(`**ERROR:** No posts were found on r/${args[0]}`));
         }
       });
     }else {
@@ -382,21 +383,27 @@ class Commands {
     }
   }
 
-  stop(client,message){
+  stop(guildsMap,client,message){
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
       dispatch.end();
+      var np = guildsMap.get(message.guild.id);
+      delete np.playing;
+      guildsMap.set(message.guild.id, np);
       message.channel.send(lib.embed(`:mute: ${message.author.username} Stopped Playback`));
       vconnec.channel.leave();
     }
   }
 
-  leave(client,message){
+  leave(guildsMap,client,message){
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
       dispatch.end();
+      var np = guildsMap.get(message.guild.id);
+      delete np.playing;
+      guildsMap.set(message.guild.id, np);
       vconnec.channel.leave();
     }
   }
@@ -419,15 +426,26 @@ class Commands {
     }
   }
 
-  radio(client,guildPrefix,args,message){
+  radio(client,guildPrefix,guildsMap,args,message){
+    var stream = this.stream;
     if (args[0]) {
       var choice = parseInt(args[0])-1;
       if (choice<config.radio.length) {
-        this.stream(client,[config.radio[choice].url],message);
-        message.channel.send({embed:new Discord.RichEmbed()
-          .setDescription(`:headphones: Now Streaming: ${config.radio[choice].title}`)
-          .setThumbnail(config.radio[choice].thumb)
-          .setColor(config.hexColour)});
+        request(`https://feed.tunein.com/profiles/${config.radio[choice].tuneinId}/nowPlaying`, function (error, response, body) {
+          if (error!=null) {
+            message.channel.send(lib.embed(`**ERROR:** Could not access TuneIn API`));
+          }else {
+            body = JSON.parse(body);
+            stream(client,[config.radio[choice].url],message);
+            var guildData = guildsMap.get(message.guild.id);
+            guildData.playing = config.radio[choice].tuneinId;
+            guildsMap.set(message.guild.id,guildData);
+            message.channel.send({embed:new Discord.RichEmbed()
+              .setDescription(`:headphones: **Now Streaming:** ${config.radio[choice].title}\n${body.Secondary ? `**Currently Playing:** ${body.Secondary.Title}`:''}`)
+              .setThumbnail(body.Primary.Image)
+              .setColor(config.hexColour)});
+          }
+        });
       }else {
         message.channel.send(lib.embed(`**ERROR:** Selection does not exist`));
       }
@@ -445,6 +463,25 @@ class Commands {
         }
       }
       message.channel.send({embed:{title: `:radio: Programmed Stations:`, description:'\n', fields: desc, color: 15514833}});
+    }
+  }
+
+  nowPlaying(guildsMap,message){
+    var np = guildsMap.get(message.guild.id).playing;
+    if (np) {
+      request(`https://feed.tunein.com/profiles/${np}/nowPlaying`, function (error, response, body) {
+        if (error!=null) {
+          message.channel.send(lib.embed(`**ERROR:** Could not access TuneIn API`));
+        }else {
+          body = JSON.parse(body);
+          message.channel.send({embed:new Discord.RichEmbed()
+            .setDescription(`${body.Secondary ? `**Currently Playing:** ${body.Secondary.Title}`:'No ID3 Tags found for this stream'}`)
+            .setThumbnail(body.Secondary ? body.Secondary.Image:'')
+            .setColor(config.hexColour)});
+        }
+      });
+    }else {
+      message.channel.send(lib.embed(`**ERROR:** No streaming data could be found`));
     }
   }
 

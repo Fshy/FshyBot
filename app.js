@@ -44,7 +44,7 @@ client.on('ready', () => {
   console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
   client.setInterval(function () {
     var d = new Date(Date.now());
-    console.log(`\n\x1b[32m[${d.getDate()}/${(d.getMonth()+1)}/${d.getFullYear()} | ${d.toLocaleTimeString()}]\x1b[0m Memory: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB | Ping: ${Math.round(client.ping)}ms | Users: ${client.users.size} | Guilds: ${client.guilds.size}`);
+    console.log(`\n\x1b[32m[${d.getDate()}/${(d.getMonth()+1)}/${d.getFullYear()} | ${d.toLocaleTimeString()}]\x1b[0m Memory: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB | Users: ${client.users.size} | Guilds: ${client.guilds.size}`);
   },300000);
 });
 
@@ -66,7 +66,6 @@ client.on('guildCreate', (guild)=>{
       if (toInsert) {
         guildDB.push({id: guild.id, prefix: config.prefix});
         guildsMap.set(guilds[key].id,{prefix:config.prefix});
-        console.log(guildsMap);
       }
     }else {
       var clientGuilds = client.guilds.keyArray();
@@ -74,7 +73,6 @@ client.on('guildCreate', (guild)=>{
         guildDB.push({id: clientGuilds[i], prefix: config.prefix});
         guildsMap.set(clientGuilds[i],{prefix:config.prefix});
       }
-      console.log(guildsMap);
     }
     guild.defaultChannel.send({embed:new Discord.RichEmbed()
       .setTitle(`// ${config.name} Online and listening for input`)
@@ -126,12 +124,14 @@ client.on('message', (message)=>{
 
     // Music
     case 'play':        return commands.play(ytdl,client,args,message);
-    case 'stop':        return commands.stop(client,message);
+    case 'stop':        return commands.stop(guildsMap,client,message);
     case 'pause':       return commands.pause(client,message);
     case 'resume':      return commands.resume(client,message);
-    case 'leave':       return commands.leave(client,message);
+    case 'leave':       return commands.leave(guildsMap,client,message);
     case 'stream':      return commands.stream(client,args,message);
-    case 'radio':       return commands.radio(client,guildPrefix,args,message);
+    case 'radio':       return commands.radio(client,guildPrefix,guildsMap,args,message);
+    case 'np':
+    case 'nowplaying':  return commands.nowPlaying(guildsMap,message);
 
     // Anime/NSFW
     case 'lewd':        return commands.danbooru(args,`e`,100,message);

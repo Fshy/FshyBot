@@ -15,6 +15,7 @@
 !ping                   - Displays response time to server
 !stats                  - Displays bot usage statistics
 !version                - Checks for updates to the bot
+!invite                 - Generates a link to invite 2B to your server
 </pre>
 
 <h5>Admin</h5>
@@ -43,6 +44,7 @@ Requires user to have a role titled "Admin"
 !leave                  - Stops any playback and leaves the channel
 !stream [url]           - Plays a given audio stream, or file from direct URL
 !radio                  - Displays some available preprogrammed radio streams
+!np                     - Displays Now Playing info for radio streams
 </pre>
 
 <h5>Anime/NSFW</h5>
