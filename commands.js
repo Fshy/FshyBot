@@ -257,7 +257,7 @@ class Commands {
   }
 
   update(message){
-    if (this.checkOwner(message)) {
+    if (lib.checkOwner(message)) {
       message.channel.send(lib.embed(`Updating...`));
       lib.series([
         'git fetch',
