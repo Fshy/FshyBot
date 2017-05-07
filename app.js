@@ -88,12 +88,13 @@ client.on('guildCreate', (guild)=>{
   });
 });
 
-// client.on('guildMemberAdd', (member) => {
-//   member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
-//     .setDescription(`${member.user.username} has joined the server.\n@everyone please welcome them to ${member.guild.name}`)
-//     .setImage('https://i.imgur.com/v177BWr.gif')
-//     .setColor(config.hexColour)});
-// });
+client.on('guildMemberAdd', (member) => {
+  member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
+    .setDescription(`${member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
+    .setThumbnail(member.user.displayAvatarURL)
+    .setColor(config.hexColour)});
+    // .setImage('https://i.imgur.com/v177BWr.gif')
+});
 
 client.on('message', (message)=>{
   if(message.author.bot) return;
@@ -134,8 +135,9 @@ client.on('message', (message)=>{
     case 'nowplaying':  return commands.nowPlaying(guildsMap,message);
 
     // Anime/NSFW
-    case 'lewd':        return commands.danbooru(args,`e`,100,message);
     case 'sfw':         return commands.danbooru(args,`s`,100,message);
+    case 'nsfw':
+    case 'lewd':        return commands.danbooru(args,`e`,100,message);
     case 'tags':        return commands.danbooruTags(args,message);
     case '2b':
     case '2B':          return commands.img2B(args,message);
