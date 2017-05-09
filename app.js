@@ -24,7 +24,6 @@ var guildsMap = new Map();
 client.login(config.token);
 
 client.on('ready', () => {
-  client.user.setGame(config.game);
   guildDB.once("value", (data) => {
     var guilds = data.val();
     if (guilds) {
@@ -42,6 +41,19 @@ client.on('ready', () => {
     }
   });
   console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
+  // Alternate setGame
+  var i = 0;
+  client.setInterval(function () {
+    switch (i%5) {
+      case 4:   client.user.setGame(`${client.guilds.size} Guilds - ${client.users.size} Users`);  break;
+      case 3:   client.user.setGame(`Commands: !help`);                                               break;
+      case 2:   client.user.setGame(`@Fshy#0986`);                                                    break;
+      case 1:   client.user.setGame(`arc.moe`);                                                       break;
+      case 0:   client.user.setGame(`NieR: Automata™`);                                               break;
+    }
+    i++;
+  },15000);
+  // Log Current Stats
   client.setInterval(function () {
     var d = new Date(Date.now());
     console.log(`\n\x1b[32m[${d.getDate()}/${(d.getMonth()+1)}/${d.getFullYear()} | ${d.toLocaleTimeString()}]\x1b[0m Memory: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB | Users: ${client.users.size} | Guilds: ${client.guilds.size}`);

@@ -2,7 +2,6 @@
   "token":                "DISCORD_USER_TOKEN",
   "prefix":               "!",
   "name":                 "2B | FshyBot",
-  "game":                 "NieR: Automata",
   "adminRoleID":          "DISCORD_ROLE_ID",
   "ownerID":              "DISCORD_USER_ID",
   "hexColour":            "#ECBCD1",
