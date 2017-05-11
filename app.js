@@ -20,6 +20,7 @@ const client    = new Discord.Client();
 const reddit    = new snoowrap(config.reddit);
 
 var guildsMap = new Map();
+var timer;
 
 client.login(config.token);
 
@@ -43,7 +44,7 @@ client.on('ready', () => {
   console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
   // Alternate setGame
   var i = 0;
-  client.setInterval(function () {
+  timer = client.setInterval(function () {
     switch (i%5) {
       case 4:   client.user.setGame(`${client.guilds.size} Guilds - ${client.users.size} Users`);  break;
       case 3:   client.user.setGame(`Commands: !help`);                                               break;
@@ -130,7 +131,7 @@ client.on('message', (message)=>{
 
     // Admin Commands
     case 'setname':     return commands.setName(client,args,message);
-    case 'setgame':     return commands.setGame(client,args,message);
+    case 'setgame':     return commands.setGame(timer,client,args,message);
     case 'setavatar':   return commands.setAvatar(client,args,message);
     case 'setstatus':   return commands.setStatus(client,guildPrefix,args,message);
     case 'setprefix':   return commands.setprefix(guildDB,guildsMap,guildPrefix,args,message);

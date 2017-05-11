@@ -206,8 +206,9 @@ class Commands {
     }
   }
 
-  setGame(client,args,message){
+  setGame(timer,client,args,message){
     if (lib.checkOwner(message)) {
+      clearInterval(timer);
       if (args[0]) {
         var game = args.join(' ');
         client.user.setGame(game).then(message.channel.send(lib.embed(`Game successfully updated!`)));
