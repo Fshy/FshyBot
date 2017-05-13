@@ -111,14 +111,21 @@ client.on('guildMemberAdd', (member) => {
 
 client.on('message', (message)=>{
   if(message.author.bot) return;
-  let guildPrefix = guildsMap.get(message.guild.id).prefix;
-  if(!message.content.startsWith(guildPrefix) && !message.content.startsWith('2B') && !message.content.startsWith('2b')) return;
-  console.log(`\x1b[36m[${message.guild}] \x1b[1m${message.author.username}: \x1b[0m${message.content}`);
 
+  // Chatbot
+  if (message.content.startsWith(`2B`) || message.content.startsWith(`2b`))
+    return commands.chatbot(message.content.split(/\s+/g).slice(1),message);
+
+  // Custom Prefixes
+  let guildPrefix = guildsMap.get(message.guild.id).prefix;
+  if(!message.content.startsWith(guildPrefix)) return;
+
+  // Command Parsing
+  console.log(`\x1b[36m[${message.guild}] \x1b[1m${message.author.username}: \x1b[0m${message.content}`);
   let command = message.content.split(/\s+/g)[0].slice(guildPrefix.length);
   let args    = message.content.split(/\s+/g).slice(1);
 
-  switch (command) {
+  switch (command.toLowerCase()) {
     // General
     case 'help':        return commands.help(guildPrefix,message);
     case 'ping':        return commands.ping(client,message);
@@ -152,16 +159,13 @@ client.on('message', (message)=>{
     case 'nsfw':
     case 'lewd':        return commands.danbooru(args,`e`,100,message);
     case 'tags':        return commands.danbooruTags(args,message);
-    case '2b':
-    case '2B':          return commands.img2B(args,message);
+    case '2b':          return commands.img2B(args,message);
     case 'smug':        return commands.smug(message);
 
     // Misc
     case 'btc':         return commands.coin(`BTC`,message);
     case 'eth':         return commands.coin(`ETH`,message);
     case 'calc':        return commands.calc(math,args,message);
-    case 'b':
-    case 'B':           return commands.chatbot(args,message);
     case 'r':           return commands.rslash(reddit,guildPrefix,message,args);
     case 'roll':        return commands.roll(args,message);
     case 'fivem':       return commands.fivem(message);

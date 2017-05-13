@@ -557,6 +557,22 @@ class Commands {
     }
   }
 
+  // ban(args,message){
+  //   if (lib.checkOwner(message)) {
+  //     if (args[0]) {
+  //       var banUser = message.mentions.members.first();
+  //       args.shift(1);
+  //       var reason = args.join(' ');
+  //       var dmChannel = banUser.createDM().then(dmChannel => {
+  //         dmChannel.send(reason);
+  //         banUser.ban(reason).then(
+  //           message.channel.send(lib.embed(`Banning ${banUser.user.username}\nReason: ${reason}`))
+  //         );
+  //       })
+  //     }
+  //   }
+  // }
+
 }
 
 module.exports = new Commands();
