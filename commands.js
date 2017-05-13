@@ -163,7 +163,7 @@ class Commands {
       reddit.getSubreddit(args[0]).getHot().then(function (data) {
         if (data[0]) {
           var urls = [];
-          for (var i = 0; i < 10; i++) { //Top 10 sorted by Hot
+          for (var i = 0; i < 25; i++) { //Top 25 sorted by Hot
             if ((/\.(jpe?g|png|gif|bmp)$/i).test(data[i].url)) { //If matches image file push to array
               urls.push(data[i]);
             }
