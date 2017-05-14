@@ -279,10 +279,10 @@ class Commands {
     var expr = args.join(' ');
     request({url:`https://jeannie.p.mashape.com/api?input=${expr}`,headers: {'X-Mashape-Key': config.mashape.jeannie,'Accept': 'application/json'}}, function (error, response, body) {
       if (error!=null) {
-        message.channel.send(lib.embed(`**ERROR:** Could not access Jeannie API`));
+        message.reply(lib.embed(`**ERROR:** Could not access Jeannie API`));
       }else {
         response = JSON.parse(body);
-        message.channel.send(lib.embed(response.output[0].actions.say.text));
+        message.reply(response.output[0].actions.say.text.substring(0, 2000));
       }
     });
   }

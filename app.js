@@ -112,6 +112,10 @@ client.on('guildMemberAdd', (member) => {
 client.on('message', (message)=>{
   if(message.author.bot) return;
 
+  // Receive DM
+  if (message.channel.type===`dm`)
+    return commands.chatbot(message.content.split(),message);
+
   // Chatbot
   if (message.content.startsWith(`2B`) || message.content.startsWith(`2b`))
     return commands.chatbot(message.content.split(/\s+/g).slice(1),message);
