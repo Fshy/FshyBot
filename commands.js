@@ -177,12 +177,13 @@ class Commands {
           }else {
             message.channel.send(lib.embed(`Sorry, no images could be found on r/${args[0]}`));
           }
+        }
+      }).catch(e =>{
+        if (e.error) {
+          message.channel.send(lib.embed(`**ERROR ${e.statusCode}:** ${e.error.message} - ${e.error.reason}`));
         }else {
           message.channel.send(lib.embed(`**ERROR:** No suitable posts were found on r/${args[0]}`));
         }
-      }).catch(e =>{
-        // b = JSON.parse(e.body);
-        message.channel.send(lib.embed(`**ERROR ${e.statusCode}:** ${e.error.message} - ${e.error.reason}`));
       });
     }else {
       message.channel.send(lib.embed(`**ERROR:** No subreddit specified | Use ${guildPrefix}r [subreddit]`));
