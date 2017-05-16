@@ -8,45 +8,45 @@ class Commands {
 
   help(guildPrefix,message) {
     var desc = `
-      -- General
-      **${guildPrefix}help** - Displays all available commands
-      **${guildPrefix}ping** - Displays response time to server
-      **${guildPrefix}stats** - Displays bot usage statistics
-      **${guildPrefix}version** - Checks for updates to the bot
-      **${guildPrefix}invite** - Generates a link to invite 2B to your server
+-- General
+**${guildPrefix}help** - Displays all available commands
+**${guildPrefix}ping** - Displays response time to server
+**${guildPrefix}stats** - Displays bot usage statistics
+**${guildPrefix}version** - Checks for updates to the bot
+**${guildPrefix}invite** - Generates a link to invite 2B to your server
 
-      -- Admin | Requires user to have a role titled "Admin"
-      **${guildPrefix}setprefix [newprefix]** - Sets the prefix that the bot listens to
+-- Admin | Requires user to have a role titled "Admin"
+**${guildPrefix}setprefix [newprefix]** - Sets the prefix that the bot listens to
 
-      -- Music
-      **${guildPrefix}play [title/link]** - Searches and queues the given term/link
-      **${guildPrefix}stop** - Stops the current song and leaves the channel
-      **${guildPrefix}pause** - Pauses playback of the current song
-      **${guildPrefix}resume** - Resumes playback of the current song
-      **${guildPrefix}leave** - Stops any playback and leaves the channel
-      **${guildPrefix}stream [url]** - Plays a given audio stream, or file from direct URL
-      **${guildPrefix}radio** - Displays some available preprogrammed radio streams
-      **${guildPrefix}np** - Displays Now Playing info for radio streams
+-- Music
+**${guildPrefix}play [title/link]** - Searches and queues the given term/link
+**${guildPrefix}stop** - Stops the current song and leaves the channel
+**${guildPrefix}pause** - Pauses playback of the current song
+**${guildPrefix}resume** - Resumes playback of the current song
+**${guildPrefix}leave** - Stops any playback and leaves the channel
+**${guildPrefix}stream [url]** - Plays a given audio stream, or file from direct URL
+**${guildPrefix}radio** - Displays some available preprogrammed radio streams
+**${guildPrefix}np** - Displays Now Playing info for radio streams
 
-      -- Anime/NSFW
-      **${guildPrefix}smug** - Posts a random smug reaction image
-      **${guildPrefix}lewd [search term]** - Uploads a random NSFW image of the term
-      **${guildPrefix}sfw  [search term]** - Uploads a random SFW image of the term
-      **${guildPrefix}tags [search term]** - Searches Danbooru for related search tags
-      **${guildPrefix}2B [nsfw]** - Uploads a 2B image, or a NSFW version if supplied
+-- Anime/NSFW
+**${guildPrefix}smug** - Posts a random smug reaction image
+**${guildPrefix}lewd [search term]** - Uploads a random NSFW image of the term
+**${guildPrefix}sfw  [search term]** - Uploads a random SFW image of the term
+**${guildPrefix}tags [search term]** - Searches Danbooru for related search tags
+**${guildPrefix}2B [nsfw]** - Uploads a 2B image, or a NSFW version if supplied
 
-      -- Misc
-      **${guildPrefix}btc** - Displays current Bitcoin spot price
-      **${guildPrefix}eth** - Displays current Ethereum spot price
-      **${guildPrefix}calc [expression]** - Evaluates a given expression
-      **${guildPrefix}r    [subreddit]** - Uploads a random image from a given subreddit
-      **${guildPrefix}roll [n] [m]** - Rolls an n-sided die, m times and displays the result
+-- Misc
+**${guildPrefix}btc** - Displays current Bitcoin spot price
+**${guildPrefix}eth** - Displays current Ethereum spot price
+**${guildPrefix}calc [expression]** - Evaluates a given expression
+**${guildPrefix}r    [subreddit]** - Uploads a random image from a given subreddit
+**${guildPrefix}roll [n] [m]** - Rolls an n-sided die, m times and displays the result
 
-      -- Chatbot
-      2B answers her callsign in response to the user
-      Eg. 2B How are you? | 2B What's the time?
+-- Chatbot
+2B answers her callsign in response to the user
+Eg. 2B How are you? | 2B What's the time?
 
-      For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)`;
+For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)`;
       message.channel.send({embed:new Discord.RichEmbed()
         .setTitle(`Commands:`)
         .setDescription(desc)
