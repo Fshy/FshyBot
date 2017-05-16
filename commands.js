@@ -161,7 +161,7 @@ class Commands {
   rslash(reddit,guildPrefix,message,args) {
     if (args[0]) {
       reddit.getSubreddit(args[0]).getHot().then(function (data) {
-        if (data[0]) {
+        if (data[0].url) {
           var urls = [];
           for (var i = 0; i < 25; i++) { //Top 25 sorted by Hot
             if ((/\.(jpe?g|png|gif|bmp)$/i).test(data[i].url)) { //If matches image file push to array
@@ -178,8 +178,11 @@ class Commands {
             message.channel.send(lib.embed(`Sorry, no images could be found on r/${args[0]}`));
           }
         }else {
-          message.channel.send(lib.embed(`**ERROR:** No posts were found on r/${args[0]}`));
+          message.channel.send(lib.embed(`**ERROR:** No suitable posts were found on r/${args[0]}`));
         }
+      }).catch(e =>{
+        // b = JSON.parse(e.body);
+        message.channel.send(lib.embed(`**ERROR ${e.statusCode}:** ${e.error.message} - ${e.error.reason}`));
       });
     }else {
       message.channel.send(lib.embed(`**ERROR:** No subreddit specified | Use ${guildPrefix}r [subreddit]`));
@@ -484,17 +487,6 @@ class Commands {
     }else {
       message.channel.send(lib.embed(`**ERROR:** No streaming data could be found`));
     }
-  }
-
-  fivem(message){
-    const server = require('fivereborn-query');
-    server.query(config.fiveM.ip, 30120, (err, data) => {
-      if (!err) {
-        message.channel.send(lib.embed(`:white_check_mark: Server is Online\nHostname: ${data.hostname}\nIP Address: ${config.fiveM.ip}\nPort: 30120\nConnected: ${data.clients}/${data.maxclients}`));
-      } else {
-        message.channel.send(lib.embed(`**ERROR:** Server is currently offline`));
-      }
-    })
   }
 
   smug(message){
