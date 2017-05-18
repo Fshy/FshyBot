@@ -320,7 +320,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                 .setThumbnail(res.snippet.thumbnails.default.url)
                 .setColor(config.hexColour)});
               dispatcher.on('end', () => {
-                voiceChannel.leave();
+                // voiceChannel.leave();
               });
             });
           }
@@ -349,7 +349,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                 .setThumbnail(res.snippet.thumbnails.default.url)
                 .setColor(config.hexColour)});
               dispatcher.on('end', () => {
-                voiceChannel.leave();
+                // voiceChannel.leave();
               });
             });
           }
@@ -373,12 +373,18 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
           require('https').get(args[0], (res) => {
             voiceChannel.join().then(connnection => {
               connnection.playStream(res, {passes:2});
+              dispatcher.on('end', () => {
+                // voiceChannel.leave();
+              });
             });
           });
         }else {
           require('http').get(args[0], (res) => {
             voiceChannel.join().then(connnection => {
               connnection.playStream(res, {passes:2});
+              dispatcher.on('end', () => {
+                // voiceChannel.leave();
+              });
             });
           });
         }
