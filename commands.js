@@ -319,9 +319,9 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                 .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
                 .setThumbnail(res.snippet.thumbnails.default.url)
                 .setColor(config.hexColour)});
-              // dispatcher.on('end', () => {
-              //   voiceChannel.leave();
-              // });
+              dispatcher.on('end', () => {
+                voiceChannel.leave();
+              });
             });
           }
         });
@@ -348,9 +348,9 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                 .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
                 .setThumbnail(res.snippet.thumbnails.default.url)
                 .setColor(config.hexColour)});
-              // dispatcher.on('end', () => {
-              //   voiceChannel.leave();
-              // });
+              dispatcher.on('end', () => {
+                voiceChannel.leave();
+              });
             });
           }
         });
