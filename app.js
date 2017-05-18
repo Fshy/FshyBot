@@ -148,7 +148,8 @@ client.on('message', (message)=>{
     case 'setprefix':   return commands.setprefix(guildDB,guildsMap,guildPrefix,args,message);
 
     // Music
-    case 'play':        return commands.play(ytdl,client,args,message);
+    case 'controls':    return commands.controls(guildsMap,client,message);
+    case 'play':        return commands.play(ytdl,guildsMap,client,args,message);
     case 'stop':        return commands.stop(guildsMap,client,message);
     case 'pause':       return commands.pause(client,message);
     case 'resume':      return commands.resume(client,message);

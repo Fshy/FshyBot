@@ -291,8 +291,9 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     });
   }
 
-  play(ytdl,client,args,message){
+  play(ytdl,guildsMap,client,args,message){
     const voiceChannel = message.member.voiceChannel;
+    var controls = this.controls;
     if (!voiceChannel) {
       message.channel.send(lib.embed(`**ERROR:** Please join a voice channel first`));
     }else {
@@ -314,19 +315,22 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
               if (dispatch)
                 dispatch.end();
             }
-            voiceChannel.join().then(connnection => {
-              const dispatcher = connnection.playStream(stream, {passes:2});
-              message.channel.send({embed:new Discord.RichEmbed()
-                .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
-                .setThumbnail(res.snippet.thumbnails.default.url)
-                .setColor(config.hexColour)});
-              dispatcher.on('end', () => {
-                // voiceChannel.leave();
-              });
-            });
+            client.setTimeout(function () {
+              voiceChannel.join().then(connnection => {
+                const dispatcher = connnection.playStream(stream, {passes:2});
+                message.channel.send({embed:new Discord.RichEmbed()
+                  .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
+                  .setThumbnail(res.snippet.thumbnails.default.url)
+                  .setColor(config.hexColour)}).then(m =>{
+                    controls(guildsMap,client,m);
+                  });
+                dispatcher.on('end', () => {
+                  // voiceChannel.leave();
+                });
+              })
+            }, 250);
           }
         });
-
       }else {
         let expr = args.join('+');
         request(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${expr}&type=video&videoCategoryId=10&key=${config.youtube.apiKey}`, function (error, response, body) {
@@ -344,16 +348,20 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
               if (dispatch)
                 dispatch.end();
             }
-            voiceChannel.join().then(connnection => {
-              const dispatcher = connnection.playStream(stream, {passes:2});
-              message.channel.send({embed:new Discord.RichEmbed()
-                .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
-                .setThumbnail(res.snippet.thumbnails.default.url)
-                .setColor(config.hexColour)});
-              dispatcher.on('end', () => {
-                // voiceChannel.leave();
-              });
-            });
+            client.setTimeout(function () {
+              voiceChannel.join().then(connnection => {
+                const dispatcher = connnection.playStream(stream, {passes:2});
+                message.channel.send({embed:new Discord.RichEmbed()
+                  .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
+                  .setThumbnail(res.snippet.thumbnails.default.url)
+                  .setColor(config.hexColour)}).then(m =>{
+                    controls(guildsMap,client,m);
+                  });
+                dispatcher.on('end', () => {
+                  // voiceChannel.leave();
+                });
+              })
+            }, 250);
           }
         });
       }
@@ -406,8 +414,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       var np = guildsMap.get(message.guild.id);
       delete np.playing;
       guildsMap.set(message.guild.id, np);
-      message.channel.send(lib.embed(`:mute: ${message.author.username} Stopped Playback`));
-      vconnec.channel.leave();
+      // message.channel.send(lib.embed(`:mute: ${message.author.username} Stopped Playback`));
     }
   }
 
@@ -430,7 +437,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       let dispatch = vconnec.player.dispatcher;
       if (dispatch)
         dispatch.pause();
-      message.channel.send(lib.embed(`:speaker: ${message.author.username} Paused Playback`));
+      // message.channel.send(lib.embed(`:speaker: ${message.author.username} Paused Playback`));
     }
   }
 
@@ -440,7 +447,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       let dispatch = vconnec.player.dispatcher;
       if (dispatch)
         dispatch.resume();
-      message.channel.send(lib.embed(`:loud_sound: ${message.author.username} Resumed Playback`));
+      // message.channel.send(lib.embed(`:loud_sound: ${message.author.username} Resumed Playback`));
     }
   }
 
@@ -561,6 +568,83 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     }else {
       message.channel.send(lib.embed(`**ERROR:** Guild must have a role titled \`Admin\` to use this command`));
     }
+  }
+
+  controls(guildsMap,client,message){
+
+    function leave(guildsMap,client,message){
+      let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+      if (vconnec) {
+        let dispatch = vconnec.player.dispatcher;
+        if (dispatch)
+          dispatch.end();
+        var np = guildsMap.get(message.guild.id);
+        delete np.playing;
+        guildsMap.set(message.guild.id, np);
+        vconnec.channel.leave();
+      }
+    }
+
+    function stop(guildsMap,client,message) {
+      let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+      if (vconnec) {
+        let dispatch = vconnec.player.dispatcher;
+        if (dispatch)
+          dispatch.end();
+        var np = guildsMap.get(message.guild.id);
+        delete np.playing;
+        guildsMap.set(message.guild.id, np);
+      }
+    }
+    message.react('⏯').then(r => {
+      // playpause
+      client.on('messageReactionAdd', (messageReaction)=>{
+        if (messageReaction===r && messageReaction.count>2){
+          let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+          if (vconnec) {
+            let dispatch = vconnec.player.dispatcher;
+            if (dispatch){
+              if (dispatch.speaking)
+                dispatch.pause();
+              else
+                dispatch.resume();
+            }
+          }
+        } //this.resume(client,message);
+      });
+      client.on('messageReactionRemove', (messageReaction)=>{
+        if (messageReaction===r){
+          let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+          if (vconnec) {
+            let dispatch = vconnec.player.dispatcher;
+            if (dispatch){
+              if (dispatch.speaking)
+                dispatch.pause();
+              else
+                dispatch.resume();
+            }
+          }
+        }// this.resume(client,message);
+      });
+        message.react('⏹').then(r => {
+          // stop
+          client.on('messageReactionAdd', (messageReaction)=>{
+            if (messageReaction===r && messageReaction.count>2) stop(guildsMap,client,message);
+          });
+          client.on('messageReactionRemove', (messageReaction)=>{
+            if (messageReaction===r) stop(guildsMap,client,message);
+          });
+          message.react('❌').then(r => {
+            //close
+            client.on('messageReactionAdd', (messageReaction)=>{
+              if (messageReaction===r && messageReaction.count>2) leave(guildsMap,client,message);
+            });
+            client.on('messageReactionRemove', (messageReaction)=>{
+              if (messageReaction===r) leave(guildsMap,client,message);
+            });
+          })
+        })
+    })
   }
 
   // wowlogs(args,message){
