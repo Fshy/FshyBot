@@ -311,7 +311,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
             if (vconnec) {
               let dispatch = vconnec.player.dispatcher;
-              dispatch.end();
+              if (dispatch)
+                dispatch.end();
             }
             voiceChannel.join().then(connnection => {
               const dispatcher = connnection.playStream(stream, {passes:2});
@@ -340,7 +341,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
             if (vconnec) {
               let dispatch = vconnec.player.dispatcher;
-              dispatch.end();
+              if (dispatch)
+                dispatch.end();
             }
             voiceChannel.join().then(connnection => {
               const dispatcher = connnection.playStream(stream, {passes:2});
@@ -367,7 +369,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
         let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
         if (vconnec) {
           let dispatch = vconnec.player.dispatcher;
-          dispatch.end();
+          if (dispatch)
+            dispatch.end();
         }
         if (args[0].startsWith('https')) {
           require('https').get(args[0], (res) => {
@@ -398,7 +401,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
-      dispatch.end();
+      if (dispatch)
+        dispatch.end();
       var np = guildsMap.get(message.guild.id);
       delete np.playing;
       guildsMap.set(message.guild.id, np);
@@ -411,7 +415,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
-      dispatch.end();
+      if (dispatch)
+        dispatch.end();
       var np = guildsMap.get(message.guild.id);
       delete np.playing;
       guildsMap.set(message.guild.id, np);
@@ -423,7 +428,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
-      dispatch.pause();
+      if (dispatch)
+        dispatch.pause();
       message.channel.send(lib.embed(`:speaker: ${message.author.username} Paused Playback`));
     }
   }
@@ -432,7 +438,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
-      dispatch.resume();
+      if (dispatch)
+        dispatch.resume();
       message.channel.send(lib.embed(`:loud_sound: ${message.author.username} Resumed Playback`));
     }
   }
