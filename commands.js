@@ -319,9 +319,9 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                 .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
                 .setThumbnail(res.snippet.thumbnails.default.url)
                 .setColor(config.hexColour)});
-              dispatcher.on('end', () => {
-                voiceChannel.leave();
-              });
+              // dispatcher.on('end', () => {
+              //   voiceChannel.leave();
+              // });
             });
           }
         });
@@ -348,9 +348,9 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                 .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
                 .setThumbnail(res.snippet.thumbnails.default.url)
                 .setColor(config.hexColour)});
-              dispatcher.on('end', () => {
-                voiceChannel.leave();
-              });
+              // dispatcher.on('end', () => {
+              //   voiceChannel.leave();
+              // });
             });
           }
         });
@@ -550,21 +550,143 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     }
   }
 
-  // ban(args,message){
-  //   if (lib.checkOwner(message)) {
-  //     if (args[0]) {
-  //       var banUser = message.mentions.members.first();
-  //       args.shift(1);
-  //       var reason = args.join(' ');
-  //       var dmChannel = banUser.createDM().then(dmChannel => {
-  //         dmChannel.send(reason);
-  //         banUser.ban(reason).then(
-  //           message.channel.send(lib.embed(`Banning ${banUser.user.username}\nReason: ${reason}`))
-  //         );
-  //       })
+  // wowlogs(args,message){
+  //   var wow = require('weasel.js');
+  //   wow.setApiKey(config.warcraftlogs.apiKey);
+  //   if (args[0]) {
+  //     switch (args[0]) {
+  //       case 'logs':
+  //         if (args[1]) {
+  //           if (args[2]) {
+  //             if (args[3]) {
+  //               wow.getReportsGuild(`Here for Gear`, `Kiljaeden`, `us`, {}, function(err, data) {
+  //                 if (err) return console.log(err);
+  //                 var raid = data[data.length-1].id; //Most recent raid
+  //                 wow.getReportFights(raid, {}, function(err, data) {
+  //                   if (err) return console.log(err);
+  //                   for (var i = 0; i < data.length; i++) {
+  //                     console.log(data[i]);
+  //                   }
+  //                 });
+  //               });
+  //             }else {
+  //               message.channel.send(lib.embed(`**ERROR:** Missing Parameter\nUse !wow logs [Guild Name] [Server] [Region]`));
+  //             }
+  //           }else {
+  //             message.channel.send(lib.embed(`**ERROR:** Missing Parameter\nUse !wow logs [Guild Name] [Server] [Region]`));
+  //           }
+  //         }else {
+  //           message.channel.send(lib.embed(`**ERROR:** Missing Parameter\nUse !wow logs [Guild Name] [Server] [Region]`));
+  //         }
+  //         break;
   //     }
+  //   }else {
+  //     message.channel.send(lib.embed(`Please use the commands available:\n!wow logs [Guild Name] [Server] [Region]\n!wow dps [Fight ID]`));
   //   }
   // }
+
+//   leagueoflegends(args,message){
+//     if (args[0]) {
+//       if (args[1]) {
+//         request(`https://${args[1]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${args[0]}?api_key=${config.riot.apiKey}`, function (error, response, body) {
+//           let summoner = JSON.parse(body);
+//           if (error!=null) {
+//             message.channel.send(lib.embed('**ERROR:** Could not access Riot API'));
+//           }else {
+//             request(`https://${args[1]}.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/${summoner.id}?api_key=${config.riot.apiKey}`, function (error, response, body) {
+//               let game = JSON.parse(body);
+//               if (error!=null) {
+//                 message.channel.send(lib.embed('**ERROR:** Could not access Riot API'));
+//               }else {
+//                 if (game.status) {
+//                   return message.channel.send(lib.embed('Live game stats could not be found for that user'));
+//                 }else {
+//                   request(`http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json`, function (error, response, body) {
+//                     let champions = JSON.parse(body);
+//                     if (error!=null) {
+//                       message.channel.send(lib.embed('**ERROR:** Could not access Champion API'));
+//                     }else {
+//                       for (var i = 0; i < game.participants.length; i++) {
+//                           let playerInfo = ``;
+//                           if (game.participants[i].teamId===100)
+//                             playerInfo += `Blue Team - `;
+//                           else
+//                             playerInfo += `Red Team - `;
+//                           playerInfo += `${game.participants[i].summonerName} | `;
+//                           let champId = game.participants[i].championId;
+//                           request(`https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/${summoner.id}/ranked?api_key=${config.riot.apiKey}`, function (error, response, body) {
+//                             var summonerInfo = JSON.parse(body);
+//                             for (var champ in champions.data) {
+//                                 if (champions.data[champ].key==champId)
+//                                   playerInfo += `${champ} `;
+//                                   break;
+//                             }
+//                             Object.keys(summonerInfo).forEach(function(key) {
+//                               if (summonerInfo.champions[key]==champId) {
+//                                 console.log(champId);
+//                               }
+//                               // console.log(key, summonerInfo[key]);
+//                             });
+//                             // for (var champStats in summonerInfo.champions) {
+//                             //   if (summonerInfo.champions[champStats].id==champId){
+//                             //     var stats = summonerInfo.champions[champStats].stats;
+//                             //     playerInfo += `${stats.totalSessionsWon}W/${stats.totalSessionsLost}L (${((stats.totalSessionsWon/stats.totalSessionsPlayed)*100).toFixed(1)}%) | `;
+//                             //     break;
+//                             //   }
+//                             // }
+//                             // for (var cs in summonerInfo.champions) {
+//                             //   if (summonerInfo.champions[cs].id===0){
+//                             //     var s = summonerInfo.champions[cs].stats;
+//                             //     playerInfo += `Overall ${s.totalSessionsWon}W/${s.totalSessionsLost}L (${((s.totalSessionsWon/s.totalSessionsPlayed)*100).toFixed(1)}%)`;
+//                             //     break;
+//                             //   }
+//                             // }
+//                             console.log(playerInfo);
+//                             // console.log(summonerInfo.champions);
+//                             // console.log(`Overall ${summonerInfo.champions}`);
+//                           });
+//
+//                       }
+//                     }
+//                   });
+//                 }
+//               }
+//             });
+//           }
+//         });
+//       }else {
+//         message.channel.send(lib.embed(`
+// **ERROR:** Missing Parameter
+// Use !lol [Username] [Server Code]
+//
+// **Server List:**
+// North America - NA1
+// Europe West - EUW1
+// Europe Nordic & East - EUN1
+// Latin America North - LA1
+// Latin America South - LA2
+// Oceania - OC1
+// Korea - KR
+// Japan - JP1`
+//         ));
+//       }
+//     }else {
+//       message.channel.send(lib.embed(`
+// **ERROR:** Missing Parameter
+// Use !lol [Username] [Server Code]
+//
+// **Server List:**
+// North America - NA1
+// Europe West - EUW1
+// Europe Nordic & East - EUN1
+// Latin America North - LA1
+// Latin America South - LA2
+// Oceania - OC1
+// Korea - KR
+// Japan - JP1`
+//       ));
+//     }
+//   }
 
 }
 

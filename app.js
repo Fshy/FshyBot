@@ -158,6 +158,12 @@ client.on('message', (message)=>{
     case 'np':
     case 'nowplaying':  return commands.nowPlaying(guildsMap,message);
 
+    // World of Warcraft
+    // case 'wow':         return commands.wowlogs(args,message);
+
+    // League of Legends
+    // case 'lol':         return commands.leagueoflegends(args,message);
+
     // Anime/NSFW
     case 'sfw':         return commands.danbooru(args,`s`,100,message);
     case 'nsfw':
@@ -172,6 +178,7 @@ client.on('message', (message)=>{
     case 'calc':        return commands.calc(math,args,message);
     case 'r':           return commands.rslash(reddit,guildPrefix,message,args);
     case 'roll':        return commands.roll(args,message);
+    case 'riddle':      return commands.riddle(message);
 
     // Default
     // default:            return message.channel.send(lib.embed(`A-Are you talking to me? Because that's not a command I understand..\nReference \`${guildPrefix}help\` to see what I can do, or use \`${guildPrefix}setprefix\`.`));
