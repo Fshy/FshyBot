@@ -317,7 +317,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             }
             client.setTimeout(function () {
               voiceChannel.join().then(connnection => {
-                const dispatcher = connnection.playStream(stream, {passes:2});
+                var dispatcher = connnection.playStream(stream, {passes:2});
                 message.channel.send({embed:new Discord.RichEmbed()
                   .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
                   .setThumbnail(res.snippet.thumbnails.default.url)
@@ -350,7 +350,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             }
             client.setTimeout(function () {
               voiceChannel.join().then(connnection => {
-                const dispatcher = connnection.playStream(stream, {passes:2});
+                var dispatcher = connnection.playStream(stream, {passes:2});
                 message.channel.send({embed:new Discord.RichEmbed()
                   .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
                   .setThumbnail(res.snippet.thumbnails.default.url)
