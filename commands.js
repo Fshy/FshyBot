@@ -325,6 +325,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                     controls(guildsMap,client,m);
                   });
                 dispatcher.on('end', () => {
+                  client.removeAllListeners('messageReactionAdd');
+                  client.removeAllListeners('messageReactionRemove');
                   // voiceChannel.leave();
                 });
               })
@@ -358,6 +360,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                     controls(guildsMap,client,m);
                   });
                 dispatcher.on('end', () => {
+                  client.removeAllListeners('messageReactionAdd');
+                  client.removeAllListeners('messageReactionRemove');
                   // voiceChannel.leave();
                 });
               })
@@ -646,41 +650,6 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
         })
     })
   }
-
-  // wowlogs(args,message){
-  //   var wow = require('weasel.js');
-  //   wow.setApiKey(config.warcraftlogs.apiKey);
-  //   if (args[0]) {
-  //     switch (args[0]) {
-  //       case 'logs':
-  //         if (args[1]) {
-  //           if (args[2]) {
-  //             if (args[3]) {
-  //               wow.getReportsGuild(`Here for Gear`, `Kiljaeden`, `us`, {}, function(err, data) {
-  //                 if (err) return console.log(err);
-  //                 var raid = data[data.length-1].id; //Most recent raid
-  //                 wow.getReportFights(raid, {}, function(err, data) {
-  //                   if (err) return console.log(err);
-  //                   for (var i = 0; i < data.length; i++) {
-  //                     console.log(data[i]);
-  //                   }
-  //                 });
-  //               });
-  //             }else {
-  //               message.channel.send(lib.embed(`**ERROR:** Missing Parameter\nUse !wow logs [Guild Name] [Server] [Region]`));
-  //             }
-  //           }else {
-  //             message.channel.send(lib.embed(`**ERROR:** Missing Parameter\nUse !wow logs [Guild Name] [Server] [Region]`));
-  //           }
-  //         }else {
-  //           message.channel.send(lib.embed(`**ERROR:** Missing Parameter\nUse !wow logs [Guild Name] [Server] [Region]`));
-  //         }
-  //         break;
-  //     }
-  //   }else {
-  //     message.channel.send(lib.embed(`Please use the commands available:\n!wow logs [Guild Name] [Server] [Region]\n!wow dps [Fight ID]`));
-  //   }
-  // }
 
 //   leagueoflegends(args,message){
 //     if (args[0]) {
