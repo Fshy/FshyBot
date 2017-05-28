@@ -60,11 +60,10 @@ Requires user to have a role titled "Admin"
 <h5>Misc</h5>
 
 <pre>
-!btc                    - Displays current Bitcoin spot price
-!eth                    - Displays current Ethereum spot price
-!calc [expression]      - Evaluates a given expression
-!r    [subreddit]       - Uploads a random image from frontpage of a given subreddit
-!roll [sides] [num]     - Rolls an n-sided die, m times and displays the result
+!crypto [coin] [amount] - Displays current cryptocurrency price or calculated value (optional)
+!calc   [expression]    - Evaluates a given expression
+!r      [subreddit]     - Uploads a random image from frontpage of a given subreddit
+!roll   [sides] [num]   - Rolls an n-sided die, m times and displays the result
 </pre>
 
 <h5>Chatbot</h5>

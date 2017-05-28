@@ -171,8 +171,7 @@ client.on('message', (message)=>{
     case 'smug':        return commands.smug(message);
 
     // Misc
-    case 'btc':         return commands.coin(`BTC`,message);
-    case 'eth':         return commands.coin(`ETH`,message);
+    case 'crypto':      return commands.coin(args,message);
     case 'calc':        return commands.calc(math,args,message);
     case 'r':           return commands.rslash(reddit,guildPrefix,message,args);
     case 'roll':        return commands.roll(args,message);

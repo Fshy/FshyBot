@@ -36,8 +36,7 @@ class Commands {
 **${guildPrefix}2B [nsfw]** - Uploads a 2B image, or a NSFW version if supplied
 
 -- Misc
-**${guildPrefix}btc** - Displays current Bitcoin spot price
-**${guildPrefix}eth** - Displays current Ethereum spot price
+**${guildPrefix}crypto [coin] [amount]** - Displays current cryptocurrency price or calculated value (optional)
 **${guildPrefix}calc [expression]** - Evaluates a given expression
 **${guildPrefix}r    [subreddit]** - Uploads a random image from a given subreddit
 **${guildPrefix}roll [n] [m]** - Rolls an n-sided die, m times and displays the result
@@ -86,15 +85,79 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       .setColor(config.hexColour)});
   }
 
-  coin(currency,message) {
-    request(`https://min-api.cryptocompare.com/data/price?fsym=${currency}&tsyms=USD`, function (error, response, body) {
-      response = JSON.parse(body);
-      if (error!=null) {
-        message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`));
-      }else {
-        message.channel.send(lib.embed(`Current ${currency} Price: $${response.USD.toFixed(2)}`));
-      }
-    });
+  coin(args,message) {
+    if (args[0]) {
+      var currency = args[0].toUpperCase();
+      request(`https://min-api.cryptocompare.com/data/price?fsym=${currency}&tsyms=USD`, function (error, response, body) {
+        var price = JSON.parse(body).USD;
+        if (error!=null) {
+          message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`));
+        }else {
+          if (args[1]) {
+            var amt = args[1];
+            if (!isNaN(amt)) {
+              request(`https://www.cryptocompare.com/api/data/coinlist`, function (error, response, body) {
+                body = JSON.parse(body).Data;
+                if (error!=null) {
+                  message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`));
+                }else {
+                  for (var coin in body) {
+                    if (body[coin].Name===currency) {
+                      return message.channel.send({embed:new Discord.RichEmbed()
+                        .setAuthor(`${body[coin].CoinName} (${body[coin].Name}) - $${price}`,`https://www.cryptocompare.com${body[coin].ImageUrl}`)
+                        .setDescription(`${amt} ${body[coin].Name} = $${(price*parseFloat(amt)).toFixed(2)}`)
+                        .setColor(config.hexColour)});
+                    }
+                  }
+                  message.channel.send(lib.embed(`**ERROR:** ${currency} not found in database`));
+                }
+              });
+            }else {
+              message.channel.send(lib.embed(`**ERROR:** Parameter is not a number`));
+            }
+          }else {
+            request(`https://www.cryptocompare.com/api/data/coinlist`, function (error, response, body) {
+              body = JSON.parse(body).Data;
+              if (error!=null) {
+                message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`));
+              }else {
+                for (var coin in body) {
+                  if (body[coin].Name===currency) {
+                    return message.channel.send({embed:new Discord.RichEmbed()
+                      .setAuthor(`${body[coin].CoinName} (${body[coin].Name}) - $${price}`,`https://www.cryptocompare.com${body[coin].ImageUrl}`)
+                      .setColor(config.hexColour)});
+                  }
+                }
+                message.channel.send(lib.embed(`**ERROR:** ${currency} not found in database`));
+              }
+            });
+          }
+        }
+      });
+    }else {
+      request(`https://www.cryptocompare.com/api/data/coinlist`, function (error, response, body) {
+        body = JSON.parse(body).Data;
+        if (error!=null) {
+          message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`));
+        }else {
+          var coinStack = [];
+          for (var i = 0; coinStack.length < 10; i++) {
+            for (var coin in body) {
+              if (parseInt(body[coin].SortOrder)===i+1) {
+                coinStack.push(body[coin]);
+              }
+            }
+          }
+          //
+          var desc = [];
+          for (var i = 0; i < coinStack.length; i++) {
+            desc.push({name:'­', value:`${coinStack[i].Name}\t-\t${coinStack[i].CoinName}`});
+          }
+          message.channel.send({embed:{title: `Usage: !crypto [coin] or !crypto [coin] [amount]`, description:'Current Popular Cryptocurrencies:\n', fields: desc, color: 15514833}});
+          //
+        }
+      });
+    }
   }
 
   roll(args,message) {
