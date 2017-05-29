@@ -714,6 +714,27 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     })
   }
 
+  insta(args,message){
+    if (args[0]) {
+      const instagramPosts = require('instagram-posts');
+      instagramPosts(args[0],{
+      	filter: data => data.type === 'image'
+      }).then(posts => {
+        if (posts[0]) {
+          message.channel.send({embed:new Discord.RichEmbed()
+            .setAuthor(`@${posts[0].username}`)
+            .setDescription(`https://www.instagram.com/p/${posts[0].id}\n${posts[0].text}`)
+            .setImage(posts[0].media)
+            .setColor(config.hexColour)});
+        }else {
+          message.channel.send(lib.embed(`**ERROR:** Could not retrieve any images for @${args[0]}`));
+        }
+      });
+    }else {
+      message.channel.send(lib.embed(`**Usage:** !insta [username]`));
+    }
+  }
+
 //   leagueoflegends(args,message){
 //     if (args[0]) {
 //       if (args[1]) {

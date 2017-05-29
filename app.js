@@ -162,6 +162,11 @@ client.on('message', (message)=>{
     // League of Legends
     // case 'lol':         return commands.leagueoflegends(args,message);
 
+    // Web APIs
+    case 'r':           return commands.rslash(reddit,guildPrefix,message,args);
+    case 'insta':       return commands.insta(args,message);
+    case 'crypto':      return commands.coin(args,message);
+
     // Anime/NSFW
     case 'sfw':         return commands.danbooru(args,`s`,100,message);
     case 'nsfw':
@@ -171,9 +176,7 @@ client.on('message', (message)=>{
     case 'smug':        return commands.smug(message);
 
     // Misc
-    case 'crypto':      return commands.coin(args,message);
     case 'calc':        return commands.calc(math,args,message);
-    case 'r':           return commands.rslash(reddit,guildPrefix,message,args);
     case 'roll':        return commands.roll(args,message);
 
     // Default
