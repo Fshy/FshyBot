@@ -26,9 +26,6 @@
   "mashape": {
     "jeannie":            "JEANNIE_API_KEY"
   },
-  "fiveM":{
-    "ip":                 "arc.moe"
-  },
   "radio": [
     {"title":"Odyssey Radio",           "genre":"Anime",            "url":"https://listen.moe/stream",                                "tuneinId":"s277012"},
     {"title":"Real Hardstyle Radio",    "genre":"Hardstyle",        "url":"http://stream2.rhr.fm/rhrfm",                              "tuneinId":"s193826"},

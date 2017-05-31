@@ -164,8 +164,9 @@ client.on('message', (message)=>{
 
     // Web APIs
     case 'r':           return commands.rslash(reddit,guildPrefix,message,args);
-    case 'insta':       return commands.insta(args,message);
     case 'crypto':      return commands.coin(args,message);
+    case 'ig':
+    case 'insta':       return commands.insta(args,message);
 
     // Anime/NSFW
     case 'sfw':         return commands.danbooru(args,`s`,100,message);
