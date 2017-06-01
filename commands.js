@@ -735,6 +735,40 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     }
   }
 
+  pubg(scraper,args,message){
+    if (args[0]) {
+      scraper(`https://pubg.me/player/${args[0]}`, {
+          username: ".username-header h1",
+          avatar: {
+            selector: ".steam-avatar",
+            attr: "src"
+          },
+          soloRating: ".profile-match-overview-solo .stat-blue .value",
+          soloKD: ".profile-match-overview-solo .stat-red .value",
+          duoRating: ".profile-match-overview-duo .stat-blue .value",
+          duoKD: ".profile-match-overview-duo .stat-red .value",
+          squadRating: ".profile-match-overview-squad .stat-blue .value",
+          squadKD: ".profile-match-overview-squad .stat-red .value"
+      }).then(stats => {
+          if (stats.username) {
+            message.channel.send({embed:new Discord.RichEmbed()
+              .setAuthor(`PUBG.ME | ${stats.username}`,stats.avatar)
+              .addField(`Solo`,`${stats.soloRating ? `${stats.soloRating}`:'N/A'} Rating`,true)
+              .addField(`Duo`,`${stats.duoRating ? `${stats.duoRating}`:'N/A'} Rating`,true)
+              .addField(`Squad`,`${stats.squadRating ? `${stats.duoRating}`:'N/A'} Rating`,true)
+              .addField('­',`${stats.soloKD ? `${stats.soloKD}`:'N/A'} K/D`,true)
+              .addField('­',`${stats.duoKD ? `${stats.duoKD}`:'N/A'} K/D`,true)
+              .addField('­',`${stats.squadKD ? `${stats.squadKD}`:'N/A'} K/D`,true)
+              .setColor(config.hexColour)});
+          }else {
+            message.channel.send(lib.embed(`**ERROR:** Could not retrieve stats for ${args[0]}`));
+          }
+      });
+    }else {
+      message.channel.send(lib.embed(`**Usage:** !pubg [username]`));
+    }
+  }
+
 //   leagueoflegends(args,message){
 //     if (args[0]) {
 //       if (args[1]) {

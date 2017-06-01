@@ -7,6 +7,7 @@ const ytdl      = require('ytdl-core');
 const firebase  = require("firebase");
 const snoowrap  = require('snoowrap');
 const math      = require('mathjs');
+const scraper   = require("scrape-it");
 const config    = require('./config.json');
 const version   = require('./package.json').version;
 const commands  = require('./commands');
@@ -161,6 +162,9 @@ client.on('message', (message)=>{
 
     // League of Legends
     // case 'lol':         return commands.leagueoflegends(args,message);
+
+    // PUBG
+    case 'pubg':        return commands.pubg(scraper,args,message);
 
     // Web APIs
     case 'r':           return commands.rslash(reddit,guildPrefix,message,args);
