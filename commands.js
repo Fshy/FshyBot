@@ -756,9 +756,9 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
               .addField(`Solo`,`${stats.soloRating ? `${stats.soloRating}`:'N/A'} Rating`,true)
               .addField(`Duo`,`${stats.duoRating ? `${stats.duoRating}`:'N/A'} Rating`,true)
               .addField(`Squad`,`${stats.squadRating ? `${stats.squadRating}`:'N/A'} Rating`,true)
-              .addField('­',`${stats.soloKD ? `${stats.soloKD}`:'N/A'} K/D`,true)
-              .addField('­',`${stats.duoKD ? `${stats.duoKD}`:'N/A'} K/D`,true)
-              .addField('­',`${stats.squadKD ? `${stats.squadKD}`:'N/A'} K/D`,true)
+              .addField('­',`${stats.soloKD ? `${stats.soloKD}`:'0.00'} K/D`,true)
+              .addField('­',`${stats.duoKD ? `${stats.duoKD}`:'0.00'} K/D`,true)
+              .addField('­',`${stats.squadKD ? `${stats.squadKD}`:'0.00'} K/D`,true)
               .setColor(config.hexColour)});
           }else {
             message.channel.send(lib.embed(`**ERROR:** Could not retrieve stats for ${args[0]}`));
