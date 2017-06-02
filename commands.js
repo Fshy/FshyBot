@@ -755,7 +755,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
               .setAuthor(`PUBG.ME | ${stats.username}`,stats.avatar)
               .addField(`Solo`,`${stats.soloRating ? `${stats.soloRating}`:'N/A'} Rating`,true)
               .addField(`Duo`,`${stats.duoRating ? `${stats.duoRating}`:'N/A'} Rating`,true)
-              .addField(`Squad`,`${stats.squadRating ? `${stats.duoRating}`:'N/A'} Rating`,true)
+              .addField(`Squad`,`${stats.squadRating ? `${stats.squadRating}`:'N/A'} Rating`,true)
               .addField('­',`${stats.soloKD ? `${stats.soloKD}`:'N/A'} K/D`,true)
               .addField('­',`${stats.duoKD ? `${stats.duoKD}`:'N/A'} K/D`,true)
               .addField('­',`${stats.squadKD ? `${stats.squadKD}`:'N/A'} K/D`,true)
