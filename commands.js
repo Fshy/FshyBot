@@ -57,6 +57,11 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     message.channel.send(lib.embed(`Response time to discord server: ${Math.round(client.ping)}ms`));
   }
 
+  embed(guildPrefix,message) {
+    var str = message.content.slice(guildPrefix.length+5);
+    message.channel.send(lib.embed(str));
+  }
+
   ver(version,guildPrefix,message) {
     request('https://raw.githubusercontent.com/Fshy/FshyBot/master/package.json', function (error, response, body) {
       response = JSON.parse(body);
