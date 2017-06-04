@@ -89,15 +89,14 @@ client.on('guildCreate', (guild)=>{
       }
     }
     guild.defaultChannel.send({embed:new Discord.RichEmbed()
-      .setTitle(`// ${config.name} Online and listening for input`)
+      .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
       .setDescription(`
-        Thanks for adding me to your server!
-        Please have a look at my command list using **${guildPrefix}help**
-        or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
+Thanks for adding me to your server!
+Please have a look at my command list using **${guildPrefix}help**
+or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
 
-        Currently running v${version} on a ${process.platform}-${process.arch} platform
-        My latency to your server is ${Math.round(client.ping)}ms`)
-      .setThumbnail('http://i.imgur.com/4D1IKh8.png')
+Currently running v${version} on a ${process.platform}-${process.arch} platform`)
+      .setThumbnail(client.user.displayAvatarURL)
       .setColor(config.hexColour)});
   });
 });
