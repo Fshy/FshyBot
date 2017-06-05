@@ -109,6 +109,32 @@ client.on('guildMemberAdd', (member) => {
     // .setImage('https://i.imgur.com/v177BWr.gif')
 });
 
+client.on('presenceUpdate', (oldMember, newMember) => {
+  if (!oldMember.user.bot) {//Not a Bot User - else null
+    if (newMember.presence.game) {//A game status exists - else null
+      if (newMember.presence.game.streaming) {//The new game status is a stream - else null
+        if (oldMember.presence.game) {//Still playing a game - else now started a game
+          if (!oldMember.presence.game.streaming) {//If user was streaming before update do nothing
+            if (newMember.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
+              newMember.guild.defaultChannel.send({embed:new Discord.RichEmbed()
+                .setDescription(`${newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
+                .setThumbnail(newMember.user.displayAvatarURL)
+                .setColor(config.hexColour)});
+            }
+          }
+        }else {
+          if (newMember.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
+            newMember.guild.defaultChannel.send({embed:new Discord.RichEmbed()
+              .setDescription(`${newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
+              .setThumbnail(newMember.user.displayAvatarURL)
+              .setColor(config.hexColour)});
+          }
+        }
+      }
+    }
+  }
+});
+
 client.on('message', (message)=>{
   if(message.author.bot) return;
 
@@ -130,6 +156,23 @@ client.on('message', (message)=>{
   let args    = message.content.split(/\s+/g).slice(1);
 
   switch (command.toLowerCase()) {
+
+    // TO-DO List
+    // --1
+    // Notes: These commands may not disabled themselves | Require MANAGE_GUILD Perms
+    // case 'disable':     return commands.disableCommand(guildDB,guildsMap,guildPrefix,args,message);
+    // case 'enable':      return commands.enableCommand(guildDB,guildsMap,guildPrefix,args,message);
+    // --2
+    // Apply a SEND_MESSAGES check before attempting output
+    // --3
+    // Let RichEmbed.color = Role.color || config.hexColour // Adjust Colours based on message type (success, error, warning, info)
+    // --4
+    // Music Queue
+    // --5
+    // Rewrite interactive reactions using createReactionCollector()
+    // --6
+    // Retrieve User Logs (Past Messages)
+
     // General
     case 'help':        return commands.help(guildPrefix,message);
     case 'ping':        return commands.ping(client,message);
@@ -160,16 +203,12 @@ client.on('message', (message)=>{
     case 'np':
     case 'nowplaying':  return commands.nowPlaying(guildsMap,message);
 
-    // League of Legends
-    // case 'lol':         return commands.leagueoflegends(args,message);
-
     // PUBG
     case 'pubg':        return commands.pubg(scraper,args,message);
 
     // Web APIs
     case 'r':           return commands.rslash(reddit,guildPrefix,message,args);
     case 'crypto':      return commands.coin(args,message);
-    case 'ig':
     case 'insta':       return commands.insta(args,message);
 
     // Anime/NSFW
