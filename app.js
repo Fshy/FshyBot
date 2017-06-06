@@ -8,8 +8,8 @@ const firebase  = require("firebase");
 const snoowrap  = require('snoowrap');
 const math      = require('mathjs');
 const scraper   = require("scrape-it");
-const config    = require('./config.json');
-const version   = require('./package.json').version;
+const config    = require('./config');
+const version   = require('./package').version;
 const commands  = require('./commands');
 const lib       = require('./lib');
 
