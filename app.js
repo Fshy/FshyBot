@@ -179,7 +179,7 @@ client.on('message', (message)=>{
     case 'stats':       return commands.stats(version,client,message);
     case 'version':     return commands.ver(version,guildPrefix,message);
     case 'invite':      return commands.invite(client,message);
-    case 'embed':       return commands.embed(guildPrefix,message);
+    case 'say':         return commands.say(guildPrefix,message);
 
     // Owner Commands
     case 'update':      return commands.update(message);
