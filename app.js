@@ -97,7 +97,7 @@ or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | 
 
 Currently running v${version} on a ${process.platform}-${process.arch} platform`)
       .setThumbnail(client.user.displayAvatarURL)
-      .setColor(config.hexColour)});
+      .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
   });
 });
 
@@ -105,7 +105,7 @@ client.on('guildMemberAdd', (member) => {
   member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
     .setDescription(`${member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
     .setThumbnail(member.user.displayAvatarURL)
-    .setColor(config.hexColour)});
+    .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
     // .setImage('https://i.imgur.com/v177BWr.gif')
 });
 
@@ -119,7 +119,7 @@ client.on('presenceUpdate', (oldMember, newMember) => {
               newMember.guild.defaultChannel.send({embed:new Discord.RichEmbed()
                 .setDescription(`${newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
                 .setThumbnail(newMember.user.displayAvatarURL)
-                .setColor(config.hexColour)});
+                .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
             }
           }
         }else {
@@ -127,7 +127,7 @@ client.on('presenceUpdate', (oldMember, newMember) => {
             newMember.guild.defaultChannel.send({embed:new Discord.RichEmbed()
               .setDescription(`${newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
               .setThumbnail(newMember.user.displayAvatarURL)
-              .setColor(config.hexColour)});
+              .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
           }
         }
       }
@@ -165,7 +165,7 @@ client.on('message', (message)=>{
     // --2
     // Apply a SEND_MESSAGES check before attempting output
     // --3
-    // Let RichEmbed.color = Role.color || config.hexColour // Adjust Colours based on message type (success, error, warning, info)
+    // Adjust Embed Colours based on message type (success, error, warning, info)
     // --4
     // Music Queue
     // --5
@@ -223,8 +223,6 @@ client.on('message', (message)=>{
     case 'calc':        return commands.calc(math,args,message);
     case 'roll':        return commands.roll(args,message);
 
-    // Default
-    // default:            return message.channel.send(lib.embed(`A-Are you talking to me? Because that's not a command I understand..\nReference \`${guildPrefix}help\` to see what I can do, or use \`${guildPrefix}setprefix\`.`));
   }
 
 });

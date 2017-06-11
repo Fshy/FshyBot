@@ -3,8 +3,8 @@ const config    = require('./config.json');
 
 // Helper Functions
 class Lib {
-  embed(text){
-    return ({embed:new Discord.RichEmbed().setDescription(text).setColor(config.hexColour)});
+  embed(text,message){
+    return ({embed:new Discord.RichEmbed().setDescription(text).setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
   }
 
   checkOwner(message){

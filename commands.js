@@ -50,28 +50,28 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
         .setTitle(`Commands:`)
         .setDescription(desc)
         .setImage('http://i.imgur.com/a96NGOY.png')
-        .setColor(config.hexColour)});
+        .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
   }
 
   ping(client,message){
-    message.channel.send(lib.embed(`Response time to discord server: ${Math.round(client.ping)}ms`));
+    message.channel.send(lib.embed(`Response time to discord server: ${Math.round(client.ping)}ms`,message));
   }
 
   say(guildPrefix,message) {
     var str = message.content.slice(guildPrefix.length+3);
-    message.channel.send(lib.embed(str));
+    message.channel.send(lib.embed(str,message));
   }
 
   ver(version,guildPrefix,message) {
     request('https://raw.githubusercontent.com/Fshy/FshyBot/master/package.json', function (error, response, body) {
       response = JSON.parse(body);
       if (error!=null) {
-        message.channel.send(lib.embed(`**ERROR:** Could not access repository`));
+        message.channel.send(lib.embed(`**ERROR:** Could not access repository`,message));
       }else {
         if (response.version!=version) {
-          message.channel.send(lib.embed(`Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Use **${guildPrefix}update** to fetch master branch and restart bot | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`));
+          message.channel.send(lib.embed(`Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Use **${guildPrefix}update** to fetch master branch and restart bot | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,message));
         }else {
-          message.channel.send(lib.embed(`Currently Running v${version}\nNightly Build: v${response.version}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`));
+          message.channel.send(lib.embed(`Currently Running v${version}\nNightly Build: v${response.version}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,message));
         }
       }
     });
@@ -87,7 +87,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       .addField(`Memory Usage`,`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,true)
       .addField(`Platform`,`${process.platform}`,true)
       .addField(`Architecture`,`${process.arch}`,true)
-      .setColor(config.hexColour)});
+      .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
   }
 
   coin(args,message) {
@@ -96,7 +96,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       request(`https://min-api.cryptocompare.com/data/price?fsym=${currency}&tsyms=USD`, function (error, response, body) {
         var price = JSON.parse(body).USD;
         if (error!=null) {
-          message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`));
+          message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`,message));
         }else {
           if (args[1]) {
             var amt = args[1];
@@ -104,36 +104,36 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
               request(`https://www.cryptocompare.com/api/data/coinlist`, function (error, response, body) {
                 body = JSON.parse(body).Data;
                 if (error!=null) {
-                  message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`));
+                  message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`,message));
                 }else {
                   for (var coin in body) {
                     if (body[coin].Name===currency) {
                       return message.channel.send({embed:new Discord.RichEmbed()
                         .setAuthor(`${body[coin].CoinName} (${body[coin].Name}) - $${price}`,`https://www.cryptocompare.com${body[coin].ImageUrl}`)
                         .setDescription(`${amt} ${body[coin].Name} = $${(price*parseFloat(amt)).toFixed(2)}`)
-                        .setColor(config.hexColour)});
+                        .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
                     }
                   }
-                  message.channel.send(lib.embed(`**ERROR:** ${currency} not found in database`));
+                  message.channel.send(lib.embed(`**ERROR:** ${currency} not found in database`,message));
                 }
               });
             }else {
-              message.channel.send(lib.embed(`**ERROR:** Parameter is not a number`));
+              message.channel.send(lib.embed(`**ERROR:** Parameter is not a number`,message));
             }
           }else {
             request(`https://www.cryptocompare.com/api/data/coinlist`, function (error, response, body) {
               body = JSON.parse(body).Data;
               if (error!=null) {
-                message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`));
+                message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`,message));
               }else {
                 for (var coin in body) {
                   if (body[coin].Name===currency) {
                     return message.channel.send({embed:new Discord.RichEmbed()
                       .setAuthor(`${body[coin].CoinName} (${body[coin].Name}) - $${price}`,`https://www.cryptocompare.com${body[coin].ImageUrl}`)
-                      .setColor(config.hexColour)});
+                      .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
                   }
                 }
-                message.channel.send(lib.embed(`**ERROR:** ${currency} not found in database`));
+                message.channel.send(lib.embed(`**ERROR:** ${currency} not found in database`,message));
               }
             });
           }
@@ -143,7 +143,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       request(`https://www.cryptocompare.com/api/data/coinlist`, function (error, response, body) {
         body = JSON.parse(body).Data;
         if (error!=null) {
-          message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`));
+          message.channel.send(lib.embed(`**ERROR:** Could not access cryptocompare API`,message));
         }else {
           var coinStack = [];
           for (var i = 0; coinStack.length < 10; i++) {
@@ -183,26 +183,26 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       res += n;
     }
     output += "= "+res;
-    message.channel.send(lib.embed(output));
+    message.channel.send(lib.embed(output,message));
   }
 
   danbooru(args,rating,amount,message) {
     var tag = args.join('_');
     if ((tag.toLowerCase().match(/kanna/g) && rating==='e') || (tag.toLowerCase().match(/kamui/g) && rating==='e'))
-      return message.channel.send(lib.embed(`Don't lewd the dragon loli`));
+      return message.channel.send(lib.embed(`Don't lewd the dragon loli`,message));
     request(`http://danbooru.donmai.us/posts.json?tags=*${tag}*+rating%3A${rating}+limit%3A${amount}`, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
-        message.channel.send(lib.embed(`**ERROR:** Could not access Danbooru API`));
+        message.channel.send(lib.embed(`**ERROR:** Could not access Danbooru API`,message));
       }else {
         var random = Math.floor(Math.random() * body.length);//Picks one randomly to post
         if (body[random]) {
           message.channel.send({embed:new Discord.RichEmbed()
             .setImage(`http://danbooru.donmai.us${body[random].file_url}`)
             .setDescription(`[Source](${body[random].source})`)
-            .setColor(config.hexColour)});
+            .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
         }else {
-          message.channel.send(lib.embed(`**ERROR:** Could not find any posts matching ${tag}\nTry using the ${config.prefix}tags [search term] command to narrow down the search`));
+          message.channel.send(lib.embed(`**ERROR:** Could not find any posts matching ${tag}\nTry using the ${config.prefix}tags [search term] command to narrow down the search`,message));
         }
       }
     });
@@ -222,7 +222,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       }else {
         suggestions = `No tags found for ${tag}`;
       }
-      message.channel.send(lib.embed(suggestions));
+      message.channel.send(lib.embed(suggestions,message));
     });
   }
 
@@ -241,20 +241,20 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             message.channel.send({embed:new Discord.RichEmbed()
             .setImage(urls[random].url)
             .setDescription(`${urls[random].title}\n[Source](http://reddit.com${urls[random].permalink})`)
-            .setColor(config.hexColour)});
+            .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
           }else {
-            message.channel.send(lib.embed(`Sorry, no images could be found on r/${args[0]}`));
+            message.channel.send(lib.embed(`Sorry, no images could be found on r/${args[0]}`,message));
           }
         }
       }).catch(e =>{
         if (e.error) {
-          message.channel.send(lib.embed(`**ERROR ${e.statusCode}:** ${e.error.message} - ${e.error.reason}`));
+          message.channel.send(lib.embed(`**ERROR ${e.statusCode}:** ${e.error.message} - ${e.error.reason}`,message));
         }else {
-          message.channel.send(lib.embed(`**ERROR:** No suitable posts were found on r/${args[0]}`));
+          message.channel.send(lib.embed(`**ERROR:** No suitable posts were found on r/${args[0]}`,message));
         }
       });
     }else {
-      message.channel.send(lib.embed(`**ERROR:** No subreddit specified | Use ${guildPrefix}r [subreddit]`));
+      message.channel.send(lib.embed(`**ERROR:** No subreddit specified | Use ${guildPrefix}r [subreddit]`,message));
     }
   }
 
@@ -269,12 +269,12 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     if (lib.checkOwner(message)) {
       if (args[0]) {
         var name = args.join(' ');
-        client.user.setUsername(name).then(message.channel.send(lib.embed(`Name successfully updated!`)));
+        client.user.setUsername(name).then(message.channel.send(lib.embed(`Name successfully updated!`,message)));
       }else {
-        message.channel.send(lib.embed(`**ERROR:** Specify a string to change username to`));
+        message.channel.send(lib.embed(`**ERROR:** Specify a string to change username to`,message));
       }
     }else {
-      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`));
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`,message));
     }
   }
 
@@ -283,36 +283,36 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       clearInterval(timer);
       if (args[0]) {
         var game = args.join(' ');
-        client.user.setGame(game).then(message.channel.send(lib.embed(`Game successfully updated!`)));
+        client.user.setGame(game).then(message.channel.send(lib.embed(`Game successfully updated!`,message)));
       }else {
-        client.user.setGame(null).then(message.channel.send(lib.embed(`Game successfully cleared!`)));
+        client.user.setGame(null).then(message.channel.send(lib.embed(`Game successfully cleared!`,message)));
       }
     }else {
-      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`));
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`,message));
     }
   }
 
   setStatus(client,guildPrefix,args,message){
     if (lib.checkOwner(message)) {
       if (args[0]==='online' || args[0]==='idle' || args[0]==='invisible' || args[0]==='dnd') {
-        client.user.setStatus(args[0]).then(message.channel.send(lib.embed(`Status successfully updated!`)));
+        client.user.setStatus(args[0]).then(message.channel.send(lib.embed(`Status successfully updated!`,message)));
       }else {
-        message.channel.send(lib.embed(`**ERROR:** Incorrect syntax | Use ${guildPrefix}setstatus [status]\nStatuses: online, idle, invisible, dnd`));
+        message.channel.send(lib.embed(`**ERROR:** Incorrect syntax | Use ${guildPrefix}setstatus [status]\nStatuses: online, idle, invisible, dnd`,message));
       }
     }else {
-      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`));
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`,message));
     }
   }
 
   setAvatar(client,args,message){
     if (lib.checkOwner(message)) {
       if ((/\.(jpe?g|png|gif|bmp)$/i).test(args[0])) {
-        client.user.setAvatar(args[0]).then(message.channel.send(lib.embed(`Avatar successfully updated!`)));
+        client.user.setAvatar(args[0]).then(message.channel.send(lib.embed(`Avatar successfully updated!`,message)));
       }else {
-        message.channel.send(lib.embed(`**ERROR:** That's not an image filetype I recognize | Try: .jpg .png .gif .bmp`));
+        message.channel.send(lib.embed(`**ERROR:** That's not an image filetype I recognize | Try: .jpg .png .gif .bmp`,message));
       }
     }else {
-      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`));
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`,message));
     }
   }
 
@@ -320,18 +320,18 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     var expr = args.join(' ');
     if (args[0]) {
       try {
-        message.channel.send(lib.embed(`${expr} = ${math.eval(expr)}`));
+        message.channel.send(lib.embed(`${expr} = ${math.eval(expr)}`,message));
       } catch (e) {
-        message.channel.send(lib.embed(`**ERROR:** ${e.message}`));
+        message.channel.send(lib.embed(`**ERROR:** ${e.message}`,message));
       }
     }else {
-      message.channel.send(lib.embed(`**ERROR:** Enter an expression to evaluate`));
+      message.channel.send(lib.embed(`**ERROR:** Enter an expression to evaluate`,message));
     }
   }
 
   update(message){
     if (lib.checkOwner(message)) {
-      message.channel.send(lib.embed(`Updating...`));
+      message.channel.send(lib.embed(`Updating...`,message));
       lib.series([
         'git fetch',
         'git reset --hard origin/master',
@@ -343,7 +343,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
         }
       });
     }else {
-      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`));
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`,message));
     }
   }
 
@@ -351,7 +351,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     var expr = args.join(' ');
     request({url:`https://jeannie.p.mashape.com/api?input=${expr}`,headers: {'X-Mashape-Key': config.mashape.jeannie,'Accept': 'application/json'}}, function (error, response, body) {
       if (error!=null) {
-        message.reply(lib.embed(`**ERROR:** Could not access Jeannie API`));
+        message.reply(lib.embed(`**ERROR:** Could not access Jeannie API`,message));
       }else {
         response = JSON.parse(body);
         message.reply(response.output[0].actions.say.text.substring(0, 2000));
@@ -363,14 +363,14 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     const voiceChannel = message.member.voiceChannel;
     var controls = this.controls;
     if (!voiceChannel) {
-      message.channel.send(lib.embed(`**ERROR:** Please join a voice channel first`));
+      message.channel.send(lib.embed(`**ERROR:** Please join a voice channel first`,message));
     }else {
       let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
       let match = args[0].match(regExp);
       if (match) {
         request(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${match[2]}&key=${config.youtube.apiKey}`, function (error, response, body) {
           if (error!=null) {
-            message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`));
+            message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
           }else {
             response = JSON.parse(body);
             let res = response.items[0];
@@ -389,7 +389,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                 message.channel.send({embed:new Discord.RichEmbed()
                   .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
                   .setThumbnail(res.snippet.thumbnails.default.url)
-                  .setColor(config.hexColour)}).then(m =>{
+                  .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
                     controls(guildsMap,client,m);
                   });
                 dispatcher.on('end', () => {
@@ -405,7 +405,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
         let expr = args.join('+');
         request(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${expr}&type=video&videoCategoryId=10&key=${config.youtube.apiKey}`, function (error, response, body) {
           if (error!=null) {
-            message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`));
+            message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
           }else {
             response = JSON.parse(body);
             let res = response.items[0];
@@ -424,7 +424,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                 message.channel.send({embed:new Discord.RichEmbed()
                   .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
                   .setThumbnail(res.snippet.thumbnails.default.url)
-                  .setColor(config.hexColour)}).then(m =>{
+                  .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
                     controls(guildsMap,client,m);
                   });
                 dispatcher.on('end', () => {
@@ -443,7 +443,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
   stream(client,args,message){
     const voiceChannel = message.member.voiceChannel;
     if (!voiceChannel) {
-      message.channel.send(lib.embed(`**ERROR:** Please join a voice channel first`));
+      message.channel.send(lib.embed(`**ERROR:** Please join a voice channel first`,message));
     }else {
       if (args[0]) {
         let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
@@ -472,7 +472,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
           });
         }
       }else {
-        message.channel.send(lib.embed(`**ERROR:** Please specify the stream url as a parameter`));
+        message.channel.send(lib.embed(`**ERROR:** Please specify the stream url as a parameter`,message));
       }
     }
   }
@@ -486,7 +486,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       var np = guildsMap.get(message.guild.id);
       delete np.playing;
       guildsMap.set(message.guild.id, np);
-      // message.channel.send(lib.embed(`:mute: ${message.author.username} Stopped Playback`));
+      // message.channel.send(lib.embed(`:mute: ${message.author.username} Stopped Playback`,message));
     }
   }
 
@@ -509,7 +509,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       let dispatch = vconnec.player.dispatcher;
       if (dispatch)
         dispatch.pause();
-      // message.channel.send(lib.embed(`:speaker: ${message.author.username} Paused Playback`));
+      // message.channel.send(lib.embed(`:speaker: ${message.author.username} Paused Playback`,message));
     }
   }
 
@@ -519,7 +519,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       let dispatch = vconnec.player.dispatcher;
       if (dispatch)
         dispatch.resume();
-      // message.channel.send(lib.embed(`:loud_sound: ${message.author.username} Resumed Playback`));
+      // message.channel.send(lib.embed(`:loud_sound: ${message.author.username} Resumed Playback`,message));
     }
   }
 
@@ -530,7 +530,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       if (choice<config.radio.length) {
         request(`https://feed.tunein.com/profiles/${config.radio[choice].tuneinId}/nowPlaying`, function (error, response, body) {
           if (error!=null) {
-            message.channel.send(lib.embed(`**ERROR:** Could not access TuneIn API`));
+            message.channel.send(lib.embed(`**ERROR:** Could not access TuneIn API`,message));
           }else {
             body = JSON.parse(body);
             stream(client,[config.radio[choice].url],message);
@@ -540,11 +540,11 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             message.channel.send({embed:new Discord.RichEmbed()
               .setDescription(`:headphones: **Now Streaming:** ${config.radio[choice].title}\n${body.Secondary ? `**Currently Playing:** ${body.Secondary.Title}`:''}`)
               .setThumbnail(body.Primary.Image)
-              .setColor(config.hexColour)});
+              .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
           }
         });
       }else {
-        message.channel.send(lib.embed(`**ERROR:** Selection does not exist`));
+        message.channel.send(lib.embed(`**ERROR:** Selection does not exist`,message));
       }
     }else {
       var desc = [];
@@ -568,17 +568,17 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     if (np) {
       request(`https://feed.tunein.com/profiles/${np}/nowPlaying`, function (error, response, body) {
         if (error!=null) {
-          message.channel.send(lib.embed(`**ERROR:** Could not access TuneIn API`));
+          message.channel.send(lib.embed(`**ERROR:** Could not access TuneIn API`,message));
         }else {
           body = JSON.parse(body);
           message.channel.send({embed:new Discord.RichEmbed()
             .setDescription(`${body.Secondary ? `**Currently Playing:** ${body.Secondary.Title}`:'No ID3 Tags found for this stream'}`)
             .setThumbnail(body.Secondary ? body.Secondary.Image:'')
-            .setColor(config.hexColour)});
+            .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
         }
       });
     }else {
-      message.channel.send(lib.embed(`**ERROR:** No streaming data could be found`));
+      message.channel.send(lib.embed(`**ERROR:** No streaming data could be found`,message));
     }
   }
 
@@ -586,15 +586,15 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     request(`http://arc.moe/smug`, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
-        message.channel.send(lib.embed('**ERROR:** Could not access arc.moe resource'));
+        message.channel.send(lib.embed('**ERROR:** Could not access arc.moe resource',message));
       }else {
         var random = Math.floor(Math.random() * body.length);//Picks one randomly to post
         if (body[random]) {
           message.channel.send({embed:new Discord.RichEmbed()
             .setImage(`${body[random]}`)
-            .setColor(config.hexColour)});
+            .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
         }else {
-          message.channel.send(lib.embed(`**ERROR:** Could not find the image requested`));
+          message.channel.send(lib.embed(`**ERROR:** Could not find the image requested`,message));
         }
       }
     });
@@ -604,7 +604,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     client.generateInvite(8).then(link => {
       message.channel.send({embed:new Discord.RichEmbed()
         .setDescription(`You can use this [LINK](${link}) to invite me to your server! :sparkling_heart:`)
-        .setColor(config.hexColour)});
+        .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
     });
   }
 
@@ -624,7 +624,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
                 if (guilds[key].id===message.guild.id) {
                   guildDB.child(key).update({"prefix": newprefix});
                   guildsMap.set(message.guild.id,{prefix:newprefix});
-                  message.channel.send(lib.embed(`**SUCCESS:** Now listening for the prefix: \`${newprefix}\``));
+                  message.channel.send(lib.embed(`**SUCCESS:** Now listening for the prefix: \`${newprefix}\``,message));
                   break;
                 }
               }
@@ -632,13 +632,13 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
           });
           // end prefix
         }else {
-          message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command\n**Required Role:** \`Admin\``));
+          message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command\n**Required Role:** \`Admin\``,message));
         }
       }else {
-        message.channel.send(lib.embed(`**ERROR:** Failed to specify a parameter, i.e. ${guildPrefix}setprefix [newprefix]`));
+        message.channel.send(lib.embed(`**ERROR:** Failed to specify a parameter, i.e. ${guildPrefix}setprefix [newprefix]`,message));
       }
     }else {
-      message.channel.send(lib.embed(`**ERROR:** Guild must have a role titled \`Admin\` to use this command`));
+      message.channel.send(lib.embed(`**ERROR:** Guild must have a role titled \`Admin\` to use this command`,message));
     }
   }
 
@@ -730,13 +730,13 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             .setAuthor(`@${posts[0].username}`)
             .setDescription(`https://www.instagram.com/p/${posts[0].id}\n${posts[0].text}`)
             .setImage(posts[0].media)
-            .setColor(config.hexColour)});
+            .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
         }else {
-          message.channel.send(lib.embed(`**ERROR:** Could not retrieve any images for @${args[0]}`));
+          message.channel.send(lib.embed(`**ERROR:** Could not retrieve any images for @${args[0]}`,message));
         }
       });
     }else {
-      message.channel.send(lib.embed(`**Usage:** !insta [username]`));
+      message.channel.send(lib.embed(`**Usage:** !insta [username]`,message));
     }
   }
 
@@ -764,13 +764,13 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
               .addField('­',`${stats.soloKD ? `${stats.soloKD}`:'0.00'} K/D`,true)
               .addField('­',`${stats.duoKD ? `${stats.duoKD}`:'0.00'} K/D`,true)
               .addField('­',`${stats.squadKD ? `${stats.squadKD}`:'0.00'} K/D`,true)
-              .setColor(config.hexColour)});
+              .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
           }else {
-            message.channel.send(lib.embed(`**ERROR:** Could not retrieve stats for ${args[0]}`));
+            message.channel.send(lib.embed(`**ERROR:** Could not retrieve stats for ${args[0]}`,message));
           }
       });
     }else {
-      message.channel.send(lib.embed(`**Usage:** !pubg [username]`));
+      message.channel.send(lib.embed(`**Usage:** !pubg [username]`,message));
     }
   }
 
