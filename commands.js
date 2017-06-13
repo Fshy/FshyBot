@@ -186,6 +186,32 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     message.channel.send(lib.embed(output,message));
   }
 
+  anime(args,message) {
+    var tag = args.join('+');
+    request(`https://myanimelist.net/api/anime/search.xml?q=${tag}`, function (error, response, body) {
+      if (error!=null) {
+        message.channel.send(lib.embed(`**ERROR:** Could not find any matches on MyAnimeList`,message));
+      }else {
+        const parseString = require('xml2js').parseString;
+        parseString(body, function (err, result) {
+            const decode = require('he').decode;
+            var anime = result.anime.entry[0];
+            message.channel.send({embed:new Discord.RichEmbed()
+              .setTitle(anime.title[0])
+              .setImage(anime.image[0])
+              .addField(`English Title:`,anime.english[0],true)
+              .addField(`Episodes:`,anime.episodes[0],true)
+              .addField(`Start Date:`,anime.start_date[0],true)
+              .addField(`External Link:`,`[MyAnimeList](https://myanimelist.net/anime/${anime.id[0]})`,true)
+              .addField(`Score:`,anime.score[0],true)
+              .addField(`End Date:`,anime.end_date[0],true)
+              .setDescription(decode(anime.synopsis[0].replace(/<[^>]*>/g, '')).split('\n')[0])
+              .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+        });
+      }
+    }).auth(config.myAnimeList.user, config.myAnimeList.password);
+  }
+
   danbooru(args,rating,amount,message) {
     var tag = args.join('_');
     if ((tag.toLowerCase().match(/kanna/g) && rating==='e') || (tag.toLowerCase().match(/kamui/g) && rating==='e'))

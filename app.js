@@ -212,6 +212,7 @@ client.on('message', (message)=>{
     case 'insta':       return commands.insta(args,message);
 
     // Anime/NSFW
+    case 'anime':       return commands.anime(args,message);
     case 'sfw':         return commands.danbooru(args,`s`,100,message);
     case 'nsfw':
     case 'lewd':        return commands.danbooru(args,`e`,100,message);
