@@ -199,12 +199,12 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             message.channel.send({embed:new Discord.RichEmbed()
               .setTitle(anime.title[0])
               .setImage(anime.image[0])
-              .addField(`English Title:`,anime.english[0],true)
-              .addField(`Episodes:`,anime.episodes[0],true)
-              .addField(`Start Date:`,anime.start_date[0],true)
-              .addField(`External Link:`,`[MyAnimeList](https://myanimelist.net/anime/${anime.id[0]})`,true)
-              .addField(`Score:`,anime.score[0],true)
-              .addField(`End Date:`,anime.end_date[0],true)
+              .addField(`English Title:`,`${anime.english[0]!='' ? anime.english[0] : '­'}`,true)
+              .addField(`Episodes:`,`${anime.episodes[0]!='' ? anime.episodes[0] : '­'}`,true)
+              .addField(`Start Date:`,`${anime.start_date[0]!='' ? anime.start_date[0] : '­'}`,true)
+              .addField(`External Link:`,`${anime.id[0]!='' ? `[MyAnimeList](https://myanimelist.net/anime/${anime.id[0]})` : '­'}`,true)
+              .addField(`Score:`,`${anime.score[0]!='' ? anime.score[0] : '­'}`,true)
+              .addField(`End Date:`,`${anime.end_date[0]!='' ? anime.end_date[0] : '­'}`,true)
               .setDescription(decode(anime.synopsis[0].replace(/<[^>]*>/g, '')).split('\n')[0])
               .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
         });
