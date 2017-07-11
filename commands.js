@@ -97,7 +97,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
           }
           message.channel.send({embed:new Discord.RichEmbed()
             .setTitle(`Showing last ${count} Voice Channel logs`)
-            .setDescription(`\`\`\`${desc}\`\`\``)
+            .setDescription(`\`\`\`${desc==='' ? 'No logs found for this guild' : desc}\`\`\``)
             .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
         });
       }else {
