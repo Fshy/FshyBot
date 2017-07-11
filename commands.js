@@ -65,7 +65,11 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
   }
 
   logs(args,message){
-    var logLines = parseInt(args[0]);
+    if (args[0]) {
+      var logLines = parseInt(args[0]);
+    }else {
+      var logLines = 10;
+    }
     if (!isNaN(logLines)) {
       var logs = [];
       if (fs.existsSync('winston.log')) {
