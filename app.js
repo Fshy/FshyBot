@@ -8,10 +8,17 @@ const firebase  = require("firebase");
 const snoowrap  = require('snoowrap');
 const math      = require('mathjs');
 const scraper   = require("scrape-it");
+const winston   = require('winston');
 const config    = require('./config');
 const version   = require('./package').version;
 const commands  = require('./commands');
 const lib       = require('./lib');
+
+winston.configure({
+  transports: [
+    new (winston.transports.File)({ filename: 'winston.log' })
+  ]
+});
 
 firebase.initializeApp(config.firebase);
 const database  = firebase.database();
@@ -135,6 +142,22 @@ client.on('presenceUpdate', (oldMember, newMember) => {
   }
 });
 
+client.on('voiceStateUpdate', (oldMember, newMember) => {
+  if (oldMember.voiceChannel) {//Was in a voiceChannel
+    if (newMember.voiceChannel !== oldMember.voiceChannel) {//If state changed, but channel remains the same i.e. Mute, Deafen
+      if (newMember.voiceChannel) {//If moved to a new voiceChannel
+        winston.log('info', `${newMember.user.username} moved from ${oldMember.voiceChannel.name} to ${newMember.voiceChannel.name}`, {guildID: oldMember.guild.id});
+      }else {
+        winston.log('info', `${newMember.user.username} disconnected from ${oldMember.voiceChannel.name}`, {guildID: oldMember.guild.id});
+      }
+    }
+  }else {//Was not in a voiceChannel
+    if (newMember.voiceChannel !== oldMember.voiceChannel) {//If connected to a new voiceChannel
+      winston.log('info', `${newMember.user.username} connected to ${newMember.voiceChannel.name}`, {guildID: newMember.guild.id});
+    }
+  }
+});
+
 client.on('message', (message)=>{
   if(message.author.bot) return;
 
@@ -180,6 +203,7 @@ client.on('message', (message)=>{
     case 'version':     return commands.ver(version,guildPrefix,message);
     case 'invite':      return commands.invite(client,message);
     case 'say':         return commands.say(guildPrefix,message);
+    case 'logs':        return commands.logs(args,message);
 
     // Owner Commands
     case 'update':      return commands.update(message);

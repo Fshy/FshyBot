@@ -1,4 +1,6 @@
 const request   = require('request');
+const fs        = require('fs');
+const readline  = require('readline');
 const Discord   = require('discord.js');
 const config    = require('./config.json');
 const lib       = require('./lib');
@@ -60,6 +62,46 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
   say(guildPrefix,message) {
     var str = message.content.slice(guildPrefix.length+3);
     message.channel.send(lib.embed(str,message));
+  }
+
+  logs(args,message){
+    var logLines = parseInt(args[0]);
+    if (!isNaN(logLines)) {
+      var logs = [];
+      if (fs.existsSync('winston.log')) {
+        var rd = readline.createInterface({
+          input: fs.createReadStream('winston.log'),
+          output: process.stdout,
+          console: false
+        });
+        rd.on('line', function(line) {
+          var item = JSON.parse(line);
+          if (item.guildID===message.guild.id) {
+            logs.push(JSON.parse(line));
+          }
+        });
+        rd.on('close', function () {
+          var startIndex = 0;
+          var count = 0;
+          var desc = '';
+          if (logs.length>logLines) startIndex = logs.length - logLines;
+          for (var i = startIndex; i < logs.length; i++) {
+            if (logs[i].guildID===message.guild.id) {
+              desc += `${logs[i].timestamp.slice(0,-5).replace(/T/g, ' ')} - ${logs[i].message}\n`;
+              count++;
+            }
+          }
+          message.channel.send({embed:new Discord.RichEmbed()
+            .setTitle(`Showing last ${count} Voice Channel logs`)
+            .setDescription(`\`\`\`${desc}\`\`\``)
+            .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+        });
+      }else {
+        message.channel.send(lib.embed(`**ERROR:** Log file not found`,message));
+      }
+    }else {
+      message.channel.send(lib.embed(`**ERROR:** Parameter is not a number`,message));
+    }
   }
 
   ver(version,guildPrefix,message) {
