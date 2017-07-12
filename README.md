@@ -117,6 +117,7 @@ $ npm config set python python2.7
 $ git clone https://github.com/Fshy/FshyBot
 $ cd FshyBot
 $ npm install
+$ chmod 0775 app.js
 ```
 
 Rename `config_example.json` to `config.json` and add your user token/API keys to suit.

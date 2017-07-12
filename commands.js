@@ -91,13 +91,13 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
           if (logs.length>logLines) startIndex = logs.length - logLines;
           for (var i = startIndex; i < logs.length; i++) {
             if (logs[i].guildID===message.guild.id) {
-              desc += `${logs[i].timestamp.slice(0,-5).replace(/T/g, ' ')} - ${logs[i].message}\n`;
+              desc += `<${logs[i].timestamp.slice(0,-5).replace(/T/g, ' ')}> ${logs[i].message}\n<!--------------------------------------------------------->\n`;
               count++;
             }
           }
           message.channel.send({embed:new Discord.RichEmbed()
             .setTitle(`Showing last ${count} Voice Channel logs`)
-            .setDescription(`\`\`\`${desc==='' ? 'No logs found for this guild' : desc}\`\`\``)
+            .setDescription(`\`\`\`html\n${desc==='' ? 'No logs found for this guild' : desc}\n\`\`\``)
             .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
         });
       }else {
