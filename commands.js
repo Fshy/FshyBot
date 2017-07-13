@@ -91,7 +91,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
           if (logs.length>logLines) startIndex = logs.length - logLines;
           for (var i = startIndex; i < logs.length; i++) {
             if (logs[i].guildID===message.guild.id) {
-              desc += `<${logs[i].timestamp.slice(0,-5).replace(/T/g, ' ')}> ${logs[i].message}\n<!--------------------------------------------------------->\n`;
+              desc += `<${logs[i].timestamp.slice(0,-5).replace(/T/g, ' ')} GMT> ${logs[i].message}\n<!--------------------------------------------------------->\n`;
               count++;
             }
           }
