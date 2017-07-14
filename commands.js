@@ -598,8 +598,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
             if (vconnec) {
               let dispatch = vconnec.player.dispatcher;
-              if (dispatch)
-                dispatch.end();
+              // if (dispatch) dispatch.end();
               message.channel.send(lib.embed(`:headphones: **Re-playing:** ${logs[i].message}`,message));
               return dispatch = vconnec.playStream(stream, {passes:2});
             }else {
