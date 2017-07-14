@@ -4,7 +4,7 @@ const request   = require('request');
 const Discord   = require('discord.js');
 const fs        = require('fs');
 const ytdl      = require('ytdl-core');
-const firebase  = require("firebase");
+// const firebase  = require("firebase");
 const snoowrap  = require('snoowrap');
 const math      = require('mathjs');
 const scraper   = require("scrape-it");
@@ -20,10 +20,10 @@ winston.configure({
   ]
 });
 
-firebase.initializeApp(config.firebase);
-const database  = firebase.database();
-const userDB    = database.ref('users');
-const guildDB   = database.ref('guilds');
+// firebase.initializeApp(config.firebase);
+// const database  = firebase.database();
+// const userDB    = database.ref('users');
+// const guildDB   = database.ref('guilds');
 const client    = new Discord.Client();
 const reddit    = new snoowrap(config.reddit);
 
@@ -33,22 +33,22 @@ var timer;
 client.login(config.token);
 
 client.on('ready', () => {
-  guildDB.once("value", (data) => {
-    var guilds = data.val();
-    if (guilds) {
-      var keys = Object.keys(guilds);
-      for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        guildsMap.set(guilds[key].id,{prefix:guilds[key].prefix});
-      }
-    }else {
-      var clientGuilds = client.guilds.keyArray();
-      for (var i = 0; i < clientGuilds.length; i++) {
-        guildDB.push({id: clientGuilds[i], prefix: config.prefix});
-        guildsMap.set(clientGuilds[i],{prefix:config.prefix});
-      }
-    }
-  });
+  // guildDB.once("value", (data) => {
+  //   var guilds = data.val();
+  //   if (guilds) {
+  //     var keys = Object.keys(guilds);
+  //     for (var i = 0; i < keys.length; i++) {
+  //       var key = keys[i];
+  //       guildsMap.set(guilds[key].id,{prefix:guilds[key].prefix});
+  //     }
+  //   }else {
+  //     var clientGuilds = client.guilds.keyArray();
+  //     for (var i = 0; i < clientGuilds.length; i++) {
+  //       guildDB.push({id: clientGuilds[i], prefix: config.prefix});
+  //       guildsMap.set(clientGuilds[i],{prefix:config.prefix});
+  //     }
+  //   }
+  // });
   console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
   // Alternate setGame
   var i = 0;
@@ -70,42 +70,52 @@ client.on('ready', () => {
 });
 
 client.on('guildCreate', (guild)=>{
-  var guildPrefix = '!';
-  var toInsert = true;
-  guildDB.once("value", (data) => {
-    var guilds = data.val();
-    if (guilds) {
-      var keys = Object.keys(guilds);
-      for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        if (guilds[key].id===guild.id) {
-          guildPrefix = guilds[key].prefix;
-          toInsert = false;
-          break;
-        }
-      }
-      if (toInsert) {
-        guildDB.push({id: guild.id, prefix: config.prefix});
-        guildsMap.set(guilds[key].id,{prefix:config.prefix});
-      }
-    }else {
-      var clientGuilds = client.guilds.keyArray();
-      for (var i = 0; i < clientGuilds.length; i++) {
-        guildDB.push({id: clientGuilds[i], prefix: config.prefix});
-        guildsMap.set(clientGuilds[i],{prefix:config.prefix});
-      }
-    }
-    guild.defaultChannel.send({embed:new Discord.RichEmbed()
-      .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
-      .setDescription(`
+//   var guildPrefix = '!';
+//   var toInsert = true;
+//   guildDB.once("value", (data) => {
+//     var guilds = data.val();
+//     if (guilds) {
+//       var keys = Object.keys(guilds);
+//       for (var i = 0; i < keys.length; i++) {
+//         var key = keys[i];
+//         if (guilds[key].id===guild.id) {
+//           guildPrefix = guilds[key].prefix;
+//           toInsert = false;
+//           break;
+//         }
+//       }
+//       if (toInsert) {
+//         guildDB.push({id: guild.id, prefix: config.prefix});
+//         guildsMap.set(guilds[key].id,{prefix:config.prefix});
+//       }
+//     }else {
+//       var clientGuilds = client.guilds.keyArray();
+//       for (var i = 0; i < clientGuilds.length; i++) {
+//         guildDB.push({id: clientGuilds[i], prefix: config.prefix});
+//         guildsMap.set(clientGuilds[i],{prefix:config.prefix});
+//       }
+//     }
+//     guild.defaultChannel.send({embed:new Discord.RichEmbed()
+//       .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
+//       .setDescription(`
+// Thanks for adding me to your server!
+// Please have a look at my command list using **${guildPrefix}help**
+// or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
+//
+// Currently running v${version} on a ${process.platform}-${process.arch} platform`)
+//       .setThumbnail(client.user.displayAvatarURL)
+//       .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+//   });
+  guild.defaultChannel.send({embed:new Discord.RichEmbed()
+    .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
+    .setDescription(`
 Thanks for adding me to your server!
 Please have a look at my command list using **${guildPrefix}help**
 or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
 
 Currently running v${version} on a ${process.platform}-${process.arch} platform`)
-      .setThumbnail(client.user.displayAvatarURL)
-      .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-  });
+    .setThumbnail(client.user.displayAvatarURL)
+    .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
 });
 
 client.on('guildMemberAdd', (member) => {
@@ -113,7 +123,6 @@ client.on('guildMemberAdd', (member) => {
     .setDescription(`${member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
     .setThumbnail(member.user.displayAvatarURL)
     .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-    // .setImage('https://i.imgur.com/v177BWr.gif')
 });
 
 client.on('presenceUpdate', (oldMember, newMember) => {
@@ -170,7 +179,8 @@ client.on('message', (message)=>{
     return commands.chatbot(message.content.split(/\s+/g).slice(1),message);
 
   // Custom Prefixes
-  let guildPrefix = guildsMap.get(message.guild.id).prefix;
+  // let guildPrefix = guildsMap.get(message.guild.id).prefix;
+  let guildPrefix = config.prefix;
   if(!message.content.startsWith(guildPrefix)) return;
 
   // Command Parsing
@@ -207,13 +217,14 @@ client.on('message', (message)=>{
 
     // Owner Commands
     case 'update':      return commands.update(message);
+    case 'broadcast':   return commands.broadcast(client,guildPrefix,message);
 
     // Admin Commands
     case 'setname':     return commands.setName(client,args,message);
     case 'setgame':     return commands.setGame(timer,client,args,message);
     case 'setavatar':   return commands.setAvatar(client,args,message);
     case 'setstatus':   return commands.setStatus(client,guildPrefix,args,message);
-    case 'setprefix':   return commands.setprefix(guildDB,guildsMap,guildPrefix,args,message);
+    // case 'setprefix':   return commands.setprefix(guildDB,guildsMap,guildPrefix,args,message);
 
     // Music
     case 'controls':    return commands.controls(guildsMap,client,message);

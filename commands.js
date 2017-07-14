@@ -64,6 +64,13 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     message.channel.send(lib.embed(str,message));
   }
 
+  broadcast(client,guildPrefix,message) {
+    var str = message.content.slice(guildPrefix.length+9);
+    client.guilds.forEach(function (guild) {
+      guild.defaultChannel.send({embed:new Discord.RichEmbed().setDescription(str).setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
+    });
+  }
+
   logs(args,message){
     if (args[0]) {
       var logLines = parseInt(args[0]);
