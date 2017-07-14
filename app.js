@@ -110,7 +110,7 @@ client.on('guildCreate', (guild)=>{
     .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
     .setDescription(`
 Thanks for adding me to your server!
-Please have a look at my command list using **${guildPrefix}help**
+Please have a look at my command list using **!help**
 or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
 
 Currently running v${version} on a ${process.platform}-${process.arch} platform`)
@@ -227,7 +227,7 @@ client.on('message', (message)=>{
     // case 'setprefix':   return commands.setprefix(guildDB,guildsMap,guildPrefix,args,message);
 
     // Music
-    case 'controls':    return commands.controls(guildsMap,client,message);
+    // case 'controls':    return commands.controls(guildsMap,client,message);
     case 'play':        return commands.play(ytdl,guildsMap,client,args,message);
     case 'stop':        return commands.stop(guildsMap,client,message);
     case 'pause':       return commands.pause(client,message);

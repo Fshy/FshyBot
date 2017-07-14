@@ -572,23 +572,16 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       if (dispatch)
         dispatch.end();
       var np = guildsMap.get(message.guild.id);
-      delete np.playing;
+      if (np) delete np.playing;
       guildsMap.set(message.guild.id, np);
       // message.channel.send(lib.embed(`:mute: ${message.author.username} Stopped Playback`,message));
     }
   }
 
   leave(guildsMap,client,message){
+    this.stop(guildsMap,client,message);
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
-    if (vconnec) {
-      let dispatch = vconnec.player.dispatcher;
-      if (dispatch)
-        dispatch.end();
-      var np = guildsMap.get(message.guild.id);
-      delete np.playing;
-      guildsMap.set(message.guild.id, np);
-      vconnec.channel.leave();
-    }
+    if (vconnec) vconnec.channel.leave();
   }
 
   pause(client,message){
@@ -739,7 +732,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
         if (dispatch)
           dispatch.end();
         var np = guildsMap.get(message.guild.id);
-        delete np.playing;
+        if (np) delete np.playing;
+        // delete np.playing;
         guildsMap.set(message.guild.id, np);
         vconnec.channel.leave();
       }
@@ -752,7 +746,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
         if (dispatch)
           dispatch.end();
         var np = guildsMap.get(message.guild.id);
-        delete np.playing;
+        if (np) delete np.playing;
+        // delete np.playing;
         guildsMap.set(message.guild.id, np);
       }
     }
