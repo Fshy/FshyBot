@@ -33,22 +33,10 @@ var timer;
 client.login(config.token);
 
 client.on('ready', () => {
-  // guildDB.once("value", (data) => {
-  //   var guilds = data.val();
-  //   if (guilds) {
-  //     var keys = Object.keys(guilds);
-  //     for (var i = 0; i < keys.length; i++) {
-  //       var key = keys[i];
-  //       guildsMap.set(guilds[key].id,{prefix:guilds[key].prefix});
-  //     }
-  //   }else {
-  //     var clientGuilds = client.guilds.keyArray();
-  //     for (var i = 0; i < clientGuilds.length; i++) {
-  //       guildDB.push({id: clientGuilds[i], prefix: config.prefix});
-  //       guildsMap.set(clientGuilds[i],{prefix:config.prefix});
-  //     }
-  //   }
-  // });
+  var clientGuilds = client.guilds.keyArray();
+  for (var i = 0; i < clientGuilds.length; i++) {
+    guildsMap.set(clientGuilds[i],{prefix:config.prefix,playing:null});
+  }
   console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
   // Alternate setGame
   var i = 0;
@@ -155,15 +143,69 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   if (oldMember.voiceChannel) {//Was in a voiceChannel
     if (newMember.voiceChannel !== oldMember.voiceChannel) {//If state changed, but channel remains the same i.e. Mute, Deafen
       if (newMember.voiceChannel) {//If moved to a new voiceChannel
-        winston.log('info', `${newMember.user.username} moved from ${oldMember.voiceChannel.name} to ${newMember.voiceChannel.name}`, {guildID: oldMember.guild.id});
+        winston.log('info', `${newMember.user.username} moved from ${oldMember.voiceChannel.name} to ${newMember.voiceChannel.name}`, {guildID: oldMember.guild.id, type: 'voice'});
       }else {
-        winston.log('info', `${newMember.user.username} disconnected from ${oldMember.voiceChannel.name}`, {guildID: oldMember.guild.id});
+        winston.log('info', `${newMember.user.username} disconnected from ${oldMember.voiceChannel.name}`, {guildID: oldMember.guild.id, type: 'voice'});
       }
     }
   }else {//Was not in a voiceChannel
     if (newMember.voiceChannel !== oldMember.voiceChannel) {//If connected to a new voiceChannel
-      winston.log('info', `${newMember.user.username} connected to ${newMember.voiceChannel.name}`, {guildID: newMember.guild.id});
+      winston.log('info', `${newMember.user.username} connected to ${newMember.voiceChannel.name}`, {guildID: newMember.guild.id, type: 'voice'});
     }
+  }
+});
+
+client.on('messageReactionAdd', (messageReaction,user)=>{
+  if (user.bot) return;
+  switch (messageReaction.emoji.identifier) {
+    case '%E2%8F%AF'://PlayPause
+      let vconnec = client.voiceConnections.get(messageReaction.message.guild.defaultChannel.id);
+      if (vconnec) {
+        let dispatch = vconnec.player.dispatcher;
+        if (dispatch){
+          if (dispatch.speaking)
+            dispatch.pause();
+          else
+            dispatch.resume();
+        }
+      }
+      break;
+    case '%E2%8F%B9'://Stop
+      commands.stop(guildsMap,client,messageReaction.message);
+      break;
+    case '%F0%9F%94%81'://Repeat
+      commands.repeat(ytdl,winston,guildsMap,client,user,messageReaction.message);
+      break;
+    case '%E2%9D%8C'://Leave
+      commands.leave(guildsMap,client,messageReaction.message);
+      break;
+  }
+});
+
+client.on('messageReactionRemove', (messageReaction,user)=>{
+  if (user.bot) return;
+  switch (messageReaction.emoji.identifier) {
+    case '%E2%8F%AF'://PlayPause
+      let vconnec = client.voiceConnections.get(messageReaction.message.guild.defaultChannel.id);
+      if (vconnec) {
+        let dispatch = vconnec.player.dispatcher;
+        if (dispatch){
+          if (dispatch.speaking)
+            dispatch.pause();
+          else
+            dispatch.resume();
+        }
+      }
+      break;
+    case '%E2%8F%B9'://Stop
+      commands.stop(guildsMap,client,messageReaction.message);
+      break;
+    case '%F0%9F%94%81'://Repeat
+      commands.repeat(ytdl,winston,guildsMap,client,user,messageReaction.message);
+      break;
+    case '%E2%9D%8C'://Leave
+      commands.leave(guildsMap,client,messageReaction.message);
+      break;
   }
 });
 
@@ -202,9 +244,7 @@ client.on('message', (message)=>{
     // --4
     // Music Queue
     // --5
-    // Rewrite interactive reactions using createReactionCollector()
-    // --6
-    // Retrieve User Logs (Past Messages)
+    // Use createReactionCollector() to generate timed responses/polls
 
     // General
     case 'help':        return commands.help(guildPrefix,message);
@@ -228,7 +268,8 @@ client.on('message', (message)=>{
 
     // Music
     // case 'controls':    return commands.controls(guildsMap,client,message);
-    case 'play':        return commands.play(ytdl,guildsMap,client,args,message);
+    case 'join':        return commands.join(message);
+    case 'play':        return commands.play(ytdl,winston,guildsMap,client,args,message);
     case 'stop':        return commands.stop(guildsMap,client,message);
     case 'pause':       return commands.pause(client,message);
     case 'resume':      return commands.resume(client,message);
