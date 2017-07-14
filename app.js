@@ -217,7 +217,7 @@ client.on('message', (message)=>{
 
     // Owner Commands
     case 'update':      return commands.update(message);
-    case 'broadcast':   return commands.broadcast(client,guildPrefix,message);
+    case 'broadcast':   return commands.broadcast(client,guildPrefix,args,message);
 
     // Admin Commands
     case 'setname':     return commands.setName(client,args,message);

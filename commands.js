@@ -64,12 +64,20 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     message.channel.send(lib.embed(str,message));
   }
 
-  broadcast(client,guildPrefix,message) {
-    var str = message.content.slice(guildPrefix.length+9);
-    client.guilds.forEach(function (guild) {
-      if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES'))
-        guild.defaultChannel.send({embed:new Discord.RichEmbed().setDescription(str).setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
-    });
+  broadcast(client,guildPrefix,args,message) {
+    if (lib.checkOwner(message)) {
+      if (args[0]) {
+        var str = message.content.slice(guildPrefix.length+9);
+        client.guilds.forEach(function (guild) {
+          if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES'))
+            guild.defaultChannel.send({embed:new Discord.RichEmbed().setDescription(str).setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
+        });
+      }else {
+        message.channel.send(lib.embed(`**ERROR:** Enter a message to broadcast`,message));
+      }
+    }else {
+      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`,message));
+    }
   }
 
   logs(args,message){
