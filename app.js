@@ -110,7 +110,7 @@ client.on('guildMemberAdd', (member) => {
   member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
     .setDescription(`${member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
     .setThumbnail(member.user.displayAvatarURL)
-    .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+    .setColor(`${member.guild.me.displayHexColor!=='#000000' ? member.guild.me.displayHexColor : config.hexColour}`)});
 });
 
 client.on('presenceUpdate', (oldMember, newMember) => {
