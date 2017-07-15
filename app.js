@@ -58,42 +58,7 @@ client.on('ready', () => {
 });
 
 client.on('guildCreate', (guild)=>{
-//   var guildPrefix = '!';
-//   var toInsert = true;
-//   guildDB.once("value", (data) => {
-//     var guilds = data.val();
-//     if (guilds) {
-//       var keys = Object.keys(guilds);
-//       for (var i = 0; i < keys.length; i++) {
-//         var key = keys[i];
-//         if (guilds[key].id===guild.id) {
-//           guildPrefix = guilds[key].prefix;
-//           toInsert = false;
-//           break;
-//         }
-//       }
-//       if (toInsert) {
-//         guildDB.push({id: guild.id, prefix: config.prefix});
-//         guildsMap.set(guilds[key].id,{prefix:config.prefix});
-//       }
-//     }else {
-//       var clientGuilds = client.guilds.keyArray();
-//       for (var i = 0; i < clientGuilds.length; i++) {
-//         guildDB.push({id: clientGuilds[i], prefix: config.prefix});
-//         guildsMap.set(clientGuilds[i],{prefix:config.prefix});
-//       }
-//     }
-//     guild.defaultChannel.send({embed:new Discord.RichEmbed()
-//       .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
-//       .setDescription(`
-// Thanks for adding me to your server!
-// Please have a look at my command list using **${guildPrefix}help**
-// or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
-//
-// Currently running v${version} on a ${process.platform}-${process.arch} platform`)
-//       .setThumbnail(client.user.displayAvatarURL)
-//       .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-//   });
+  if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
   guild.defaultChannel.send({embed:new Discord.RichEmbed()
     .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
     .setDescription(`
@@ -104,13 +69,16 @@ or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | 
 Currently running v${version} on a ${process.platform}-${process.arch} platform`)
     .setThumbnail(client.user.displayAvatarURL)
     .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+  }
 });
 
 client.on('guildMemberAdd', (member) => {
-  member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
-    .setDescription(`${member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
-    .setThumbnail(member.user.displayAvatarURL)
-    .setColor(`${member.guild.me.displayHexColor!=='#000000' ? member.guild.me.displayHexColor : config.hexColour}`)});
+  if (member.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
+    member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
+      .setDescription(`${member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
+      .setThumbnail(member.user.displayAvatarURL)
+      .setColor(`${member.guild.me.displayHexColor!=='#000000' ? member.guild.me.displayHexColor : config.hexColour}`)});
+  }
 });
 
 client.on('presenceUpdate', (oldMember, newMember) => {
