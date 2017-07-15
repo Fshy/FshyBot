@@ -443,11 +443,10 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       }else {
         response = JSON.parse(body);
         if(response.output[0]){
-          if (message.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
+          if (message.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) //Has write permissions
             message.reply(response.output[0].actions.say.text.substring(0, 2000));
-        }
-        else {
-          if (message.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
+        }else {
+          if (message.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) //Has write permissions
             message.reply(`Sorry I couldn't process what you're trying to say.`);
         }
       }
