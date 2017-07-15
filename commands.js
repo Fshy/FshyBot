@@ -481,7 +481,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
               voiceChannel.join().then(connnection => {
                 var dispatcher = connnection.playStream(stream, {passes:2});
                 message.channel.send({embed:new Discord.RichEmbed()
-                  .setDescription(`:headphones: Now Playing: ${res.snippet.title}`)
+                  .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.author.username}`)
                   .setThumbnail(res.snippet.thumbnails.default.url)
                   .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
                     controls(guildsMap,client,m);
@@ -515,7 +515,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
               voiceChannel.join().then(connnection => {
                 var dispatcher = connnection.playStream(stream, {passes:2});
                 message.channel.send({embed:new Discord.RichEmbed()
-                  .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}`)
+                  .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.author.username}`)
                   .setThumbnail(res.snippet.thumbnails.default.url)
                   .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
                     controls(guildsMap,client,m);
@@ -582,6 +582,8 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
   }
 
   repeat(ytdl,winston,guildsMap,client,user,message){
+    const voiceChannel = message.guild.members.get(user.id).voiceChannel;
+    if (!voiceChannel) return message.channel.send(lib.embed(`**ERROR:** User is not connected to a Voice Channel\n:speech_balloon: **Requested by:** ${user.username}`,message));
     var logs = [];
     if (fs.existsSync('winston.log')) {
       var rd = readline.createInterface({
@@ -601,18 +603,13 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             let stream = ytdl(logs[i].ytID, {
               filter : 'audioonly'
             });
-            let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
-            if (vconnec) {
-              let dispatch = vconnec.player.dispatcher;
-              // if (dispatch) dispatch.end();
-              message.channel.send(lib.embed(`:headphones: **Re-playing:** ${logs[i].message}`,message));
-              return dispatch = vconnec.playStream(stream, {passes:2});
-            }else {
-              return message.channel.send(lib.embed(`**ERROR:** Bot needs to be in a voice channel to start playback`,message));
-            }
+            const song = logs[i];
+            voiceChannel.join().then(vconnec => {
+              vconnec.playStream(stream, {passes:2});
+              return message.channel.send(lib.embed(`:headphones: **Re-playing:** ${song.message}\n:speech_balloon: **Requested by:** ${user.username}`,message));
+            });
           }
         }
-        message.channel.send(lib.embed(`**ERROR:** Song ID could not be found in log`,message));
       });
     }else {
       message.channel.send(lib.embed(`**ERROR:** Log file not found`,message));
