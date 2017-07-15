@@ -182,11 +182,13 @@ client.on('message', (message)=>{
 
   // Receive DM
   if (message.channel.type===`dm`)
-    return commands.chatbot(message.content.split(),message);
+    return commands.chatbot(client,message.content.split(),message);
 
   // Chatbot
-  if (message.content.startsWith(`2B`) || message.content.startsWith(`2b`))
-    return commands.chatbot(message.content.split(/\s+/g).slice(1),message);
+  if (message.content.startsWith(`2B`) || message.content.startsWith(`2b`)){
+    console.log(`\x1b[36m[${message.guild}] \x1b[1m${message.author.username}: \x1b[0m${message.content}`);
+    return commands.chatbot(client,message.content.split(/\s+/g).slice(1),message);
+  }
 
   // Custom Prefixes
   // let guildPrefix = guildsMap.get(message.guild.id).prefix;
