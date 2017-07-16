@@ -125,6 +125,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
 client.on('messageReactionAdd', (messageReaction,user)=>{
   if (user.bot) return;
+  if (messageReaction.message.author.id!==client.user.id) return;
   switch (messageReaction.emoji.identifier) {
     case '%E2%8F%AF'://PlayPause
       let vconnec = client.voiceConnections.get(messageReaction.message.guild.defaultChannel.id);
@@ -152,6 +153,7 @@ client.on('messageReactionAdd', (messageReaction,user)=>{
 
 client.on('messageReactionRemove', (messageReaction,user)=>{
   if (user.bot) return;
+  if (messageReaction.message.author.id!==client.user.id) return;
   switch (messageReaction.emoji.identifier) {
     case '%E2%8F%AF'://PlayPause
       let vconnec = client.voiceConnections.get(messageReaction.message.guild.defaultChannel.id);
