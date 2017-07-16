@@ -68,7 +68,7 @@ or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | 
 
 Currently running v${version} on a ${process.platform}-${process.arch} platform`)
     .setThumbnail(client.user.displayAvatarURL)
-    .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+    .setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
   }
 });
 
@@ -91,7 +91,7 @@ client.on('presenceUpdate', (oldMember, newMember) => {
               newMember.guild.defaultChannel.send({embed:new Discord.RichEmbed()
                 .setDescription(`${newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
                 .setThumbnail(newMember.user.displayAvatarURL)
-                .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+                .setColor(`${newMember.guild.me.displayHexColor!=='#000000' ? newMember.guild.me.displayHexColor : config.hexColour}`)});
             }
           }
         }else {
@@ -99,7 +99,7 @@ client.on('presenceUpdate', (oldMember, newMember) => {
             newMember.guild.defaultChannel.send({embed:new Discord.RichEmbed()
               .setDescription(`${newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
               .setThumbnail(newMember.user.displayAvatarURL)
-              .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+              .setColor(`${newMember.guild.me.displayHexColor!=='#000000' ? newMember.guild.me.displayHexColor : config.hexColour}`)});
           }
         }
       }
