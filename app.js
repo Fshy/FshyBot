@@ -42,10 +42,10 @@ client.on('ready', () => {
   var i = 0;
   timer = client.setInterval(function () {
     switch (i%5) {
-      case 4:   client.user.setGame(`${client.guilds.size} Guilds - ${client.users.size} Users`);  break;
+      case 4:   client.user.setGame(`on ${client.guilds.size} Guilds for ${client.users.size} Users`);break;
       case 3:   client.user.setGame(`Commands: !help`);                                               break;
       case 2:   client.user.setGame(`@Fshy#0986`);                                                    break;
-      case 1:   client.user.setGame(`arc.moe`);                                                       break;
+      case 1:   client.user.setGame(`on arc.moe`);                                                    break;
       case 0:   client.user.setGame(`NieR: Automata™`);                                               break;
     }
     i++;
@@ -53,7 +53,7 @@ client.on('ready', () => {
   // Log Current Stats
   client.setInterval(function () {
     var d = new Date(Date.now());
-    console.log(`\n\x1b[32m[${d.getDate()}/${(d.getMonth()+1)}/${d.getFullYear()} | ${d.toLocaleTimeString()}]\x1b[0m Memory: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB | Users: ${client.users.size} | Guilds: ${client.guilds.size}`);
+    console.log(`\n\x1b[32m[${d.getDate()}/${(d.getMonth()+1)}/${d.getFullYear()} | ${d.toLocaleTimeString()}]\x1b[0m Mem: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB | Users: ${client.users.size} | Guilds: ${client.guilds.size}`);
   },300000);
 });
 

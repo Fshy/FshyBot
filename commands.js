@@ -107,7 +107,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
           if (logs.length>logLines) startIndex = logs.length - logLines;
           for (var i = startIndex; i < logs.length; i++) {
             if (logs[i].guildID===message.guild.id) {
-              desc += `<${logs[i].timestamp.slice(0,-5).replace(/T/g, ' ')} GMT> ${logs[i].message}\n<!--------------------------------------------------------->\n`;
+              desc += `<${logs[i].timestamp.slice(0,-5).replace(/T/g, ' ')} AST> ${logs[i].message}\n<!--------------------------------------------------------->\n`;
               count++;
             }
           }
@@ -437,7 +437,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
 
   chatbot(client,args,message){
     var expr = args.join(' ');
-    request({url:`https://jeannie.p.mashape.com/api?input=${expr}`,headers: {'X-Mashape-Key': config.mashape.jeannie,'Accept': 'application/json'}}, function (error, response, body) {
+    request({url:`https://jeannie.p.mashape.com/api?input=${expr}&locale=en_GB&timeZone=-240&location=10.2906,-61.4494`,headers: {'X-Mashape-Key': config.mashape.jeannie,'Accept': 'application/json'}}, function (error, response, body) {
       if (error!=null) {
         message.reply(lib.embed(`**ERROR:** Could not access Jeannie API`,message));
       }else {
