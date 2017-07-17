@@ -16,7 +16,12 @@ const lib       = require('./lib');
 
 winston.configure({
   transports: [
-    new (winston.transports.File)({ filename: 'winston.log' })
+    new (winston.transports.File)({
+      filename: 'winston.log',
+      timestamp: function () {
+        return +new Date()
+      }
+    })
   ]
 });
 

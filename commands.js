@@ -107,10 +107,12 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
           if (logs.length>logLines) startIndex = logs.length - logLines;
           for (var i = startIndex; i < logs.length; i++) {
             if (logs[i].guildID===message.guild.id) {
-              desc += `<${logs[i].timestamp.slice(0,-5).replace(/T/g, ' ')} AST> ${logs[i].message}\n<!--------------------------------------------------------->\n`;
+              var timestamp = new Date(logs[i].timestamp+(config.localization.timezoneOffset*60000));
+              desc += `<${timestamp.toISOString().slice(0,-5).replace(/T/g, ' ')} ${config.localization.timezone}> ${logs[i].message}\n<!--------------------------------------------------------->\n`;
               count++;
             }
           }
+          desc = desc.substring(0, desc.lastIndexOf("\n<!--------------------------------------------------------->\n"));
           message.channel.send({embed:new Discord.RichEmbed()
             .setTitle(`Showing last ${count} Voice Channel logs`)
             .setDescription(`\`\`\`html\n${desc==='' ? 'No logs found for this guild' : desc}\n\`\`\``)
@@ -437,7 +439,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
 
   chatbot(client,args,message){
     var expr = args.join(' ');
-    request({url:`https://jeannie.p.mashape.com/api?input=${expr}&locale=en_GB&timeZone=-240&location=10.2906,-61.4494`,headers: {'X-Mashape-Key': config.mashape.jeannie,'Accept': 'application/json'}}, function (error, response, body) {
+    request({url:`https://jeannie.p.mashape.com/api?input=${expr}&locale=${config.localization.locale}&timeZone=${config.localization.timezoneOffset}&location=${config.localization.coordinates}`,headers: {'X-Mashape-Key': config.mashape.jeannie,'Accept': 'application/json'}}, function (error, response, body) {
       if (error!=null) {
         message.reply(lib.embed(`**ERROR:** Could not access Jeannie API`,message));
       }else {
