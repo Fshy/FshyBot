@@ -1,6 +1,6 @@
 {
   "name": "fshybot",
-  "version": "1.5.10",
+  "version": "1.5.11",
   "description": "Discord Bot",
   "main": "app.js",
   "dependencies": {

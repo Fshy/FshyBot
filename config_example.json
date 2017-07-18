@@ -4,13 +4,13 @@
   "name":                 "2B | FshyBot",
   "adminRoleID":          "DISCORD_ROLE_ID",
   "ownerID":              "DISCORD_USER_ID",
+  "hexColour":            "#ECBCD1",
   "localization":{
     "locale":             "en_GB",
     "timezone":           "AST",
     "timezoneOffset":     -240,
     "coordinates":        "LATITUDE,LONGITUDE"
   },
-  "hexColour":            "#ECBCD1",
   "youtube":{
     "apiKey":             "YOUTUBE_API_KEY"
   },
