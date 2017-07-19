@@ -34,17 +34,8 @@ var timer;
 client.login(config.token);
 
 client.on('ready', () => {
-  var fileMap = new Map();
-  fs.existsSync('guildRecords.json', (err) => {
-    if (!err) {
-      fs.writeFile('guildRecords.json', '{}', 'utf8', function (err,data) {
-        if (err) console.log(err);
-      });
-    }else {
-      var fileMap = lib.readFileToMap();//Read from file
-      guildsMap = lib.readFileToMap();
-    }
-  });
+  var fileMap = new Map(lib.readFileToMap());//Read from file
+  guildsMap = lib.readFileToMap();
   var clientGuilds = client.guilds.keyArray();//Cached Guilds
   for (var i = 0; i < clientGuilds.length; i++) {
     if (!guildsMap.has(clientGuilds[i])) {
