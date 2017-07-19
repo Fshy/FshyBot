@@ -838,7 +838,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
   pubg(scraper,args,message){
     if (args[0]) {
       if (args[1]) {
-        scraper(`https://pubg.me/player/${args[0]}?region=${args[1]}`, {
+        scraper(`https://pubg.me/player/${args[0]}?region=${args[1].toLowerCase()}`, {
             username: ".username-header h1",
             avatar: {
               selector: ".steam-avatar",
