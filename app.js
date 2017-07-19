@@ -222,6 +222,14 @@ client.on('message', (message)=>{
     // Music Queue
     // --5
     // Use createReactionCollector() to generate timed responses/polls
+    // --6
+    // Check that [current version < stable version] before allowing !update
+    // --7
+    // Winston logs implement users @mentions
+    // --8
+    // Start logging messages per user
+    // --9
+    // Implement controls for stream
 
     // General
     case 'help':        return commands.help(guildPrefix,message);

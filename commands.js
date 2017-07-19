@@ -551,9 +551,9 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             voiceChannel.join().then(connnection => {
               var dispatcher = connnection.playStream(res, {passes:2});
               dispatcher.on('end', () => {
-                var guildData = guildsMap.get(message.guild.id);
-                guildData.playing = config.radio[choice].tuneinId;
-                guildsMap.set(message.guild.id,guildData);
+                var np = guildsMap.get(message.guild.id);
+                if (np) delete np.playing;
+                guildsMap.set(message.guild.id, np);
               });
             });
           });
@@ -562,9 +562,9 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             voiceChannel.join().then(connnection => {
               var dispatcher = connnection.playStream(res, {passes:2});
               dispatcher.on('end', () => {
-                var guildData = guildsMap.get(message.guild.id);
-                guildData.playing = config.radio[choice].tuneinId;
-                guildsMap.set(message.guild.id,guildData);
+                var np = guildsMap.get(message.guild.id);
+                if (np) delete np.playing;
+                guildsMap.set(message.guild.id, np);
               });
             });
           });
@@ -837,33 +837,63 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
 
   pubg(scraper,args,message){
     if (args[0]) {
-      scraper(`https://pubg.me/player/${args[0]}`, {
-          username: ".username-header h1",
-          avatar: {
-            selector: ".steam-avatar",
-            attr: "src"
-          },
-          soloRating: ".profile-match-overview-solo .stat-blue .value",
-          soloKD: ".profile-match-overview-solo .stat-red .value",
-          duoRating: ".profile-match-overview-duo .stat-blue .value",
-          duoKD: ".profile-match-overview-duo .stat-red .value",
-          squadRating: ".profile-match-overview-squad .stat-blue .value",
-          squadKD: ".profile-match-overview-squad .stat-red .value"
-      }).then(stats => {
-          if (stats.username) {
-            message.channel.send({embed:new Discord.RichEmbed()
-              .setAuthor(`PUBG.ME | ${stats.username}`,stats.avatar)
-              .addField(`Solo`,`${stats.soloRating ? `${stats.soloRating}`:'N/A'} Rating`,true)
-              .addField(`Duo`,`${stats.duoRating ? `${stats.duoRating}`:'N/A'} Rating`,true)
-              .addField(`Squad`,`${stats.squadRating ? `${stats.squadRating}`:'N/A'} Rating`,true)
-              .addField('­',`${stats.soloKD ? `${stats.soloKD}`:'0.00'} K/D`,true)
-              .addField('­',`${stats.duoKD ? `${stats.duoKD}`:'0.00'} K/D`,true)
-              .addField('­',`${stats.squadKD ? `${stats.squadKD}`:'0.00'} K/D`,true)
-              .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-          }else {
-            message.channel.send(lib.embed(`**ERROR:** Could not retrieve stats for ${args[0]}`,message));
-          }
-      });
+      if (args[1]) {
+        scraper(`https://pubg.me/player/${args[0]}?region=${args[1]}`, {
+            username: ".username-header h1",
+            avatar: {
+              selector: ".steam-avatar",
+              attr: "src"
+            },
+            soloRating: ".profile-match-overview-solo .stat-blue .value",
+            soloKD: ".profile-match-overview-solo .stat-red .value",
+            duoRating: ".profile-match-overview-duo .stat-blue .value",
+            duoKD: ".profile-match-overview-duo .stat-red .value",
+            squadRating: ".profile-match-overview-squad .stat-blue .value",
+            squadKD: ".profile-match-overview-squad .stat-red .value"
+        }).then(stats => {
+            if (stats.username) {
+              message.channel.send({embed:new Discord.RichEmbed()
+                .setAuthor(`PUBG.ME | ${stats.username}`,stats.avatar)
+                .addField(`Solo`,`${stats.soloRating ? `${stats.soloRating}`:'N/A'} Rating`,true)
+                .addField(`Duo`,`${stats.duoRating ? `${stats.duoRating}`:'N/A'} Rating`,true)
+                .addField(`Squad`,`${stats.squadRating ? `${stats.squadRating}`:'N/A'} Rating`,true)
+                .addField('­',`${stats.soloKD ? `${stats.soloKD}`:'0.00'} K/D`,true)
+                .addField('­',`${stats.duoKD ? `${stats.duoKD}`:'0.00'} K/D`,true)
+                .addField('­',`${stats.squadKD ? `${stats.squadKD}`:'0.00'} K/D`,true)
+                .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+            }else {
+              message.channel.send(lib.embed(`**ERROR:** Could not retrieve stats for ${args[0]}`,message));
+            }
+        });
+      }else {
+        scraper(`https://pubg.me/player/${args[0]}`, {
+            username: ".username-header h1",
+            avatar: {
+              selector: ".steam-avatar",
+              attr: "src"
+            },
+            soloRating: ".profile-match-overview-solo .stat-blue .value",
+            soloKD: ".profile-match-overview-solo .stat-red .value",
+            duoRating: ".profile-match-overview-duo .stat-blue .value",
+            duoKD: ".profile-match-overview-duo .stat-red .value",
+            squadRating: ".profile-match-overview-squad .stat-blue .value",
+            squadKD: ".profile-match-overview-squad .stat-red .value"
+        }).then(stats => {
+            if (stats.username) {
+              message.channel.send({embed:new Discord.RichEmbed()
+                .setAuthor(`PUBG.ME | ${stats.username}`,stats.avatar)
+                .addField(`Solo`,`${stats.soloRating ? `${stats.soloRating}`:'N/A'} Rating`,true)
+                .addField(`Duo`,`${stats.duoRating ? `${stats.duoRating}`:'N/A'} Rating`,true)
+                .addField(`Squad`,`${stats.squadRating ? `${stats.squadRating}`:'N/A'} Rating`,true)
+                .addField('­',`${stats.soloKD ? `${stats.soloKD}`:'0.00'} K/D`,true)
+                .addField('­',`${stats.duoKD ? `${stats.duoKD}`:'0.00'} K/D`,true)
+                .addField('­',`${stats.squadKD ? `${stats.squadKD}`:'0.00'} K/D`,true)
+                .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+            }else {
+              message.channel.send(lib.embed(`**ERROR:** Could not retrieve stats for ${args[0]}`,message));
+            }
+        });
+      }
     }else {
       message.channel.send(lib.embed(`**Usage:** !pubg [username]`,message));
     }
