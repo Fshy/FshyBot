@@ -1,6 +1,6 @@
 {
   "name": "fshybot",
-  "version": "1.5.13",
+  "version": "1.6.0",
   "description": "Discord Bot",
   "main": "app.js",
   "dependencies": {
@@ -11,6 +11,7 @@
     "he": "^1.1.1",
     "instagram-posts": "^1.0.0",
     "instagram-screen-scrape": "^2.0.0",
+    "lodash": "^4.17.4",
     "mathjs": "^3.13.1",
     "node-opus": "^0.2.6",
     "request": "^2.81.0",

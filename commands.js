@@ -1,4 +1,5 @@
 const request   = require('request');
+const _         = require('lodash/core');
 const fs        = require('fs');
 const readline  = require('readline');
 const Discord   = require('discord.js');
@@ -742,28 +743,16 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
     });
   }
 
-  setprefix(guildDB,guildsMap,guildPrefix,args,message){
+  setprefix(guildsMap,guildPrefix,args,message){
     if (message.guild.roles.exists('name', 'Admin')) {
       var newprefix = args.join('');
       if(newprefix){
         var admins = message.guild.roles.find('name', 'Admin').members;
         if (admins.has(message.author.id)) {
           // set the prefix here
-          guildDB.once("value", (data) => {
-            var guilds = data.val();
-            if (guilds) {
-              var keys = Object.keys(guilds);
-              for (var i = 0; i < keys.length; i++) {
-                var key = keys[i];
-                if (guilds[key].id===message.guild.id) {
-                  guildDB.child(key).update({"prefix": newprefix});
-                  guildsMap.set(message.guild.id,{prefix:newprefix});
-                  message.channel.send(lib.embed(`**SUCCESS:** Now listening for the prefix: \`${newprefix}\``,message));
-                  break;
-                }
-              }
-            }
-          });
+          guildsMap.set(message.guild.id,{prefix:newprefix});
+          message.channel.send(lib.embed(`**SUCCESS:** Now listening for the prefix: \`${newprefix}\``,message));
+          lib.writeMapToFile(guildsMap);
           // end prefix
         }else {
           message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command\n**Required Role:** \`Admin\``,message));
@@ -777,33 +766,6 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
   }
 
   controls(guildsMap,client,message){
-
-    // function leave(guildsMap,client,message){
-    //   let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
-    //   if (vconnec) {
-    //     let dispatch = vconnec.player.dispatcher;
-    //     if (dispatch)
-    //       dispatch.end();
-    //     var np = guildsMap.get(message.guild.id);
-    //     if (np) delete np.playing;
-    //     // delete np.playing;
-    //     guildsMap.set(message.guild.id, np);
-    //     vconnec.channel.leave();
-    //   }
-    // }
-    //
-    // function stop(guildsMap,client,message) {
-    //   let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
-    //   if (vconnec) {
-    //     let dispatch = vconnec.player.dispatcher;
-    //     if (dispatch)
-    //       dispatch.end();
-    //     var np = guildsMap.get(message.guild.id);
-    //     if (np) delete np.playing;
-    //     // delete np.playing;
-    //     guildsMap.set(message.guild.id, np);
-    //   }
-    // }
     message.react('⏯').then(r => {
         message.react('⏹').then(r => {
           message.react('🔁').then(r => {

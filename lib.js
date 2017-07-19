@@ -1,4 +1,6 @@
 const Discord   = require('discord.js');
+const _         = require('lodash/core');
+const fs        = require('fs');
 const config    = require('./config.json');
 
 // Helper Functions
@@ -42,6 +44,45 @@ class Lib {
     };
     execNext();
   };
+
+  map_to_object(map) {
+    const out = Object.create(null);
+    map.forEach((value, key) => {
+      if (value instanceof Map) {
+        out[key] = map_to_object(value);
+      }
+      else {
+        out[key] = value;
+      }
+    })
+    return out;
+  }
+
+  object_to_map(obj) {
+    let map = new Map();
+    Object.keys(obj).forEach(key => {
+        map.set(key, obj[key]);
+    });
+    return map;
+  }
+
+  writeMapToFile(guildsMap){
+    var guildObj = this.map_to_object(guildsMap);
+    Object.keys(guildObj).forEach(function(key) {
+      var guild = guildObj[key];
+      delete guild.playing;
+    });
+    fs.writeFile('guildRecords.json', JSON.stringify(guildObj), 'utf8', function (err,data) {
+      if (err){
+        console.log(err);
+      }
+    });
+  }
+
+  readFileToMap(){
+    var guildObj = JSON.parse(fs.readFileSync('guildRecords.json', 'utf8'));
+    return this.object_to_map(guildObj);
+  }
 }
 
 module.exports = new Lib();

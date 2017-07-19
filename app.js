@@ -2,9 +2,9 @@
 
 const request   = require('request');
 const Discord   = require('discord.js');
+const _         = require('lodash/core');
 const fs        = require('fs');
 const ytdl      = require('ytdl-core');
-// const firebase  = require("firebase");
 const snoowrap  = require('snoowrap');
 const math      = require('mathjs');
 const scraper   = require("scrape-it");
@@ -25,10 +25,6 @@ winston.configure({
   ]
 });
 
-// firebase.initializeApp(config.firebase);
-// const database  = firebase.database();
-// const userDB    = database.ref('users');
-// const guildDB   = database.ref('guilds');
 const client    = new Discord.Client();
 const reddit    = new snoowrap(config.reddit);
 
@@ -38,10 +34,15 @@ var timer;
 client.login(config.token);
 
 client.on('ready', () => {
-  var clientGuilds = client.guilds.keyArray();
+  var fileMap = new Map(lib.readFileToMap());//Read from file
+  guildsMap = lib.readFileToMap();
+  var clientGuilds = client.guilds.keyArray();//Cached Guilds
   for (var i = 0; i < clientGuilds.length; i++) {
-    guildsMap.set(clientGuilds[i],{prefix:config.prefix,playing:null});
+    if (!guildsMap.has(clientGuilds[i])) {
+      guildsMap.set(clientGuilds[i],{prefix:config.prefix});
+    }
   }
+  if (!_.isEqual(lib.map_to_object(guildsMap),lib.map_to_object(fileMap))) lib.writeMapToFile(guildsMap);//Write to file if not matching - i.e. new guild prefs
   console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
   // Alternate setGame
   var i = 0;
@@ -63,6 +64,10 @@ client.on('ready', () => {
 });
 
 client.on('guildCreate', (guild)=>{
+  // if (!guildsMap.has(guild.id)) {//Uncomment this to retain preferences after guild removal
+    guildsMap.set(guild.id,{prefix:config.prefix});
+    lib.writeMapToFile(guildsMap);//Write to file
+  // }
   if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
   guild.defaultChannel.send({embed:new Discord.RichEmbed()
     .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
@@ -198,8 +203,8 @@ client.on('message', (message)=>{
   }
 
   // Custom Prefixes
-  // let guildPrefix = guildsMap.get(message.guild.id).prefix;
   let guildPrefix = config.prefix;
+  if (guildsMap.has(message.guild.id)) guildPrefix = guildsMap.get(message.guild.id).prefix;
   if(!message.content.startsWith(guildPrefix)) return;
 
   // Command Parsing
@@ -230,6 +235,8 @@ client.on('message', (message)=>{
     // Start logging messages per user
     // --9
     // Implement controls for stream
+    // --10
+    // Localization on a per-guild basis
 
     // General
     case 'help':        return commands.help(guildPrefix,message);
@@ -249,7 +256,7 @@ client.on('message', (message)=>{
     case 'setgame':     return commands.setGame(timer,client,args,message);
     case 'setavatar':   return commands.setAvatar(client,args,message);
     case 'setstatus':   return commands.setStatus(client,guildPrefix,args,message);
-    // case 'setprefix':   return commands.setprefix(guildDB,guildsMap,guildPrefix,args,message);
+    case 'setprefix':   return commands.setprefix(guildsMap,guildPrefix,args,message);
 
     // Music
     // case 'controls':    return commands.controls(guildsMap,client,message);
