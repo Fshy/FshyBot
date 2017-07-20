@@ -519,7 +519,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
               voiceChannel.join().then(connnection => {
                 var dispatcher = connnection.playStream(stream, {passes:2});
                 message.channel.send({embed:new Discord.RichEmbed()
-                  .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.author.username}`)
+                  .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.member.nickname ? `${message.member.displayName} (${message.author.username})` : message.author.username}`)
                   .setThumbnail(res.snippet.thumbnails.default.url)
                   .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
                     controls(guildsMap,client,m);
@@ -553,7 +553,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
               voiceChannel.join().then(connnection => {
                 var dispatcher = connnection.playStream(stream, {passes:2});
                 message.channel.send({embed:new Discord.RichEmbed()
-                  .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.author.username}`)
+                  .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.member.nickname ? `${message.member.displayName} (${message.author.username})` : message.author.username}`)
                   .setThumbnail(res.snippet.thumbnails.default.url)
                   .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
                     controls(guildsMap,client,m);
@@ -620,8 +620,9 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
   }
 
   repeat(ytdl,winston,guildsMap,client,user,message){
-    const voiceChannel = message.guild.members.get(user.id).voiceChannel;
-    if (!voiceChannel) return message.channel.send(lib.embed(`**ERROR:** User is not connected to a Voice Channel\n:speech_balloon: **Requested by:** ${user.username}`,message));
+    const guildMember = message.guild.members.get(user.id);
+    const voiceChannel = guildMember.voiceChannel;
+    if (!voiceChannel) return message.channel.send(lib.embed(`**ERROR:** User is not connected to a Voice Channel\n:speech_balloon: **Requested by:** ${guildMember.nickname ? `${guildMember.displayName} (${user.username})` : user.username}`,message));
     var logs = [];
     if (fs.existsSync('winston.log')) {
       var rd = readline.createInterface({
@@ -644,7 +645,7 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
             const song = logs[i];
             voiceChannel.join().then(vconnec => {
               vconnec.playStream(stream, {passes:2});
-              return message.channel.send(lib.embed(`:headphones: **Re-playing:** ${song.message}\n:speech_balloon: **Requested by:** ${user.username}`,message));
+              return message.channel.send(lib.embed(`:headphones: **Re-playing:** ${song.message}\n:speech_balloon: **Requested by:** ${guildMember.nickname ? `${guildMember.displayName} (${user.username})` : user.username}`,message));
             });
           }
         }
@@ -663,7 +664,6 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       var np = guildsMap.get(message.guild.id);
       if (np) delete np.playing;
       guildsMap.set(message.guild.id, np);
-      // message.channel.send(lib.embed(`:mute: ${message.author.username} Stopped Playback`,message));
     }
   }
 
@@ -679,7 +679,6 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       let dispatch = vconnec.player.dispatcher;
       if (dispatch)
         dispatch.pause();
-      // message.channel.send(lib.embed(`:speaker: ${message.author.username} Paused Playback`,message));
     }
   }
 
@@ -689,7 +688,6 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
       let dispatch = vconnec.player.dispatcher;
       if (dispatch)
         dispatch.resume();
-      // message.channel.send(lib.embed(`:loud_sound: ${message.author.username} Resumed Playback`,message));
     }
   }
 

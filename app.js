@@ -85,7 +85,7 @@ Currently running v${version} on a ${process.platform}-${process.arch} platform`
 client.on('guildMemberAdd', (member) => {
   if (member.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
     member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
-      .setDescription(`${member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
+      .setDescription(`${member.nickname ? `${member.displayName} (${member.user.username})` : member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
       .setThumbnail(member.user.displayAvatarURL)
       .setColor(`${member.guild.me.displayHexColor!=='#000000' ? member.guild.me.displayHexColor : config.hexColour}`)});
   }
@@ -99,7 +99,7 @@ client.on('presenceUpdate', (oldMember, newMember) => {
           if (!oldMember.presence.game.streaming) {//If user was streaming before update do nothing
             if (newMember.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
               newMember.guild.defaultChannel.send({embed:new Discord.RichEmbed()
-                .setDescription(`${newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
+                .setDescription(`${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
                 .setThumbnail(newMember.user.displayAvatarURL)
                 .setColor(`${newMember.guild.me.displayHexColor!=='#000000' ? newMember.guild.me.displayHexColor : config.hexColour}`)});
             }
@@ -107,7 +107,7 @@ client.on('presenceUpdate', (oldMember, newMember) => {
         }else {
           if (newMember.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
             newMember.guild.defaultChannel.send({embed:new Discord.RichEmbed()
-              .setDescription(`${newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
+              .setDescription(`${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
               .setThumbnail(newMember.user.displayAvatarURL)
               .setColor(`${newMember.guild.me.displayHexColor!=='#000000' ? newMember.guild.me.displayHexColor : config.hexColour}`)});
           }
@@ -121,14 +121,14 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   if (oldMember.voiceChannel) {//Was in a voiceChannel
     if (newMember.voiceChannel !== oldMember.voiceChannel) {//If state changed, but channel remains the same i.e. Mute, Deafen
       if (newMember.voiceChannel) {//If moved to a new voiceChannel
-        winston.log('info', `${newMember.user.username} moved from ${oldMember.voiceChannel.name} to ${newMember.voiceChannel.name}`, {guildID: oldMember.guild.id, type: 'voice'});
+        winston.log('info', `${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} moved from ${oldMember.voiceChannel.name} to ${newMember.voiceChannel.name}`, {guildID: oldMember.guild.id, type: 'voice'});
       }else {
-        winston.log('info', `${newMember.user.username} disconnected from ${oldMember.voiceChannel.name}`, {guildID: oldMember.guild.id, type: 'voice'});
+        winston.log('info', `${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} disconnected from ${oldMember.voiceChannel.name}`, {guildID: oldMember.guild.id, type: 'voice'});
       }
     }
   }else {//Was not in a voiceChannel
     if (newMember.voiceChannel !== oldMember.voiceChannel) {//If connected to a new voiceChannel
-      winston.log('info', `${newMember.user.username} connected to ${newMember.voiceChannel.name}`, {guildID: newMember.guild.id, type: 'voice'});
+      winston.log('info', `${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} connected to ${newMember.voiceChannel.name}`, {guildID: newMember.guild.id, type: 'voice'});
     }
   }
 });
