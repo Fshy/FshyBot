@@ -143,15 +143,50 @@ For source code and other dank memes check [GitHub](https://github.com/Fshy/Fshy
   }
 
   stats(version,client,message){
+    var textChannels = message.guild.channels.findAll('type','text');
+    var voiceChannels = message.guild.channels.findAll('type','voice');
+    var textRes = '';
+    var voiceRes = '';
+    for (var i = 0; i < textChannels.length; i++) {
+      textChannels.find(function (channel) {
+        if (channel.position===i) {
+          if (channel.name.length+1<38) {
+            var padding = '';
+            for (var x = channel.name.length+1; x < 38; x++) {
+              padding+=' ';
+            }
+            textRes+=`#${channel.name} ${padding}Send ${channel.permissionsFor(client.user).has('SEND_MESSAGES') ? '✔':'✘'} | Read ${channel.permissionsFor(client.user).has('READ_MESSAGES') ? '✔':'✘'}\n`;
+          }else {
+            textRes+=`#${channel.name.slice(0, 37)} Send ${channel.permissionsFor(client.user).has('SEND_MESSAGES') ? '✔':'✘'} | Read ${channel.permissionsFor(client.user).has('READ_MESSAGES') ? '✔':'✘'}\n`;
+          }
+        }
+      });
+    }
+    for (var i = 0; i < voiceChannels.length; i++) {
+      voiceChannels.find(function (channel) {
+        if (channel.position===i) {
+          if (channel.name.length<38) {
+            var padding = '';
+            for (var x = channel.name.length+1; x < 38; x++) {
+              padding+=' ';
+            }
+            voiceRes+=`${channel.name} ${padding}Speak ${channel.speakable ? '✔':'✘'} | Join ${channel.joinable ? '✔':'✘'}\n`;
+          }else {
+            voiceRes+=`${channel.name.slice(0, 37)} Speak ${channel.speakable ? '✔':'✘'} | Join ${channel.joinable ? '✔':'✘'}\n`;
+          }
+        }
+      });
+    }
     message.channel.send({embed:new Discord.RichEmbed()
-      .setTitle(`2B | FshyBot Statistics:`)
-      .setDescription(`Currently serving **${client.users.size}** user${client.users.size>1 ? 's':''} on **${client.guilds.size}** guild${client.guilds.size>1 ? 's':''}`)
-      .addField(`Ping`,`${Math.round(client.ping)}ms`,true)
-      .addField(`Uptime`,`${parseInt(client.uptime/86400000)}:${parseInt(client.uptime/3600000)%24}:${parseInt(client.uptime/60000)%60}:${parseInt(client.uptime/1000)%60}`,true)
-      .addField(`Build`,`v${version}`,true)
-      .addField(`Memory Usage`,`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,true)
-      .addField(`Platform`,`${process.platform}`,true)
-      .addField(`Architecture`,`${process.arch}`,true)
+      .setTitle(`${config.name} Diagnostics:`)
+      .addField(`--------------------------------------- Process ----------------------------------------`,
+        `\`\`\`Uptime  | ${parseInt(client.uptime/86400000)}:${parseInt(client.uptime/3600000)%24}:${parseInt(client.uptime/60000)%60}:${parseInt(client.uptime/1000)%60}\nBuild   | v${version}\nMemory  | ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\`\`\``,false)
+      .addField(`---------------------------------------- Guild ------------------------------------------`,
+        `\`\`\`ID      | ${message.guild.id}\nRegion  | ${message.guild.region.toUpperCase()}\nPing    | ${Math.round(client.ping)}ms\nMembers | ${message.guild.memberCount}\`\`\``,false)
+      .addField(`-------------------------------- TextChannel Perms ---------------------------------`,
+        `\`\`\`${textRes}\`\`\``,false)
+      .addField(`------------------------------- VoiceChannel Perms --------------------------------`,
+      `\`\`\`${voiceRes}\`\`\``,false)
       .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
   }
 

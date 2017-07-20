@@ -237,11 +237,13 @@ client.on('message', (message)=>{
     // Implement controls for stream
     // --10
     // Localization on a per-guild basis
+    // --11
+    // Perform check if guildRecords.json exists on ready
 
     // General
     case 'help':        return commands.help(guildPrefix,message);
     case 'ping':        return commands.ping(client,message);
-    case 'stats':       return commands.stats(version,client,message);
+    case 'diag':        return commands.stats(version,client,message);
     case 'version':     return commands.ver(version,guildPrefix,message);
     case 'invite':      return commands.invite(client,message);
     case 'say':         return commands.say(guildPrefix,message);
