@@ -476,11 +476,12 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
     }
   }
 
-  img2B(args,message){
+  img2B(guildPrefix,args,message){
+    message.content=`! yorha_no._2_type_b`;
     if(args[0]==='nsfw')
-      this.danbooru([`yorha_no._2_type_b`],`e`,100,message);
+      this.danbooru(guildPrefix,[`yorha_no._2_type_b`],`e`,100,message);
     else
-      this.danbooru([`yorha_no._2_type_b`],`s`,100,message);
+      this.danbooru(guildPrefix,[`yorha_no._2_type_b`],`s`,100,message);
   }
 
   setName(client,args,message){

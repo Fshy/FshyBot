@@ -287,7 +287,7 @@ client.on('message', (message)=>{
     case 'nsfw':
     case 'lewd':        return commands.danbooru(guildPrefix,args,`e`,250,message);
     case 'tags':        return commands.danbooruTags(args,message);
-    case '2b':          return commands.img2B(args,message);
+    case '2b':          return commands.img2B(guildPrefix,args,message);
     case 'smug':        return commands.smug(message);
 
     // Misc
