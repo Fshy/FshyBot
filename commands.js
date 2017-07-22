@@ -11,46 +11,38 @@ class Commands {
 
   help(guildPrefix,message) {
     var desc = `
--- General
 **${guildPrefix}help** - Displays all available commands
-**${guildPrefix}ping** - Displays response time to server
-**${guildPrefix}stats** - Displays bot usage statistics
-**${guildPrefix}version** - Checks for updates to the bot
+**${guildPrefix}diag** - Displays bot diagnostics and channel permissions
 **${guildPrefix}invite** - Generates a link to invite 2B to your server
+**${guildPrefix}setprefix [newprefix]** - Requires user to have a role titled "Admin"
 
--- Admin | Requires user to have a role titled "Admin"
-**${guildPrefix}setprefix [newprefix]** - Sets the prefix that the bot listens to
-
--- Music
-**${guildPrefix}play [title/link]** - Searches and queues the given term/link
-**${guildPrefix}stop** - Stops the current song and leaves the channel
+**${guildPrefix}play [title/link]** - Searches and plays a given song
+**${guildPrefix}stop** - Stops the current song
 **${guildPrefix}pause** - Pauses playback of the current song
 **${guildPrefix}resume** - Resumes playback of the current song
+**${guildPrefix}join** - Joins the user's VoiceChannel
 **${guildPrefix}leave** - Stops any playback and leaves the channel
 **${guildPrefix}stream [url]** - Plays a given audio stream, or file from direct URL
 **${guildPrefix}radio** - Displays some available preprogrammed radio streams
 **${guildPrefix}np** - Displays Now Playing info for radio streams
 
--- Anime/NSFW
 **${guildPrefix}smug** - Posts a random smug reaction image
-**${guildPrefix}lewd [search term]** - Uploads a random NSFW image of the term
-**${guildPrefix}sfw  [search term]** - Uploads a random SFW image of the term
-**${guildPrefix}tags [search term]** - Searches Danbooru for related search tags
-**${guildPrefix}2B [nsfw]** - Uploads a 2B image, or a NSFW version if supplied
+**${guildPrefix}sfw [search term]** - Uploads a random SFW image of the term
+**${guildPrefix}nsfw [search term]** - Uploads a random NSFW image of the term
 
--- Misc
-**${guildPrefix}crypto [coin] [amount]** - Displays current cryptocurrency price or calculated value (optional)
+**${guildPrefix}insta [username]** - Uploads a user's most recent instagram post
+**${guildPrefix}crypto [coin] [amount]** - Cryptocurrency price lookup
+**${guildPrefix}r [subreddit]** - Uploads a random image from a given subreddit
+
 **${guildPrefix}calc [expression]** - Evaluates a given expression
-**${guildPrefix}r    [subreddit]** - Uploads a random image from a given subreddit
 **${guildPrefix}roll [n] [m]** - Rolls an n-sided die, m times and displays the result
 
--- Chatbot
-2B answers her callsign in response to the user
-Eg. 2B How are you? | 2B What's the time?
+**-- Chatbot**
+Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
 
-For source code and other dank memes check [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)`;
+For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) repo`;
       message.channel.send({embed:new Discord.RichEmbed()
-        .setTitle(`Commands:`)
+        .setTitle(`${message.guild.me.displayName} Commands:`)
         .setDescription(desc)
         .setImage('http://i.imgur.com/a96NGOY.png')
         .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
