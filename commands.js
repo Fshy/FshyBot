@@ -584,6 +584,61 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
     });
   }
 
+  clearQueue(guildsMap,client,message){
+    lib.clearQueue(guildsMap,client,message);
+    let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+    if (vconnec) {
+      let dispatch = vconnec.player.dispatcher;
+      if (dispatch){
+        lib.clearQueue(guildsMap,client,message);
+        dispatch.end();
+      }
+    }
+  }
+
+  playlist(ytdl,guildsMap,client,args,message){
+    const voiceChannel = message.member.voiceChannel;
+    if (args[0]) {
+      if (args[0].match(/playlist/g)) {
+        let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\?list=)([^#\&\?]*).*/;
+        let match = args[0].match(regExp);
+        request(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${match[2]}&maxResults=50&key=${config.youtube.apiKey}`, function (error, response, body) {
+          if (error!=null) {
+            message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
+          }else {
+            var songQueue = [];
+            body = JSON.parse(body);
+            for (var i = 0; i < body.items.length; i++) {
+              songQueue.push(body.items[i].contentDetails.videoId);
+            }
+            songQueue = songQueue.reverse();
+
+            let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+            if (vconnec) {
+              let dispatch = vconnec.player.dispatcher;
+              if (dispatch){
+                lib.clearQueue(guildsMap,client,message);
+                dispatch.end();
+              }
+            }
+
+            var gm = guildsMap.get(message.guild.id)
+            gm.songQueue=songQueue;
+            guildsMap.set(message.guild.id,gm);
+            if (gm.songQueue.length===0) return;
+            // message.channel.send({embed:new Discord.RichEmbed()
+            //   .setDescription(`:headphones: **Now Playing**`)
+            //   .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+            lib.queuePlayback(ytdl,guildsMap,voiceChannel,client,message);
+          }
+        });
+      }
+    }else{
+      // message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
+      console.log(`empty params`);
+    }
+  }
+
   play(ytdl,winston,guildsMap,client,args,message){
     const voiceChannel = message.member.voiceChannel;
     var controls = this.controls;
@@ -605,8 +660,10 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
             let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
             if (vconnec) {
               let dispatch = vconnec.player.dispatcher;
-              if (dispatch)
+              if (dispatch){
+                lib.clearQueue(guildsMap,client,message);
                 dispatch.end();
+              }
             }
             client.setTimeout(function () {
               voiceChannel.join().then(connnection => {
@@ -618,9 +675,9 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
                     controls(guildsMap,client,m);
                     winston.log('info', `${res.snippet.title}`, {guildID: message.guild.id, type: 'music', messageID: m.id, ytID: match[2]});
                   });
-                dispatcher.on('end', () => {
+                // dispatcher.on('end', () => {
                   // voiceChannel.leave();
-                });
+                // });
               })
             }, 250);
           }
@@ -639,8 +696,10 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
             let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
             if (vconnec) {
               let dispatch = vconnec.player.dispatcher;
-              if (dispatch)
+              if (dispatch){
+                lib.clearQueue(guildsMap,client,message);
                 dispatch.end();
+              }
             }
             client.setTimeout(function () {
               voiceChannel.join().then(connnection => {
@@ -652,9 +711,9 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
                     controls(guildsMap,client,m);
                     winston.log('info', `${res.snippet.title}`, {guildID: message.guild.id, type: 'music', messageID: m.id, ytID: res.id.videoId});
                   });
-                dispatcher.on('end', () => {
+                // dispatcher.on('end', () => {
                   // voiceChannel.leave();
-                });
+                // });
               })
             }, 250);
           }
@@ -672,8 +731,10 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
         let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
         if (vconnec) {
           let dispatch = vconnec.player.dispatcher;
-          if (dispatch)
+          if (dispatch){
+            lib.clearQueue(guildsMap,client,message);
             dispatch.end();
+          }
         }
         if (args[0].startsWith('https')) {
           require('https').get(args[0], (res) => {

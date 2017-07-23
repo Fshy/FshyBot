@@ -71,6 +71,7 @@ class Lib {
     Object.keys(guildObj).forEach(function(key) {
       var guild = guildObj[key];
       delete guild.playing;
+      delete guild.songQueue;
     });
     fs.writeFile('guildRecords.json', JSON.stringify(guildObj), 'utf8', function (err,data) {
       if (err){
@@ -83,6 +84,24 @@ class Lib {
     var guildObj = JSON.parse(fs.readFileSync('guildRecords.json', 'utf8'));
     return this.object_to_map(guildObj);
   }
+
+  queuePlayback(ytdl,guildsMap,voiceChannel,client,message){
+    voiceChannel.join().then(connnection => {
+      var dispatcher = connnection.playStream(ytdl(guildsMap.get(message.guild.id).songQueue.pop(), {filter : 'audioonly'}), {passes:2});
+      dispatcher.on('end', () => {
+        if (guildsMap.get(message.guild.id).songQueue && guildsMap.get(message.guild.id).songQueue.length!==0) {
+          this.queuePlayback(ytdl,guildsMap,voiceChannel,client,message);
+        }
+      });
+    })
+  }
+
+  clearQueue(guildsMap,client,message){
+    var gm = guildsMap.get(message.guild.id);
+    delete gm.songQueue;
+    guildsMap.set(message.guild.id,gm);
+  }
+
 }
 
 module.exports = new Lib();

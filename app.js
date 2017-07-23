@@ -263,11 +263,13 @@ client.on('message', (message)=>{
     // Music
     // case 'controls':    return commands.controls(guildsMap,client,message);
     case 'join':        return commands.join(message);
+    case 'leave':       return commands.leave(guildsMap,client,message);
     case 'play':        return commands.play(ytdl,winston,guildsMap,client,args,message);
+    case 'playlist':    return commands.playlist(ytdl,guildsMap,client,args,message);
+    case 'clear':       return commands.clearQueue(guildsMap,client,message);
     case 'stop':        return commands.stop(guildsMap,client,message);
     case 'pause':       return commands.pause(client,message);
     case 'resume':      return commands.resume(client,message);
-    case 'leave':       return commands.leave(guildsMap,client,message);
     case 'stream':      return commands.stream(client,args,message);
     case 'radio':       return commands.radio(client,guildPrefix,guildsMap,args,message);
     case 'np':
