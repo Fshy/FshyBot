@@ -641,7 +641,6 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
                 }else {
                   body = JSON.parse(body);
                   if (!body.items[0]) return;
-                  console.log(body.items[0]);
                   message.channel.send({embed:new Discord.RichEmbed()
                     .setDescription(`:pager: **Playlist:** [${body.items[0].snippet.title}](https://www.youtube.com/playlist?list=${body.items[0].snippet.id})\n:headphones: **Playing:** -------------------- Loading --------------------`)
                     .setThumbnail(body.items[0].snippet.thumbnails.default.url)
