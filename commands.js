@@ -554,7 +554,7 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
       lib.series([
         'git fetch',
         'git reset --hard origin/master',
-        'npm install',
+        'npm install --silent',
         'pm2 restart all'
       ], function(err){
         if (err) {
