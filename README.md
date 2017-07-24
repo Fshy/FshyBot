@@ -32,6 +32,7 @@ When requesting a song, reaction controls are available under the bot response m
 [▶] Play/Pause [⬛] Stop [🔁] Replay Song [X] Leave channel
 
 !play [search/link]       - Searches and plays a given song
+!playlist [link]          - Queues a given YouTube playlist
 !stop                     - Stops the current song
 !pause                    - Pauses playback of the current song
 !resume                   - Resumes playback of the current song

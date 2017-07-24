@@ -17,6 +17,7 @@ class Commands {
 **${guildPrefix}setprefix [newprefix]** - Requires user to have a role titled "Admin"
 
 **${guildPrefix}play [title/link]** - Searches and plays a given song
+**${guildPrefix}playlist [link]** - Queues a given YouTube playlist
 **${guildPrefix}stop** - Stops the current song
 **${guildPrefix}pause** - Pauses playback of the current song
 **${guildPrefix}resume** - Resumes playback of the current song
@@ -610,14 +611,14 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
         if (args[0].match(/playlist/g)) {
           let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\?list=)([^#\&\?]*).*/;
           let match = args[0].match(regExp);
-          request(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${match[2]}&maxResults=50&key=${config.youtube.apiKey}`, function (error, response, body) {
+          request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${match[2]}&maxResults=50&key=${config.youtube.apiKey}`, function (error, response, body) {
             if (error!=null) {
               message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
             }else {
               var songQueue = [];
               body = JSON.parse(body);
               for (var i = 0; i < body.items.length; i++) {
-                songQueue.push(body.items[i].contentDetails.videoId);
+                songQueue.push(body.items[i]);
               }
               songQueue = songQueue.reverse();
 
@@ -634,10 +635,31 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
               gm.songQueue=songQueue;
               guildsMap.set(message.guild.id,gm);
               if (gm.songQueue.length===0) return;
-              // message.channel.send({embed:new Discord.RichEmbed()
-              //   .setDescription(`:headphones: **Now Playing**`)
-              //   .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-              lib.queuePlayback(ytdl,guildsMap,voiceChannel,client,message);
+              request(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${match[2]}&key=${config.youtube.apiKey}`, function (error, response, body) {
+                if (error!=null) {
+                  message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
+                }else {
+                  body = JSON.parse(body);
+                  if (!body.items[0]) return;
+                  console.log(body.items[0]);
+                  message.channel.send({embed:new Discord.RichEmbed()
+                    .setDescription(`:pager: **Playlist:** [${body.items[0].snippet.title}](https://www.youtube.com/playlist?list=${body.items[0].snippet.id})\n:headphones: **Playing:** -------------------- Loading --------------------`)
+                    .setThumbnail(body.items[0].snippet.thumbnails.default.url)
+                    .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)})
+                    .then(initMsg => {
+                      initMsg.react('⏯').then(r => {
+                        initMsg.react('⏭').then(r => {
+                          initMsg.react('⏹').then(r => {
+                            initMsg.react('❌').then(r => {
+                              lib.queuePlayback(ytdl,guildsMap,voiceChannel,client,message,initMsg,body.items[0]);
+                            });
+                          });
+                        });
+                      });
+                    });
+                }
+              });
+
             }
           });
         }
@@ -856,6 +878,7 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
   }
 
   leave(guildsMap,client,message){
+    lib.clearQueue(guildsMap,client,message);
     this.stop(guildsMap,client,message);
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
     if (vconnec) vconnec.disconnect();

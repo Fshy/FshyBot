@@ -150,6 +150,10 @@ client.on('messageReactionAdd', (messageReaction,user)=>{
       }
       break;
     case '%E2%8F%B9'://Stop
+      lib.clearQueue(guildsMap,client,messageReaction.message);
+      commands.stop(guildsMap,client,messageReaction.message);
+      break;
+    case '%E2%8F%AD'://Next Track
       commands.stop(guildsMap,client,messageReaction.message);
       break;
     case '%F0%9F%94%81'://Repeat
@@ -178,6 +182,10 @@ client.on('messageReactionRemove', (messageReaction,user)=>{
       }
       break;
     case '%E2%8F%B9'://Stop
+      lib.clearQueue(guildsMap,client,messageReaction.message);
+      commands.stop(guildsMap,client,messageReaction.message);
+      break;
+    case '%E2%8F%AD'://Next Track
       commands.stop(guildsMap,client,messageReaction.message);
       break;
     case '%F0%9F%94%81'://Repeat
@@ -239,8 +247,6 @@ client.on('message', (message)=>{
     // Localization on a per-guild basis
     // --11
     // Perform check if guildRecords.json exists on ready
-    // --12
-    // Clean up playlist code
 
     // General
     case 'help':        return commands.help(guildPrefix,message);
