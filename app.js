@@ -239,6 +239,8 @@ client.on('message', (message)=>{
     // Localization on a per-guild basis
     // --11
     // Perform check if guildRecords.json exists on ready
+    // --12
+    // Clean up playlist code
 
     // General
     case 'help':        return commands.help(guildPrefix,message);
@@ -270,7 +272,7 @@ client.on('message', (message)=>{
     case 'stop':        return commands.stop(guildsMap,client,message);
     case 'pause':       return commands.pause(client,message);
     case 'resume':      return commands.resume(client,message);
-    case 'stream':      return commands.stream(client,args,message);
+    case 'stream':      return commands.stream(guildsMap,client,args,message);
     case 'radio':       return commands.radio(client,guildPrefix,guildsMap,args,message);
     case 'np':
     case 'nowplaying':  return commands.nowPlaying(guildsMap,message);

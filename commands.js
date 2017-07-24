@@ -598,44 +598,52 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
 
   playlist(ytdl,guildsMap,client,args,message){
     const voiceChannel = message.member.voiceChannel;
-    if (args[0]) {
-      if (args[0].match(/playlist/g)) {
-        let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\?list=)([^#\&\?]*).*/;
-        let match = args[0].match(regExp);
-        request(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${match[2]}&maxResults=50&key=${config.youtube.apiKey}`, function (error, response, body) {
-          if (error!=null) {
-            message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
-          }else {
-            var songQueue = [];
-            body = JSON.parse(body);
-            for (var i = 0; i < body.items.length; i++) {
-              songQueue.push(body.items[i].contentDetails.videoId);
-            }
-            songQueue = songQueue.reverse();
-
-            let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
-            if (vconnec) {
-              let dispatch = vconnec.player.dispatcher;
-              if (dispatch){
-                lib.clearQueue(guildsMap,client,message);
-                dispatch.end();
-              }
-            }
-
-            var gm = guildsMap.get(message.guild.id)
-            gm.songQueue=songQueue;
-            guildsMap.set(message.guild.id,gm);
-            if (gm.songQueue.length===0) return;
-            // message.channel.send({embed:new Discord.RichEmbed()
-            //   .setDescription(`:headphones: **Now Playing**`)
-            //   .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-            lib.queuePlayback(ytdl,guildsMap,voiceChannel,client,message);
-          }
-        });
+    if (!voiceChannel) {
+      message.channel.send(lib.embed(`**ERROR:** Please join a voice channel first`,message));
+    }else {
+      if (!voiceChannel.permissionsFor(client.user).has('CONNECT') || !voiceChannel.permissionsFor(client.user).has('SPEAK')){
+        var padding = '';
+        for (var x = voiceChannel.name.length+1; x < 38; x++) padding+=' ';
+        return message.channel.send(lib.embed(`**ERROR:** Insufficient permissions\n\`\`\`${voiceChannel.name} ${padding}Speak ${voiceChannel.speakable ? '✔':'✘'} | Join ${voiceChannel.joinable ? '✔':'✘'}\`\`\``,message));
       }
-    }else{
-      // message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
-      console.log(`empty params`);
+      if (args[0]) {
+        if (args[0].match(/playlist/g)) {
+          let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\?list=)([^#\&\?]*).*/;
+          let match = args[0].match(regExp);
+          request(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${match[2]}&maxResults=50&key=${config.youtube.apiKey}`, function (error, response, body) {
+            if (error!=null) {
+              message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
+            }else {
+              var songQueue = [];
+              body = JSON.parse(body);
+              for (var i = 0; i < body.items.length; i++) {
+                songQueue.push(body.items[i].contentDetails.videoId);
+              }
+              songQueue = songQueue.reverse();
+
+              let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+              if (vconnec) {
+                let dispatch = vconnec.player.dispatcher;
+                if (dispatch){
+                  lib.clearQueue(guildsMap,client,message);
+                  dispatch.end();
+                }
+              }
+
+              var gm = guildsMap.get(message.guild.id)
+              gm.songQueue=songQueue;
+              guildsMap.set(message.guild.id,gm);
+              if (gm.songQueue.length===0) return;
+              // message.channel.send({embed:new Discord.RichEmbed()
+              //   .setDescription(`:headphones: **Now Playing**`)
+              //   .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+              lib.queuePlayback(ytdl,guildsMap,voiceChannel,client,message);
+            }
+          });
+        }
+      }else{
+        message.channel.send(lib.embed(`**ERROR:** Please specify a playlist link as a parameter`,message));
+      }
     }
   }
 
@@ -645,79 +653,88 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
     if (!voiceChannel) {
       message.channel.send(lib.embed(`**ERROR:** Please join a voice channel first`,message));
     }else {
-      let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-      let match = args[0].match(regExp);
-      if (match) {
-        request(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${match[2]}&key=${config.youtube.apiKey}`, function (error, response, body) {
-          if (error!=null) {
-            message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
-          }else {
-            response = JSON.parse(body);
-            let res = response.items[0];
-            let stream = ytdl(match[2], {
-              filter : 'audioonly'
-            });
-            let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
-            if (vconnec) {
-              let dispatch = vconnec.player.dispatcher;
-              if (dispatch){
-                lib.clearQueue(guildsMap,client,message);
-                dispatch.end();
+      if (!voiceChannel.permissionsFor(client.user).has('CONNECT') || !voiceChannel.permissionsFor(client.user).has('SPEAK')){
+        var padding = '';
+        for (var x = voiceChannel.name.length+1; x < 38; x++) padding+=' ';
+        return message.channel.send(lib.embed(`**ERROR:** Insufficient permissions\n\`\`\`${voiceChannel.name} ${padding}Speak ${voiceChannel.speakable ? '✔':'✘'} | Join ${voiceChannel.joinable ? '✔':'✘'}\`\`\``,message));
+      }
+      if (args[0]) {
+        let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let match = args[0].match(regExp);
+        if (match) {
+          request(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${match[2]}&key=${config.youtube.apiKey}`, function (error, response, body) {
+            if (error!=null) {
+              message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
+            }else {
+              response = JSON.parse(body);
+              let res = response.items[0];
+              let stream = ytdl(match[2], {
+                filter : 'audioonly'
+              });
+              let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+              if (vconnec) {
+                let dispatch = vconnec.player.dispatcher;
+                if (dispatch){
+                  lib.clearQueue(guildsMap,client,message);
+                  dispatch.end();
+                }
               }
+              client.setTimeout(function () {
+                voiceChannel.join().then(connnection => {
+                  var dispatcher = connnection.playStream(stream, {passes:2});
+                  message.channel.send({embed:new Discord.RichEmbed()
+                    .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.member.nickname ? `${message.member.displayName} (${message.author.username})` : message.author.username}`)
+                    .setThumbnail(res.snippet.thumbnails.default.url)
+                    .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
+                      controls(guildsMap,client,m);
+                      winston.log('info', `${res.snippet.title}`, {guildID: message.guild.id, type: 'music', messageID: m.id, ytID: match[2]});
+                    });
+                  // dispatcher.on('end', () => {
+                    // voiceChannel.leave();
+                  // });
+                })
+              }, 250);
             }
-            client.setTimeout(function () {
-              voiceChannel.join().then(connnection => {
-                var dispatcher = connnection.playStream(stream, {passes:2});
-                message.channel.send({embed:new Discord.RichEmbed()
-                  .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.member.nickname ? `${message.member.displayName} (${message.author.username})` : message.author.username}`)
-                  .setThumbnail(res.snippet.thumbnails.default.url)
-                  .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
-                    controls(guildsMap,client,m);
-                    winston.log('info', `${res.snippet.title}`, {guildID: message.guild.id, type: 'music', messageID: m.id, ytID: match[2]});
-                  });
-                // dispatcher.on('end', () => {
-                  // voiceChannel.leave();
-                // });
-              })
-            }, 250);
-          }
-        });
+          });
+        }else {
+          let expr = args.join('+');
+          request(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${expr}&type=video&videoCategoryId=10&key=${config.youtube.apiKey}`, function (error, response, body) {
+            if (error!=null) {
+              message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
+            }else {
+              response = JSON.parse(body);
+              let res = response.items[0];
+              let stream = ytdl(res.id.videoId, {
+                filter : 'audioonly'
+              });
+              let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+              if (vconnec) {
+                let dispatch = vconnec.player.dispatcher;
+                if (dispatch){
+                  lib.clearQueue(guildsMap,client,message);
+                  dispatch.end();
+                }
+              }
+              client.setTimeout(function () {
+                voiceChannel.join().then(connnection => {
+                  var dispatcher = connnection.playStream(stream, {passes:2});
+                  message.channel.send({embed:new Discord.RichEmbed()
+                    .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.member.nickname ? `${message.member.displayName} (${message.author.username})` : message.author.username}`)
+                    .setThumbnail(res.snippet.thumbnails.default.url)
+                    .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
+                      controls(guildsMap,client,m);
+                      winston.log('info', `${res.snippet.title}`, {guildID: message.guild.id, type: 'music', messageID: m.id, ytID: res.id.videoId});
+                    });
+                  // dispatcher.on('end', () => {
+                    // voiceChannel.leave();
+                  // });
+                })
+              }, 250);
+            }
+          });
+        }
       }else {
-        let expr = args.join('+');
-        request(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${expr}&type=video&videoCategoryId=10&key=${config.youtube.apiKey}`, function (error, response, body) {
-          if (error!=null) {
-            message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
-          }else {
-            response = JSON.parse(body);
-            let res = response.items[0];
-            let stream = ytdl(res.id.videoId, {
-              filter : 'audioonly'
-            });
-            let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
-            if (vconnec) {
-              let dispatch = vconnec.player.dispatcher;
-              if (dispatch){
-                lib.clearQueue(guildsMap,client,message);
-                dispatch.end();
-              }
-            }
-            client.setTimeout(function () {
-              voiceChannel.join().then(connnection => {
-                var dispatcher = connnection.playStream(stream, {passes:2});
-                message.channel.send({embed:new Discord.RichEmbed()
-                  .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.member.nickname ? `${message.member.displayName} (${message.author.username})` : message.author.username}`)
-                  .setThumbnail(res.snippet.thumbnails.default.url)
-                  .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
-                    controls(guildsMap,client,m);
-                    winston.log('info', `${res.snippet.title}`, {guildID: message.guild.id, type: 'music', messageID: m.id, ytID: res.id.videoId});
-                  });
-                // dispatcher.on('end', () => {
-                  // voiceChannel.leave();
-                // });
-              })
-            }, 250);
-          }
-        });
+        message.channel.send(lib.embed(`**ERROR:** Please specify a search term or link as a parameter`,message));
       }
     }
   }
@@ -727,6 +744,11 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
     if (!voiceChannel) {
       message.channel.send(lib.embed(`**ERROR:** Please join a voice channel first`,message));
     }else {
+      if (!voiceChannel.permissionsFor(client.user).has('CONNECT') || !voiceChannel.permissionsFor(client.user).has('SPEAK')){
+        var padding = '';
+        for (var x = voiceChannel.name.length+1; x < 38; x++) padding+=' ';
+        return message.channel.send(lib.embed(`**ERROR:** Insufficient permissions\n\`\`\`${voiceChannel.name} ${padding}Speak ${voiceChannel.speakable ? '✔':'✘'} | Join ${voiceChannel.joinable ? '✔':'✘'}\`\`\``,message));
+      }
       if (args[0]) {
         let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
         if (vconnec) {
@@ -767,7 +789,14 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
 
   join(message){
     if (message.member.voiceChannel) {
-      return message.member.voiceChannel.join();
+      const voiceChannel = message.member.voiceChannel;
+      if (!voiceChannel.permissionsFor(message.client.user).has('CONNECT') || !voiceChannel.permissionsFor(message.client.user).has('SPEAK')){
+        var padding = '';
+        for (var x = voiceChannel.name.length+1; x < 38; x++) padding+=' ';
+        return message.channel.send(lib.embed(`**ERROR:** Insufficient permissions\n\`\`\`${voiceChannel.name} ${padding}Speak ${voiceChannel.speakable ? '✔':'✘'} | Join ${voiceChannel.joinable ? '✔':'✘'}\`\`\``,message));
+      }else {
+        return message.member.voiceChannel.join();
+      }
     }else {
       message.channel.send(lib.embed(`**ERROR:** User is not connected to a Voice Channel`,message));
     }
@@ -777,6 +806,11 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
     const guildMember = message.guild.members.get(user.id);
     const voiceChannel = guildMember.voiceChannel;
     if (!voiceChannel) return message.channel.send(lib.embed(`**ERROR:** User is not connected to a Voice Channel\n:speech_balloon: **Requested by:** ${guildMember.nickname ? `${guildMember.displayName} (${user.username})` : user.username}`,message));
+    if (!voiceChannel.permissionsFor(client.user).has('CONNECT') || !voiceChannel.permissionsFor(client.user).has('SPEAK')){
+      var padding = '';
+      for (var x = voiceChannel.name.length+1; x < 38; x++) padding+=' ';
+      return message.channel.send(lib.embed(`**ERROR:** Insufficient permissions\n\`\`\`${voiceChannel.name} ${padding}Speak ${voiceChannel.speakable ? '✔':'✘'} | Join ${voiceChannel.joinable ? '✔':'✘'}\`\`\``,message));
+    }
     var logs = [];
     if (fs.existsSync('winston.log')) {
       var rd = readline.createInterface({
@@ -824,7 +858,7 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
   leave(guildsMap,client,message){
     this.stop(guildsMap,client,message);
     let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
-    if (vconnec) vconnec.channel.leave();
+    if (vconnec) vconnec.disconnect();
   }
 
   pause(client,message){
