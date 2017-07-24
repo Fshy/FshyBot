@@ -608,10 +608,10 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
         return message.channel.send(lib.embed(`**ERROR:** Insufficient permissions\n\`\`\`${voiceChannel.name} ${padding}Speak ${voiceChannel.speakable ? '✔':'✘'} | Join ${voiceChannel.joinable ? '✔':'✘'}\`\`\``,message));
       }
       if (args[0]) {
-        if (args[0].match(/playlist/g)) {
-          let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\?list=)([^#\&\?]*).*/;
-          let match = args[0].match(regExp);
-          request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${match[2]}&maxResults=50&key=${config.youtube.apiKey}`, function (error, response, body) {
+        if (args[0].match(/list=/g)) {
+          var regExpMatch = args[0].match(/(?=list=).*/g)[0];
+          let match = regExpMatch.slice(5,regExpMatch.length);
+          request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${match}&maxResults=50&key=${config.youtube.apiKey}`, function (error, response, body) {
             if (error!=null) {
               message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
             }else {
@@ -635,14 +635,14 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
               gm.songQueue=songQueue;
               guildsMap.set(message.guild.id,gm);
               if (gm.songQueue.length===0) return;
-              request(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${match[2]}&key=${config.youtube.apiKey}`, function (error, response, body) {
+              request(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${match}&key=${config.youtube.apiKey}`, function (error, response, body) {
                 if (error!=null) {
                   message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
                 }else {
                   body = JSON.parse(body);
                   if (!body.items[0]) return;
                   message.channel.send({embed:new Discord.RichEmbed()
-                    .setDescription(`:pager: **Playlist:** [${body.items[0].snippet.title}](https://www.youtube.com/playlist?list=${body.items[0].snippet.id})\n:headphones: **Playing:** -------------------- Loading --------------------`)
+                    .setDescription(`:pager: **Playlist:** [${body.items[0].snippet.title}](https://www.youtube.com/playlist?list=${body.items[0].snippet.id}) - 0/${songQueue.length}\n:headphones: **Playing:** -------------------- Loading --------------------`)
                     .setThumbnail(body.items[0].snippet.thumbnails.default.url)
                     .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)})
                     .then(initMsg => {
@@ -650,7 +650,7 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
                         initMsg.react('⏭').then(r => {
                           initMsg.react('⏹').then(r => {
                             initMsg.react('❌').then(r => {
-                              lib.queuePlayback(ytdl,guildsMap,voiceChannel,client,message,initMsg,body.items[0]);
+                              lib.queuePlayback(ytdl,guildsMap,voiceChannel,client,message,initMsg,body.items[0],{pos:0,pSize:songQueue.length});
                             });
                           });
                         });
@@ -682,6 +682,8 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
       if (args[0]) {
         let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
         let match = args[0].match(regExp);
+        if (args[0].match(/list=/g))
+          message.channel.send(lib.embed(`**INFO:** If you're trying to queue this YouTube playlist,\nPlease use the \`${guildsMap.get(message.guild.id).prefix}playlist [link]\` command`,message));
         if (match) {
           request(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${match[2]}&key=${config.youtube.apiKey}`, function (error, response, body) {
             if (error!=null) {
