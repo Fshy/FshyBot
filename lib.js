@@ -89,7 +89,7 @@ class Lib {
     voiceChannel.join().then(connnection => {
       var poppedSong = guildsMap.get(message.guild.id).songQueue.pop();
       var dispatcher = connnection.playStream(ytdl(poppedSong.contentDetails.videoId, {filter : 'audioonly'}), {passes:2});
-      initMsg.edit({embed:new Discord.RichEmbed().setDescription(`:pager: **Playlist:** [${playlistDetails.snippet.title}](https://www.youtube.com/playlist?list=${playlistDetails.snippet.id}) - ${playlistLength.pos+1}/${playlistLength.pSize}\n:headphones: **Playing:** ${poppedSong.snippet.title}`).setThumbnail(poppedSong.snippet.thumbnails.default.url).setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+      initMsg.edit({embed:new Discord.RichEmbed().setDescription(`:pager: **Playlist:** [${playlistDetails.snippet.title}](https://www.youtube.com/playlist?list=${playlistDetails.id}) - ${playlistLength.pos+1}/${playlistLength.pSize}\n:headphones: **Playing:** ${poppedSong.snippet.title}`).setThumbnail(poppedSong.snippet.thumbnails.default.url).setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
       dispatcher.on('end', () => {
         if (guildsMap.get(message.guild.id).songQueue && guildsMap.get(message.guild.id).songQueue.length!==0) {
           this.queuePlayback(ytdl,guildsMap,voiceChannel,client,message,initMsg,playlistDetails,{pos:playlistLength.pos+1,pSize:playlistLength.pSize});

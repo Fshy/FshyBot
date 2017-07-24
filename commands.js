@@ -635,14 +635,14 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
               gm.songQueue=songQueue;
               guildsMap.set(message.guild.id,gm);
               if (gm.songQueue.length===0) return;
-              request(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${match}&key=${config.youtube.apiKey}`, function (error, response, body) {
+              request(`https://www.googleapis.com/youtube/v3/playlists?part=id,snippet&id=${match}&key=${config.youtube.apiKey}`, function (error, response, body) {
                 if (error!=null) {
                   message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
                 }else {
                   body = JSON.parse(body);
                   if (!body.items[0]) return;
                   message.channel.send({embed:new Discord.RichEmbed()
-                    .setDescription(`:pager: **Playlist:** [${body.items[0].snippet.title}](https://www.youtube.com/playlist?list=${body.items[0].snippet.id}) - 0/${songQueue.length}\n:headphones: **Playing:** -------------------- Loading --------------------`)
+                    .setDescription(`:pager: **Playlist:** [${body.items[0].snippet.title}](https://www.youtube.com/playlist?list=${body.items[0].id}) - 0/${songQueue.length}\n:headphones: **Playing:** -------------------- Loading --------------------`)
                     .setThumbnail(body.items[0].snippet.thumbnails.default.url)
                     .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)})
                     .then(initMsg => {
