@@ -1,25 +1,26 @@
 {
   "name": "fshybot",
-  "version": "1.6.14",
+  "version": "1.6.15",
   "description": "Discord Bot",
   "main": "app.js",
   "dependencies": {
+    "bufferutil": "^3.0.2",
     "discord.js": "^11.1.0",
+    "erlpack": "github:hammerandchisel/erlpack",
     "ffmpeg-binaries": "^3.2.2",
-    "firebase": "^4.0.0",
-    "fivereborn-query": "^1.0.4",
     "he": "^1.1.1",
     "instagram-posts": "^1.0.0",
-    "instagram-screen-scrape": "^2.0.0",
+    "libsodium-wrappers": "^0.5.2",
     "lodash": "^4.17.4",
     "mathjs": "^3.13.1",
     "node-opus": "^0.2.6",
     "request": "^2.81.0",
     "scrape-it": "^3.3.2",
     "snoowrap": "^1.14.0",
+    "uws": "^0.14.1",
     "winston": "^2.3.1",
     "xml2js": "^0.4.17",
-    "ytdl-core": "^0.14.1"
+    "ytdl-core": "^0.15.0"
   },
   "devDependencies": {
     "jshint": "^2.9.4"

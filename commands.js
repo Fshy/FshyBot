@@ -21,6 +21,7 @@ class Commands {
 **${guildPrefix}stop** - Stops the current song
 **${guildPrefix}pause** - Pauses playback of the current song
 **${guildPrefix}resume** - Resumes playback of the current song
+**${guildPrefix}clear** - Clears the current playlist queue
 **${guildPrefix}join** - Joins the user's VoiceChannel
 **${guildPrefix}leave** - Stops any playback and leaves the channel
 **${guildPrefix}stream [url]** - Plays a given audio stream, or file from direct URL
@@ -726,6 +727,7 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
               message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
             }else {
               response = JSON.parse(body);
+              if (!response.items[0]) return;
               let res = response.items[0];
               let stream = ytdl(res.id.videoId, {
                 filter : 'audioonly'

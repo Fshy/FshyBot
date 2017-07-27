@@ -232,21 +232,21 @@ client.on('message', (message)=>{
     // --3
     // Adjust Embed Colours based on message type (success, error, warning, info)
     // --4
-    // Music Queue
-    // --5
     // Use createReactionCollector() to generate timed responses/polls
-    // --6
+    // --5
     // Check that [current version < stable version] before allowing !update
-    // --7
+    // --6
     // Winston logs implement users @mentions
-    // --8
+    // --7
     // Start logging messages per user
-    // --9
+    // --8
     // Implement controls for stream
-    // --10
+    // --9
     // Localization on a per-guild basis
-    // --11
+    // --10
     // Perform check if guildRecords.json exists on ready
+    // --11
+    // Catch instagram errors
 
     // General
     case 'help':        return commands.help(guildPrefix,message);

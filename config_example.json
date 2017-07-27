@@ -21,14 +21,6 @@
     "username":           "REDDIT_ACCOUNT_USERNAME",
     "password":           "REDDIT_ACCOUNT_PASSWORD"
   },
-  "firebase": {
-    "apiKey":             "FIREBASE_API_KEY",
-    "authDomain":         "FIREBASE_DOMAIN",
-    "databaseURL":        "FIREBASE_DB_URL",
-    "projectId":          "FIREBASE_PROJECT_ID",
-    "storageBucket":      "FIREBASE_STORAGE_BUCKET",
-    "messagingSenderId":  "FIREBASE_SENDER_ID"
-  },
   "mashape": {
     "jeannie":            "JEANNIE_API_KEY"
   },

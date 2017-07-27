@@ -1,8 +1,8 @@
-[![2b1](http://i.imgur.com/hftWBMJ.jpg)](http://arc.moe)
+[![2b1](http://i.imgur.com/LyhaP3h.jpg)](http://arc.moe)
 [![2b2](http://i.imgur.com/W87etD2.jpg)](https://discordapp.com/oauth2/authorize?permissions=8&scope=bot&client_id=291311819354800150)
 [![2b3](http://i.imgur.com/1WetvDx.jpg)](#installation)
 
-[![Discord](https://discordapp.com/api/guilds/290982567564279809/embed.png)](http://discord.arc.moe/)
+![Discord](https://discordapp.com/api/guilds/290982567564279809/embed.png)
 [![AppVeyor](https://img.shields.io/appveyor/ci/Fshy/FshyBot.svg?style=flat-square)](https://ci.appveyor.com/project/Fshy/fshybot)
 [![David](https://img.shields.io/david/Fshy/FshyBot.svg?style=flat-square)](https://david-dm.org/Fshy/FshyBot)
 [![David](https://img.shields.io/david/dev/Fshy/FshyBot.svg?style=flat-square)](https://david-dm.org/Fshy/FshyBot?type=dev)
@@ -36,6 +36,7 @@ When requesting a song, reaction controls are available under the bot response m
 !stop                     - Stops the current song
 !pause                    - Pauses playback of the current song
 !resume                   - Resumes playback of the current song
+!clear                    - Clears the current playlist queue
 !join                     - Joins the user's VoiceChannel
 !leave                    - Stops any playback and leaves the channel
 !stream [url]             - Plays a given audio stream, or file from direct URL
@@ -90,7 +91,7 @@ Examples:
 <h2><p align="center">Installation</p></h2>
 <h3>Prerequisites</h3>
 
-* [Node.js](https://nodejs.org/en/download/) (Version 6.x or newer)
+* [Node.js](https://nodejs.org/en/download/) (Version 8.0.0 or newer)
 * [python 2.7](https://www.python.org/download/releases/2.7/)
 
 <h5>Windows:</h5>
