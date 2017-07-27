@@ -2,7 +2,7 @@
 [![2b2](http://i.imgur.com/W87etD2.jpg)](https://discordapp.com/oauth2/authorize?permissions=8&scope=bot&client_id=291311819354800150)
 [![2b3](http://i.imgur.com/1WetvDx.jpg)](#installation)
 
-![Discord](https://discordapp.com/api/guilds/290982567564279809/embed.png)
+[![Discord](https://discordapp.com/api/guilds/290982567564279809/embed.png)](https://discord.gg/rvRX9U5)
 [![AppVeyor](https://img.shields.io/appveyor/ci/Fshy/FshyBot.svg?style=flat-square)](https://ci.appveyor.com/project/Fshy/fshybot)
 [![David](https://img.shields.io/david/Fshy/FshyBot.svg?style=flat-square)](https://david-dm.org/Fshy/FshyBot)
 [![David](https://img.shields.io/david/dev/Fshy/FshyBot.svg?style=flat-square)](https://david-dm.org/Fshy/FshyBot?type=dev)
