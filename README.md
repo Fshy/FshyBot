@@ -2,7 +2,7 @@
 [![2b2](http://i.imgur.com/W87etD2.jpg)](https://discordapp.com/oauth2/authorize?permissions=8&scope=bot&client_id=291311819354800150)
 [![2b3](http://i.imgur.com/1WetvDx.jpg)](#installation)
 
-[![Discord](https://discordapp.com/api/guilds/290982567564279809/embed.png)](https://discord.gg/rvRX9U5)
+[![Discord](https://discordapp.com/api/guilds/290982567564279809/embed.png)](#)
 [![AppVeyor](https://img.shields.io/appveyor/ci/Fshy/FshyBot.svg?style=flat-square)](https://ci.appveyor.com/project/Fshy/fshybot)
 [![David](https://img.shields.io/david/Fshy/FshyBot.svg?style=flat-square)](https://david-dm.org/Fshy/FshyBot)
 [![David](https://img.shields.io/david/dev/Fshy/FshyBot.svg?style=flat-square)](https://david-dm.org/Fshy/FshyBot?type=dev)
@@ -54,10 +54,13 @@ When requesting a song, reaction controls are available under the bot response m
 
 <pre>
 !smug                     - Posts a random smug reaction image
-!sfw [search term]        - Uploads a random SFW image from Danbooru, of the given search term
-!nsfw [search term]       - Uploads a random NSFW image from Danbooru, of the given search term
-!tags [search term]       - Searches Danbooru for possible related search tags
 !2B [nsfw]                - Uploads a random 2B image, or a NSFW version if supplied as a parameter
+
+!tags [search term]       - Searches Danbooru for possible related search tags
+!sfw [tag]                - Uploads a random SFW image from Danbooru, for up to two search tags
+!nsfw [tag]               - Uploads a random NSFW image from Danbooru, for up to two search tags
+
+Multiple tags are separated by a / symbol, Example: !sfw kancolle/thighhighs
 </pre>
 
 <h5>Web APIs</h5>
@@ -105,7 +108,7 @@ npm install --global --production windows-build-tools
 
 ```shell
 #Install Node/npm
-$ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+$ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 $ sudo apt-get install -y nodejs
 
 #Install python2.7

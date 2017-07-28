@@ -26,11 +26,11 @@ class Commands {
 **${guildPrefix}leave** - Stops any playback and leaves the channel
 **${guildPrefix}stream [url]** - Plays a given audio stream, or file from direct URL
 **${guildPrefix}radio** - Displays some available preprogrammed radio streams
-**${guildPrefix}np** - Displays Now Playing info for radio streams
 
 **${guildPrefix}smug** - Posts a random smug reaction image
 **${guildPrefix}sfw [search term]** - Uploads a random SFW image of the term
 **${guildPrefix}nsfw [search term]** - Uploads a random NSFW image of the term
+Tags are separated by a / symbol, Example: **${guildPrefix}sfw kancolle/thighhighs**
 
 **${guildPrefix}insta [username]** - Uploads a user's most recent instagram post
 **${guildPrefix}crypto [coin] [amount]** - Cryptocurrency price lookup
@@ -576,10 +576,10 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
       }else {
         response = JSON.parse(body);
         if(response.output[0]){
-          if (message.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) //Has write permissions
+          if (message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) //Has write permissions
             message.reply(response.output[0].actions.say.text.substring(0, 2000));
         }else {
-          if (message.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) //Has write permissions
+          if (message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) //Has write permissions
             message.reply(`Sorry I couldn't process what you're trying to say.`);
         }
       }
