@@ -576,10 +576,10 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
       }else {
         response = JSON.parse(body);
         if(response.output[0]){
-          if (message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) //Has write permissions
+          if (message.channel.type===`dm` || message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) //Has write permissions
             message.reply(response.output[0].actions.say.text.substring(0, 2000));
         }else {
-          if (message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) //Has write permissions
+          if (message.channel.type===`dm` || message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) //Has write permissions
             message.reply(`Sorry I couldn't process what you're trying to say.`);
         }
       }
