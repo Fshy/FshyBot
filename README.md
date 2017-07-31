@@ -14,15 +14,15 @@
 !help                     - Displays all available commands
 !ping                     - Displays response time to server
 !diag                     - Displays bot diagnostics and channel permissions
-!say [text]               - Repeat the given text in a neat RichEmbed message
-!logs [number]            - Posts the most recent VoiceChannel logs (User Join/Move/Disconnect)
+!say &lt;text&gt;               - Repeat the given text in a neat RichEmbed message
+!logs &lt;number&gt;            - Posts the most recent VoiceChannel logs (User Join/Move/Disconnect)
 !invite                   - Generates a link to invite 2B to your server
 </pre>
 
 <h5>Admin</h5>
 <pre>
 Requires user to have a role titled "Admin"
-!setprefix [newprefix]    - Sets the prefix that the bot listens to
+!setprefix &lt;newprefix&gt;    - Sets the prefix that the bot listens to
 </pre>
 
 <h5>Music</h5>
@@ -31,15 +31,15 @@ Requires user to have a role titled "Admin"
 When requesting a song, reaction controls are available under the bot response message.
 [▶] Play/Pause [⬛] Stop [🔁] Replay Song [X] Leave channel
 
-!play [search/link]       - Searches and plays a given song
-!playlist [link]          - Queues a given YouTube playlist
+!play &lt;search/link&gt;       - Searches and plays a given song
+!playlist &lt;link&gt; &lt;shuffle&gt;- Queues a given YouTube playlist; Pass 'shuffle' as 2nd param to randomize
 !stop                     - Stops the current song
 !pause                    - Pauses playback of the current song
 !resume                   - Resumes playback of the current song
 !clear                    - Clears the current playlist queue
 !join                     - Joins the user's VoiceChannel
 !leave                    - Stops any playback and leaves the channel
-!stream [url]             - Plays a given audio stream, or file from direct URL
+!stream &lt;url&gt;             - Plays a given audio stream, or file from direct URL
 !radio                    - Displays some available preprogrammed radio streams
 !np                       - Displays Now Playing info for radio streams
 </pre>
@@ -47,18 +47,18 @@ When requesting a song, reaction controls are available under the bot response m
 <h5>Games</h5>
 
 <pre>
-!pubg [username] [region] - PLAYERUNKNOWN'S BATTLEGROUNDS stats lookup (Regions:na/sa/eu/as/sea/oc)
+!pubg &lt;username&gt; &lt;region&gt; - PLAYERUNKNOWN'S BATTLEGROUNDS stats lookup (Regions:na/sa/eu/as/sea/oc)
 </pre>
 
 <h5>Anime/NSFW</h5>
 
 <pre>
 !smug                     - Posts a random smug reaction image
-!2B [nsfw]                - Uploads a random 2B image, or a NSFW version if supplied as a parameter
+!2B &lt;nsfw&gt;                - Uploads a random 2B image, or a NSFW version if supplied as a parameter
 
-!tags [search term]       - Searches Danbooru for possible related search tags
-!sfw [tag]                - Uploads a random SFW image from Danbooru, for up to two search tags
-!nsfw [tag]               - Uploads a random NSFW image from Danbooru, for up to two search tags
+!tags &lt;search term&gt;       - Searches Danbooru for possible related search tags
+!sfw &lt;tag&gt;                - Uploads a random SFW image from Danbooru, for up to two search tags
+!nsfw &lt;tag&gt;               - Uploads a random NSFW image from Danbooru, for up to two search tags
 
 Multiple tags are separated by a / symbol, Example: !sfw kancolle/thighhighs
 </pre>
@@ -66,16 +66,16 @@ Multiple tags are separated by a / symbol, Example: !sfw kancolle/thighhighs
 <h5>Web APIs</h5>
 
 <pre>
-!insta [username]         - Uploads the most recent instagram post from a given user
-!crypto [coin] [amount]   - Displays current cryptocurrency price or calculated value (optional)
-!r [subreddit]            - Uploads a random image from a given subreddit
+!insta &lt;username&gt;         - Uploads the most recent instagram post from a given user
+!crypto &lt;coin&gt; &lt;amount&gt;   - Displays current cryptocurrency price or calculated value (optional)
+!r &lt;subreddit&gt;            - Uploads a random image from a given subreddit
 </pre>
 
 <h5>Misc</h5>
 
 <pre>
-!calc [expression]        - Evaluates a given expression
-!roll [sides] [num]       - Rolls an n-sided die, m times and displays the result
+!calc &lt;expression&gt;        - Evaluates a given expression
+!roll &lt;sides&gt; &lt;num&gt;       - Rolls an n-sided die, m times and displays the result
 </pre>
 
 <h5>Chatbot</h5>

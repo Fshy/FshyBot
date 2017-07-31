@@ -14,39 +14,39 @@ class Commands {
 **${guildPrefix}help** - Displays all available commands
 **${guildPrefix}diag** - Displays bot diagnostics and channel permissions
 **${guildPrefix}invite** - Generates a link to invite 2B to your server
-**${guildPrefix}setprefix [newprefix]** - Requires user to have a role titled "Admin"
+**${guildPrefix}setprefix <newprefix>** - Requires user to have a role titled "Admin"
 
-**${guildPrefix}play [title/link]** - Searches and plays a given song
-**${guildPrefix}playlist [link]** - Queues a given YouTube playlist
+**${guildPrefix}play <song name/link>** - Searches and plays a given song
+**${guildPrefix}playlist <link> <shuffle>** - Queues a given YouTube playlist
 **${guildPrefix}stop** - Stops the current song
 **${guildPrefix}pause** - Pauses playback of the current song
 **${guildPrefix}resume** - Resumes playback of the current song
 **${guildPrefix}clear** - Clears the current playlist queue
 **${guildPrefix}join** - Joins the user's VoiceChannel
 **${guildPrefix}leave** - Stops any playback and leaves the channel
-**${guildPrefix}stream [url]** - Plays a given audio stream, or file from direct URL
+**${guildPrefix}stream <url>** - Plays a given audio stream, or file from direct URL
 **${guildPrefix}radio** - Displays some available preprogrammed radio streams
 
 **${guildPrefix}smug** - Posts a random smug reaction image
-**${guildPrefix}sfw [search term]** - Uploads a random SFW image of the term
-**${guildPrefix}nsfw [search term]** - Uploads a random NSFW image of the term
+**${guildPrefix}sfw <search term>** - Uploads a random SFW image of the term
+**${guildPrefix}nsfw <search term>** - Uploads a random NSFW image of the term
 Tags are separated by a / symbol, Example: **${guildPrefix}sfw kancolle/thighhighs**
 
-**${guildPrefix}insta [username]** - Uploads a user's most recent instagram post
-**${guildPrefix}crypto [coin] [amount]** - Cryptocurrency price lookup
-**${guildPrefix}r [subreddit]** - Uploads a random image from a given subreddit
+**${guildPrefix}insta <username>** - Uploads a user's most recent instagram post
+**${guildPrefix}crypto <coin> <amount>** - Cryptocurrency price lookup
+**${guildPrefix}r <subreddit>** - Uploads a random image from a given subreddit
 
-**${guildPrefix}calc [expression]** - Evaluates a given expression
-**${guildPrefix}roll [n] [m]** - Rolls an n-sided die, m times and displays the result
+**${guildPrefix}calc <expression>** - Evaluates a given expression
+**${guildPrefix}roll <n> <m>** - Rolls an n-sided die, m times and displays the result
 
 **-- Chatbot**
 Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
 
-For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) repo`;
+*For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) repo*`;
       message.channel.send({embed:new Discord.RichEmbed()
         .setTitle(`${message.guild.me.displayName} Commands:`)
         .setDescription(desc)
-        .setImage('http://i.imgur.com/a96NGOY.png')
+        // .setImage('http://i.imgur.com/a96NGOY.png')
         .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
   }
 
@@ -622,6 +622,8 @@ For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) r
                 songQueue.push(body.items[i]);
               }
               songQueue = songQueue.reverse();
+              if (args[1] && args[1].toLowerCase()==='shuffle')
+                songQueue = lib.durstenfeldShuffle(songQueue);
 
               let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
               if (vconnec) {
