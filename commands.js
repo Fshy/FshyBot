@@ -306,7 +306,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
     }).auth(config.myAnimeList.user, config.myAnimeList.password);
   }
 
-  danbooru(guildPrefix,args,rating,amount,message) {
+  danbooru(guildPrefix,args,rating,message) {
     var tag1 = '';
     var tag2 = '';
     var tag = '';
@@ -336,16 +336,16 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
     }
     if ((tag.toLowerCase().match(/kanna/g) && rating==='e') || (tag.toLowerCase().match(/kamui/g) && rating==='e'))
       return message.channel.send(lib.embed(`Don't lewd the dragon loli`,message));
-    request(`https://danbooru.donmai.us/posts.json?tags=${tag}&rating=${rating}&limit=${amount}`, function (error, response, body) {
+    request(`https://danbooru.donmai.us/posts.json?tags=${tag}&rating=${rating}&limit=1&random=true`, function (error, response, body) {
       body = JSON.parse(body);
       if (error!=null) {
         message.channel.send(lib.embed(`**ERROR:** Could not access Danbooru API`,message));
       }else {
-        var random = Math.floor(Math.random() * body.length);//Picks one randomly to post
-        if (body[random]) {
+        if (body[0]) {
+          var post = body[0];
           message.channel.send({embed:new Discord.RichEmbed()
-            .setImage(`http://danbooru.donmai.us${body[random].file_url}`)
-            .setDescription(`Artist: ${body[random].tag_string_artist} | [Source](https://danbooru.donmai.us/posts/${body[random].id}) | [Original Source](${body[random].source})`)
+            .setImage(`http://danbooru.donmai.us${post.file_url}`)
+            .setDescription(`Artist: ${post.tag_string_artist} | [Source](https://danbooru.donmai.us/posts/${post.id}) | [Original Source](${post.source})`)
             .setFooter(`Not what you expected? Try using ${guildPrefix}tags ${tag1} ${tag2 ? `or ${guildPrefix}tags ${tag2}`:``}`)
             .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
         }else {//no posts found -- so lets see if any of the tags are invalid and display subsequent suggestions
@@ -354,14 +354,11 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
           var sugg = '';
 
           request(`https://danbooru.donmai.us/tags.json?search[name]=${tag1}`, function (e, r, b) {//validate tag 1
-            // b = JSON.parse(b);
             if (b!=='[]') {//tag is valid
               // console.log('tag 1 valid');
               request(`https://danbooru.donmai.us/tags.json?search[name]=${tag2}`, function (e, r, b) {//validate tag 2
-                // b = JSON.parse(b);
                 if (b!=='[]') {//tag is valid
                   // console.log('tag 2 valid');
-                  // console.log(sugg);
                   message.channel.send(lib.embed(`**ERROR:** Could not find posts matching ${tag2? `**${tag1}** and **${tag2}**`:`**${tag1}**`}\n\nMaybe try some different tags.`,message));
                 }else {//tag is invalid -- do an autocomplete lookup
                   // console.log('tag 2 invalid');
@@ -375,7 +372,6 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
                       sugg += 'None found\n';
                     }
                   }).auth(config.danbooru.login, config.danbooru.api_key);
-                  // console.log(sugg);
                   message.channel.send(lib.embed(`**ERROR:** Could not find posts matching ${tag2? `**${tag1}** and **${tag2}**`:`**${tag1}**`}\n\nTry re-wording the parameters with the **${guildPrefix}tags [search term]** command to find what you're looking for\n\nHere are some suggestions we generated:\n\`\`\`${sugg}\`\`\``,message));
                 }
               }).auth(config.danbooru.login, config.danbooru.api_key);
@@ -391,12 +387,9 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
                   sugg += 'None found\n';
                 }
                 request(`https://danbooru.donmai.us/tags.json?search[name]=${tag2}`, function (e, r, b) {//validate tag 2
-                  // b = JSON.parse(b);
                   if (b!=='[]') {//tag is valid
                     // console.log('tag 2 valid');
-                    // console.log(sugg);
                     message.channel.send(lib.embed(`**ERROR:** Could not find posts matching ${tag2? `**${tag1}** and **${tag2}**`:`**${tag1}**`}\n\nMaybe try some different tags.`,message));
-
                   }else {//tag is invalid -- do an autocomplete lookup
                     // console.log('tag 2 invalid');
                     sugg += `--- Suggested tags for ${tag2}\n`;
@@ -408,7 +401,6 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
                       }else {
                         sugg += 'None found\n';
                       }
-                      // console.log(sugg);
                       message.channel.send(lib.embed(`**ERROR:** Could not find posts matching ${tag2? `**${tag1}** and **${tag2}**`:`**${tag1}**`}\n\nTry re-wording the parameters with the **${guildPrefix}tags [search term]** command to find what you're looking for\n\nHere are some suggestions we generated:\n\`\`\`${sugg}\`\`\``,message));
                     }).auth(config.danbooru.login, config.danbooru.api_key);
                   }
@@ -427,7 +419,6 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
       tag += `*${args[i]}*+`;
     }
     tag = tag.slice(0,tag.length-1);
-    // var tag = args.join('_');
     request(`http://danbooru.donmai.us/tags/autocomplete.json?search[name_matches]=*${tag}*`, function (e, r, b) {
       var suggestions = '';
       b = JSON.parse(b);

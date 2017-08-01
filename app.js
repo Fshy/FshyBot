@@ -293,9 +293,9 @@ client.on('message', (message)=>{
 
     // Anime/NSFW
     case 'anime':       return commands.anime(args,message);
-    case 'sfw':         return commands.danbooru(guildPrefix,args,`s`,250,message);
+    case 'sfw':         return commands.danbooru(guildPrefix,args,`s`,message);
     case 'nsfw':
-    case 'lewd':        return commands.danbooru(guildPrefix,args,`e`,250,message);
+    case 'lewd':        return commands.danbooru(guildPrefix,args,`e`,message);
     case 'tags':        return commands.danbooruTags(args,message);
     case '2b':          return commands.img2B(guildPrefix,args,message);
     case 'smug':        return commands.smug(message);
