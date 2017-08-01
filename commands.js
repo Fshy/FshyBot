@@ -472,9 +472,9 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
   img2B(guildPrefix,args,message){
     message.content=`! yorha_no._2_type_b`;
     if(args[0]==='nsfw')
-      this.danbooru(guildPrefix,[`yorha_no._2_type_b`],`e`,100,message);
+      this.danbooru(guildPrefix,[`yorha_no._2_type_b`],`e`,message);
     else
-      this.danbooru(guildPrefix,[`yorha_no._2_type_b`],`s`,100,message);
+      this.danbooru(guildPrefix,[`yorha_no._2_type_b`],`s`,message);
   }
 
   setName(client,args,message){
