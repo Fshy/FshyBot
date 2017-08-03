@@ -655,6 +655,64 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
 
             }
           });
+        }else {
+          let expr = args.join('+');
+          request(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${expr}&type=playlist&key=${config.youtube.apiKey}`, function (error, response, body) {
+            if (!JSON.parse(body).items[0]) return message.channel.send(lib.embed(`**ERROR:** No playlists found in search results`,message));
+            let match = JSON.parse(body).items[0].id.playlistId;
+            request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${match}&maxResults=50&key=${config.youtube.apiKey}`, function (error, response, body) {
+              if (error!=null) {
+                message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
+              }else {
+                var songQueue = [];
+                body = JSON.parse(body);
+                for (var i = 0; i < body.items.length; i++) {
+                  songQueue.push(body.items[i]);
+                }
+                songQueue = songQueue.reverse();
+                if (args[1] && args[1].toLowerCase()==='shuffle')
+                  songQueue = lib.durstenfeldShuffle(songQueue);
+
+                let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+                if (vconnec) {
+                  let dispatch = vconnec.player.dispatcher;
+                  if (dispatch){
+                    lib.clearQueue(guildsMap,client,message);
+                    dispatch.end();
+                  }
+                }
+
+                var gm = guildsMap.get(message.guild.id)
+                gm.songQueue=songQueue;
+                guildsMap.set(message.guild.id,gm);
+                if (gm.songQueue.length===0) return;
+                request(`https://www.googleapis.com/youtube/v3/playlists?part=id,snippet&id=${match}&key=${config.youtube.apiKey}`, function (error, response, body) {
+                  if (error!=null) {
+                    message.channel.send(lib.embed(`**ERROR:** Could not access YouTube API`,message));
+                  }else {
+                    body = JSON.parse(body);
+                    if (!body.items[0]) return;
+                    message.channel.send({embed:new Discord.RichEmbed()
+                      .setDescription(`:pager: **Playlist:** [${body.items[0].snippet.title}](https://www.youtube.com/playlist?list=${body.items[0].id}) - 0/${songQueue.length}\n:headphones: **Playing:** -------------------- Loading --------------------`)
+                      .setThumbnail(body.items[0].snippet.thumbnails.default.url)
+                      .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)})
+                      .then(initMsg => {
+                        initMsg.react('⏯').then(r => {
+                          initMsg.react('⏭').then(r => {
+                            initMsg.react('⏹').then(r => {
+                              initMsg.react('❌').then(r => {
+                                lib.queuePlayback(ytdl,guildsMap,voiceChannel,client,message,initMsg,body.items[0],{pos:0,pSize:songQueue.length});
+                              });
+                            });
+                          });
+                        });
+                      });
+                  }
+                });
+
+              }
+            });
+          });
         }
       }else{
         message.channel.send(lib.embed(`**ERROR:** Please specify a playlist link as a parameter`,message));
