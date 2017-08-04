@@ -32,6 +32,9 @@
     "login":              "DANBOORU_USERNAME",
     "api_key":            "DANBOORU_API_KEY"
   },
+  "pubg":{
+    "apiKey":             "PUBG_TRACKER_API_KEY"
+  },
   "radio": [
     {"title":"Odyssey Radio",           "genre":"Anime",            "url":"https://listen.moe/stream",                                "tuneinId":"s277012"},
     {"title":"Real Hardstyle Radio",    "genre":"Hardstyle",        "url":"http://stream2.rhr.fm/rhrfm",                              "tuneinId":"s193826"},

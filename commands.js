@@ -1076,20 +1076,29 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
 
   insta(args,message){
     if (args[0]) {
-      const instagramPosts = require('instagram-posts');
-      instagramPosts(args[0],{
-      	filter: data => data.type === 'image'
-      }).then(posts => {
-        if (posts[0]) {
-          message.channel.send({embed:new Discord.RichEmbed()
-            .setAuthor(`@${posts[0].username}`)
-            .setDescription(`https://www.instagram.com/p/${posts[0].id}\n${posts[0].text}`)
-            .setImage(posts[0].media)
-            .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-        }else {
-          message.channel.send(lib.embed(`**ERROR:** Could not retrieve any images for @${args[0]}`,message));
+      const scraper = require('insta-scraper');
+      scraper.getAccountInfo(args[0], function(error,response){
+        if (response.is_private)
+        return message.channel.send({embed:new Discord.RichEmbed()
+              .setAuthor(`@${response.username} | ${response.full_name}`,response.profile_pic_url,`https://www.instagram.com/${response.username}`)
+              .setDescription(`**ERROR:** User is a private account`)
+              .setImage(response.profile_pic_url_hd)
+              .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+
+        for (var i = 0; i < response.media.nodes.length; i++) {
+          if (!response.media.nodes[i].is_video) {
+            var post = response.media.nodes[i];
+            message.channel.send({embed:new Discord.RichEmbed()
+                  .setAuthor(`@${response.username} | ${response.full_name}`,response.profile_pic_url,`https://www.instagram.com/${response.username}`)
+                  .setDescription(`https://www.instagram.com/p/${post.code}\n${post.caption}`)
+                  .setImage(post.display_src)
+                  .setFooter(`♥ ${post.likes.count} | 💬 ${post.comments.count}`)
+                  .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+            break;
+          }
         }
-      });
+        if(i>=response.media.nodes.length) message.channel.send(lib.embed(`**ERROR:** No recent image posts found for @${args[0]}`,message));
+      })
     }else {
       message.channel.send(lib.embed(`**Usage:** !insta [username]`,message));
     }
@@ -1097,63 +1106,41 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
 
   pubg(scraper,args,message){
     if (args[0]) {
-      if (args[1]) {
-        scraper(`https://pubg.me/player/${args[0]}?region=${args[1].toLowerCase()}`, {
-            username: ".username-header h1",
-            avatar: {
-              selector: ".steam-avatar",
-              attr: "src"
-            },
-            soloRating: ".profile-match-overview-solo .stat-blue .value",
-            soloKD: ".profile-match-overview-solo .stat-red .value",
-            duoRating: ".profile-match-overview-duo .stat-blue .value",
-            duoKD: ".profile-match-overview-duo .stat-red .value",
-            squadRating: ".profile-match-overview-squad .stat-blue .value",
-            squadKD: ".profile-match-overview-squad .stat-red .value"
-        }).then(stats => {
-            if (stats.username) {
-              message.channel.send({embed:new Discord.RichEmbed()
-                .setAuthor(`PUBG.ME | ${stats.username}`,stats.avatar)
-                .addField(`Solo`,`${stats.soloRating ? `${stats.soloRating}`:'N/A'} Rating`,true)
-                .addField(`Duo`,`${stats.duoRating ? `${stats.duoRating}`:'N/A'} Rating`,true)
-                .addField(`Squad`,`${stats.squadRating ? `${stats.squadRating}`:'N/A'} Rating`,true)
-                .addField('­',`${stats.soloKD ? `${stats.soloKD}`:'0.00'} K/D`,true)
-                .addField('­',`${stats.duoKD ? `${stats.duoKD}`:'0.00'} K/D`,true)
-                .addField('­',`${stats.squadKD ? `${stats.squadKD}`:'0.00'} K/D`,true)
+      const {PubgAPI, PubgAPIErrors} = require('pubg-api-redis');
+      const api = new PubgAPI({apikey: config.pubg.apiKey});
+
+      api.profile.byNickname(args[0]).then((data) => {
+        var regionStats = [];
+        var region = '';
+
+        if (args[1])
+          region = args[1];
+        else
+          region = data.selectedRegion;
+
+        for (var i = 0; i < data.Stats.length; i++) {
+          if (data.Stats[i].Region===region && data.Stats[i].Season===data.defaultSeason)
+            regionStats.push(data.Stats[i]);
+        }
+        var statArray = ['KillDeathRatio','Rating'];
+        var desc = ``;
+        for (var i = 0; i < regionStats.length; i++) {
+          desc += `\`\`\`\n${regionStats[i].Match.toUpperCase()}\n--------------------------------------------------------\n`;
+          for (var j = 0; j < regionStats[i].Stats.length; j++) {
+            if (statArray.includes(regionStats[i].Stats[j].field))
+              desc += `${regionStats[i].Stats[j].label}: ${regionStats[i].Stats[j].displayValue}\n`;
+            if (regionStats[i].Stats[j].field==='Rating')
+              desc += `Rank: ${parseInt(regionStats[i].Stats[j].rank).toLocaleString()}\n`;
+          }
+          desc += `\`\`\``;
+        }
+        message.channel.send({embed:new Discord.RichEmbed()
+                .setAuthor(`${data.PlayerName}`,data.Avatar)
+                .setDescription(`**Region:** ${region.toUpperCase()} | **Season:** ${data.seasonDisplay}\n${desc!==''? desc:`\`\`\`No stats recorded for ${data.PlayerName} on ${region.toUpperCase()}\n\nMaybe try using !pubg <username> <region>\nRegions: NA,SA,EU,AS,SEA,OC\`\`\``}`)
                 .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-            }else {
-              message.channel.send(lib.embed(`**ERROR:** Could not retrieve stats for ${args[0]}`,message));
-            }
-        });
-      }else {
-        scraper(`https://pubg.me/player/${args[0]}`, {
-            username: ".username-header h1",
-            avatar: {
-              selector: ".steam-avatar",
-              attr: "src"
-            },
-            soloRating: ".profile-match-overview-solo .stat-blue .value",
-            soloKD: ".profile-match-overview-solo .stat-red .value",
-            duoRating: ".profile-match-overview-duo .stat-blue .value",
-            duoKD: ".profile-match-overview-duo .stat-red .value",
-            squadRating: ".profile-match-overview-squad .stat-blue .value",
-            squadKD: ".profile-match-overview-squad .stat-red .value"
-        }).then(stats => {
-            if (stats.username) {
-              message.channel.send({embed:new Discord.RichEmbed()
-                .setAuthor(`PUBG.ME | ${stats.username}`,stats.avatar)
-                .addField(`Solo`,`${stats.soloRating ? `${stats.soloRating}`:'N/A'} Rating`,true)
-                .addField(`Duo`,`${stats.duoRating ? `${stats.duoRating}`:'N/A'} Rating`,true)
-                .addField(`Squad`,`${stats.squadRating ? `${stats.squadRating}`:'N/A'} Rating`,true)
-                .addField('­',`${stats.soloKD ? `${stats.soloKD}`:'0.00'} K/D`,true)
-                .addField('­',`${stats.duoKD ? `${stats.duoKD}`:'0.00'} K/D`,true)
-                .addField('­',`${stats.squadKD ? `${stats.squadKD}`:'0.00'} K/D`,true)
-                .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-            }else {
-              message.channel.send(lib.embed(`**ERROR:** Could not retrieve stats for ${args[0]}`,message));
-            }
-        });
-      }
+      }).catch((e) => {
+        message.channel.send(lib.embed(`**ERROR:** ${e.message}`,message));
+      });
     }else {
       message.channel.send(lib.embed(`**Usage:** !pubg [username]`,message));
     }

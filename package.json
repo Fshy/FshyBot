@@ -1,6 +1,6 @@
 {
   "name": "fshybot",
-  "version": "1.6.22",
+  "version": "1.6.23",
   "description": "Discord Bot",
   "main": "app.js",
   "dependencies": {
@@ -9,11 +9,12 @@
     "erlpack": "github:hammerandchisel/erlpack",
     "ffmpeg-binaries": "^3.2.2",
     "he": "^1.1.1",
-    "instagram-posts": "^1.0.0",
+    "insta-scraper": "^1.0.2",
     "libsodium-wrappers": "^0.5.2",
     "lodash": "^4.17.4",
     "mathjs": "^3.13.1",
     "node-opus": "^0.2.6",
+    "pubg-api-redis": "^1.0.4",
     "request": "^2.81.0",
     "scrape-it": "^3.3.2",
     "snoowrap": "^1.14.0",
