@@ -1136,7 +1136,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         }
         message.channel.send({embed:new Discord.RichEmbed()
                 .setAuthor(`${data.PlayerName}`,data.Avatar)
-                .setDescription(`**Region:** ${region.toUpperCase()} | **Season:** ${data.seasonDisplay}\n${desc!==''? desc:`\`\`\`No stats recorded for ${data.PlayerName} on ${region.toUpperCase()}\n\nMaybe try using ${guildsMap.get(message.guild.id).prefix}pubg <username> <region>\nRegions: NA,SA,EU,AS,SEA,OC\`\`\``}`)
+                .setDescription(`**Region:** ${region ? region.toUpperCase():'---'} | **Season:** ${data.seasonDisplay}\n${desc!==''? desc:`\`\`\`No stats recorded for ${data.PlayerName} ${region ? `on ${region.toUpperCase()}`:''}\n\nMaybe try using ${guildsMap.get(message.guild.id).prefix}pubg <username> <region>\nRegions: NA,SA,EU,AS,SEA,OC\`\`\``}`)
                 .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
       }).catch((e) => {
         message.channel.send(lib.embed(`**ERROR:** ${e.message}`,message));

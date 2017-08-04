@@ -237,6 +237,7 @@ client.on('message', (message)=>{
     // TODO Perform check if guildRecords.json exists on ready
     // TODO Trim paramters using guildPrefix => guildsMap.get(message.guild.id).prefix
     // TODO Process guildsMap as a global variable
+    // TODO Catch errors from promises
 
     // General
     case 'help':        return commands.help(guildPrefix,message);
