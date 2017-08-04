@@ -252,7 +252,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
           for (var i = 0; i < coinStack.length; i++) {
             desc.push({name:'­', value:`${coinStack[i].Name}\t-\t${coinStack[i].CoinName}`});
           }
-          message.channel.send({embed:{title: `Usage: !crypto [coin] or !crypto [coin] [amount]`, description:'Current Popular Cryptocurrencies:\n', fields: desc, color: 15514833}});
+          message.channel.send({embed:{title: `Usage: !crypto <coin> or !crypto <coin> <amount>`, description:'Current Popular Cryptocurrencies:\n', fields: desc, color: 15514833}});
           //
         }
       });
@@ -1100,11 +1100,11 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         if(i>=response.media.nodes.length) message.channel.send(lib.embed(`**ERROR:** No recent image posts found for @${args[0]}`,message));
       })
     }else {
-      message.channel.send(lib.embed(`**Usage:** !insta [username]`,message));
+      message.channel.send(lib.embed(`**Usage:** !insta <username>`,message));
     }
   }
 
-  pubg(scraper,args,message){
+  pubg(args,message){
     if (args[0]) {
       const {PubgAPI, PubgAPIErrors} = require('pubg-api-redis');
       const api = new PubgAPI({apikey: config.pubg.apiKey});
@@ -1136,13 +1136,13 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         }
         message.channel.send({embed:new Discord.RichEmbed()
                 .setAuthor(`${data.PlayerName}`,data.Avatar)
-                .setDescription(`**Region:** ${region.toUpperCase()} | **Season:** ${data.seasonDisplay}\n${desc!==''? desc:`\`\`\`No stats recorded for ${data.PlayerName} on ${region.toUpperCase()}\n\nMaybe try using !pubg <username> <region>\nRegions: NA,SA,EU,AS,SEA,OC\`\`\``}`)
+                .setDescription(`**Region:** ${region.toUpperCase()} | **Season:** ${data.seasonDisplay}\n${desc!==''? desc:`\`\`\`No stats recorded for ${data.PlayerName} on ${region.toUpperCase()}\n\nMaybe try using ${guildsMap.get(message.guild.id).prefix}pubg <username> <region>\nRegions: NA,SA,EU,AS,SEA,OC\`\`\``}`)
                 .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
       }).catch((e) => {
         message.channel.send(lib.embed(`**ERROR:** ${e.message}`,message));
       });
     }else {
-      message.channel.send(lib.embed(`**Usage:** !pubg [username]`,message));
+      message.channel.send(lib.embed(`**Usage:** !pubg <username>`,message));
     }
   }
 

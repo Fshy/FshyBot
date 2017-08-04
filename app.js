@@ -7,7 +7,6 @@ const fs        = require('fs');
 const ytdl      = require('ytdl-core');
 const snoowrap  = require('snoowrap');
 const math      = require('mathjs');
-const scraper   = require("scrape-it");
 const winston   = require('winston');
 const config    = require('./config');
 const version   = require('./package').version;
@@ -28,7 +27,7 @@ winston.configure({
 const client    = new Discord.Client();
 const reddit    = new snoowrap(config.reddit);
 
-var guildsMap = new Map();
+global.guildsMap = new Map();
 var timer;
 
 client.login(config.token);
@@ -223,30 +222,21 @@ client.on('message', (message)=>{
   switch (command.toLowerCase()) {
 
     // TO-DO List
-    // --1
+    // TODO Modularize Commands
     // Notes: These commands may not disabled themselves | Require MANAGE_GUILD Perms
     // case 'disable':     return commands.disableCommand(guildDB,guildsMap,guildPrefix,args,message);
     // case 'enable':      return commands.enableCommand(guildDB,guildsMap,guildPrefix,args,message);
-    // --2
-    // Apply a SEND_MESSAGES check before attempting output
-    // --3
-    // Adjust Embed Colours based on message type (success, error, warning, info)
-    // --4
-    // Use createReactionCollector() to generate timed responses/polls
-    // --5
-    // Check that [current version < stable version] before allowing !update
-    // --6
-    // Winston logs implement users @mentions
-    // --7
-    // Start logging messages per user
-    // --8
-    // Implement controls for stream
-    // --9
-    // Localization on a per-guild basis
-    // --10
-    // Perform check if guildRecords.json exists on ready
-    // --11
-    // Catch instagram errors
+    // TODO Apply a SEND_MESSAGES check before attempting output
+    // TODO Adjust Embed Colours based on message type (success, error, warning, info)
+    // TODO Use createReactionCollector() to generate timed responses/polls
+    // TODO Check that [current version < stable version] before allowing !update
+    // TODO Winston logs implement users @mentions
+    // TODO Start logging messages per user
+    // TODO Implement controls for stream
+    // TODO Localization on a per-guild basis
+    // TODO Perform check if guildRecords.json exists on ready
+    // TODO Trim paramters using guildPrefix => guildsMap.get(message.guild.id).prefix
+    // TODO Process guildsMap as a global variable
 
     // General
     case 'help':        return commands.help(guildPrefix,message);
@@ -284,7 +274,7 @@ client.on('message', (message)=>{
     case 'nowplaying':  return commands.nowPlaying(guildsMap,message);
 
     // PUBG
-    case 'pubg':        return commands.pubg(scraper,args,message);
+    case 'pubg':        return commands.pubg(args,message);
 
     // Web APIs
     case 'r':           return commands.rslash(reddit,guildPrefix,message,args);
