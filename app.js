@@ -229,7 +229,7 @@ client.on('message', (message)=>{
     // TODO Apply a SEND_MESSAGES check before attempting output
     // TODO Adjust Embed Colours based on message type (success, error, warning, info)
     // TODO Use createReactionCollector() to generate timed responses/polls
-    // TODO Check that [current version < stable version] before allowing !update
+    // TODO Check that [current version < stable version] before allowing !update | Display changelog/commit messages
     // TODO Winston logs implement users @mentions
     // TODO Start logging messages per user
     // TODO Implement controls for stream
@@ -238,6 +238,8 @@ client.on('message', (message)=>{
     // TODO Trim paramters using guildPrefix => guildsMap.get(message.guild.id).prefix
     // TODO Process guildsMap as a global variable
     // TODO Catch errors from promises
+    // TODO Implement ReactionCollector for upvote/downvote system with images & moderation
+    // TODO Instagram lookup by hashtags or location
 
     // General
     case 'help':        return commands.help(guildPrefix,message);
