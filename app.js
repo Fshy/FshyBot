@@ -5,7 +5,6 @@ const Discord   = require('discord.js');
 const _         = require('lodash/core');
 const fs        = require('fs');
 const ytdl      = require('ytdl-core');
-const snoowrap  = require('snoowrap');
 const math      = require('mathjs');
 const winston   = require('winston');
 const config    = require('./config');
@@ -24,10 +23,8 @@ winston.configure({
   ]
 });
 
-const client    = new Discord.Client();
-const reddit    = new snoowrap(config.reddit);
-
 global.guildsMap = new Map();
+global.client    = new Discord.Client();
 var timer;
 
 client.login(config.token);
@@ -272,7 +269,7 @@ client.on('message', (message)=>{
     case 'pause':       return commands.pause(client,message);
     case 'resume':      return commands.resume(client,message);
     case 'stream':      return commands.stream(guildsMap,client,args,message);
-    case 'radio':       return commands.radio(client,guildPrefix,guildsMap,args,message);
+    case 'radio':       return commands.radio(guildsMap,args,message);
     case 'np':
     case 'nowplaying':  return commands.nowPlaying(guildsMap,message);
 
@@ -280,7 +277,7 @@ client.on('message', (message)=>{
     case 'pubg':        return commands.pubg(args,message);
 
     // Web APIs
-    case 'r':           return commands.rslash(reddit,guildPrefix,message,args);
+    case 'r':           return commands.rslash(guildPrefix,message,args);
     case 'crypto':      return commands.coin(args,message);
     case 'insta':       return commands.insta(args,message);
 

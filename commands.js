@@ -437,7 +437,9 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
     });
   }
 
-  rslash(reddit,guildPrefix,message,args) {
+  rslash(guildPrefix,message,args) {
+    const snoowrap  = require('snoowrap');
+    const reddit    = new snoowrap(config.reddit);
     if (args[0]) {
       reddit.getSubreddit(args[0]).getHot().then(function (data) {
         if (data[0].url) {
@@ -465,7 +467,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         }
       });
     }else {
-      message.channel.send(lib.embed(`**ERROR:** No subreddit specified | Use ${guildPrefix}r [subreddit]`,message));
+      message.channel.send(lib.embed(`**Usage:** ${guildPrefix}r <subreddit>`,message));
     }
   }
 
@@ -756,7 +758,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
               }
               client.setTimeout(function () {
                 voiceChannel.join().then(connnection => {
-                  var dispatcher = connnection.playStream(stream, {passes:2});
+                  var dispatcher = connnection.playStream(stream, {passes:2, volume:0.15});
                   message.channel.send({embed:new Discord.RichEmbed()
                     .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.member.nickname ? `${message.member.displayName} (${message.author.username})` : message.author.username}`)
                     .setThumbnail(res.snippet.thumbnails.default.url)
@@ -793,7 +795,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
               }
               client.setTimeout(function () {
                 voiceChannel.join().then(connnection => {
-                  var dispatcher = connnection.playStream(stream, {passes:2});
+                  var dispatcher = connnection.playStream(stream, {passes:2, volume:0.15});
                   message.channel.send({embed:new Discord.RichEmbed()
                     .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.member.nickname ? `${message.member.displayName} (${message.author.username})` : message.author.username}`)
                     .setThumbnail(res.snippet.thumbnails.default.url)
@@ -837,7 +839,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         if (args[0].startsWith('https')) {
           require('https').get(args[0], (res) => {
             voiceChannel.join().then(connnection => {
-              var dispatcher = connnection.playStream(res, {passes:2});
+              var dispatcher = connnection.playStream(res, {passes:2, volume:0.15});
               dispatcher.on('end', () => {
                 var np = guildsMap.get(message.guild.id);
                 if (np) delete np.playing;
@@ -848,7 +850,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         }else {
           require('http').get(args[0], (res) => {
             voiceChannel.join().then(connnection => {
-              var dispatcher = connnection.playStream(res, {passes:2});
+              var dispatcher = connnection.playStream(res, {passes:2, volume:0.15});
               dispatcher.on('end', () => {
                 var np = guildsMap.get(message.guild.id);
                 if (np) delete np.playing;
@@ -908,7 +910,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
             });
             const song = logs[i];
             voiceChannel.join().then(vconnec => {
-              vconnec.playStream(stream, {passes:2});
+              vconnec.playStream(stream, {passes:2, volume:0.15});
               return message.channel.send(lib.embed(`:headphones: **Re-playing:** ${song.message}\n:speech_balloon: **Requested by:** ${guildMember.nickname ? `${guildMember.displayName} (${user.username})` : user.username}`,message));
             });
           }
@@ -956,11 +958,12 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
     }
   }
 
-  radio(client,guildPrefix,guildsMap,args,message){
+  radio(guildsMap,args,message){
+    var prefix = guildsMap.get(message.guild.id).prefix;
     var stream = this.stream;
     if (args[0]) {
       var choice = parseInt(args[0])-1;
-      if (choice<config.radio.length) {
+      if (choice>0 && choice<config.radio.length) {
         request(`https://feed.tunein.com/profiles/${config.radio[choice].tuneinId}/nowPlaying`, function (error, response, body) {
           if (error!=null) {
             message.channel.send(lib.embed(`**ERROR:** Could not access TuneIn API`,message));
@@ -971,7 +974,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
             guildData.playing = config.radio[choice].tuneinId;
             guildsMap.set(message.guild.id,guildData);
             message.channel.send({embed:new Discord.RichEmbed()
-              .setDescription(`:headphones: **Now Streaming:** ${config.radio[choice].title}\n${body.Secondary ? `**Currently Playing:** ${body.Secondary.Title}`:''}`)
+              .setDescription(`**Now Streaming:** ${config.radio[choice].title}\n${body.Secondary ? `**Currently Playing:**  ${body.Secondary.Title}`:''}`)
               .setThumbnail(body.Primary.Image)
               .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
           }
@@ -980,19 +983,22 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         message.channel.send(lib.embed(`**ERROR:** Selection does not exist`,message));
       }
     }else {
-      var desc = [];
+      var desc = ``;
       for (var i = 0; i < config.radio.length; i++) {
-        if (i===0) {
-          desc.push({name:'Command',        value:`${guildPrefix}radio ${i+1}`,            inline:true});
-          desc.push({name:'Radio Station',  value:`${config.radio[i].title}`, inline:true});
-          desc.push({name:'Genre',          value:`${config.radio[i].genre}`, inline:true});
-        }else {
-          desc.push({name:'­', value:`${guildPrefix}radio ${i+1}`,             inline:true});
-          desc.push({name:'­', value:`${config.radio[i].title}`,  inline:true});
-          desc.push({name:'­', value:`${config.radio[i].genre}`,  inline:true});
+        var commandPadding = '';
+        var titlePadding = '';
+        for (var x = prefix.length+('radio').length+(i+1).toString().length; x < 11; x++) {
+          commandPadding+=' ';
         }
+        for (var x = config.radio[i].title.length; x < 30; x++) {
+          titlePadding+=' ';
+        }
+        desc += `${guildsMap.get(message.guild.id).prefix}radio ${i+1}${commandPadding} | ${config.radio[i].title}${titlePadding} | ${config.radio[i].genre}\n`;
       }
-      message.channel.send({embed:{title: `:radio: Programmed Stations:`, description:'\n', fields: desc, color: 15514833}});
+      message.channel.send({embed:new Discord.RichEmbed()
+        .setTitle(`:radio: Programmed Stations:`)
+        .setDescription(`\`\`\`Command      | Radio Station                  | Genre\n-------------------------------------------------------------\n${desc}\`\`\``)
+        .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
     }
   }
 
