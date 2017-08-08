@@ -611,6 +611,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
             }else {
               var songQueue = [];
               body = JSON.parse(body);
+              if (!body.items[0]) return message.channel.send(lib.embed(`**ERROR:** Could not process playlist items`,message));
               for (var i = 0; i < body.items.length; i++) {
                 songQueue.push(body.items[i]);
               }
