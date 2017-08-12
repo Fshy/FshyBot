@@ -36,20 +36,21 @@
     "apiKey":             "PUBG_TRACKER_API_KEY"
   },
   "radio": [
-    {"title":"Odyssey Radio",             "genre":"Anime",            "url":"https://listen.moe/stream",                                "tuneinId":"s277012"},
-    {"title":"Real Hardstyle Radio",      "genre":"Hardstyle",        "url":"http://stream2.rhr.fm/rhrfm",                              "tuneinId":"s193826"},
-    {"title":"Progressive.Beats",         "genre":"Electronic",       "url":"http://radio.progressivebeats.org:8050/",                  "tuneinId":"s239124"},
-    {"title":"181.FM The Eagle",          "genre":"Classic Hits",     "url":"http://listen.181fm.com/181-eagle_64k.aac",                "tuneinId":"s55021"},
-    {"title":"Radio ROKS Rock Ballads",   "genre":"Classic Hits",     "url":"http://online-radioroks2.tavrmedia.ua/RadioROKS_Ballads",  "tuneinId":"s212936"},
-    {"title":"AlternativeRadio.us",       "genre":"Alternative",      "url":"http://audiovision.cdnstream1.com/alt64k",                 "tuneinId":"s221580"},
-    {"title":"181.FM Lite 80's",          "genre":"80s",              "url":"http://listen.181fm.com/181-lite80s_64k.aac",              "tuneinId":"s89818"},
-    {"title":".977 80's Hits",            "genre":"80s",              "url":"http://19353.live.streamtheworld.com/977_80_SC",           "tuneinId":"s17339"},
-    {"title":".977 90's Hits",            "genre":"90s",              "url":"http://19353.live.streamtheworld.com/977_90AAC_SC",        "tuneinId":"s89818"},
-    {"title":".977 Hip Hop/RNB",          "genre":"HipHop",           "url":"http://19353.live.streamtheworld.com:3690/977_JAMZ_SC",    "tuneinId":"s111778"},
-    {"title":"181.FM The Box (Urban)",    "genre":"HipHop",           "url":"http://listen.181fm.com/181-thebox_64k.aac",               "tuneinId":"s90460"},
-    {"title":"Streetz 108",               "genre":"HipHop",           "url":"http://14123.live.streamtheworld.com/SAM10AAC137_SC",      "tuneinId":"s210900"},
-    {"title":"Hip-Hop Request",           "genre":"HipHop",           "url":"http://149.56.175.167:5461/",                              "tuneinId":"s287106"},
-    {"title":"RPGN Game Music Radio",     "genre":"Soundtrack",       "url":"http://stream.rpgamers.net:8000/rpgn",                     "tuneinId":"s209618"},
-    {"title":"Final Fantasy Radio",       "genre":"Soundtrack",       "url":"http://finalfantasystation.com:8000/stream.mp3",           "tuneinId":"s180358"}
+    {"title":"Odyssey Radio",             "genre":"Anime",            "url":"https://listen.moe/stream",                                     "tuneinId":"s277012"},
+    {"title":"Real Hardstyle Radio",      "genre":"Hardstyle",        "url":"http://stream2.rhr.fm/rhrfm",                                    "tuneinId":"s193826"},
+    {"title":"Progressive.Beats",         "genre":"Electronic",       "url":"http://radio.progressivebeats.org:8050/",                        "tuneinId":"s239124"},
+    {"title":"181.FM The Eagle",          "genre":"Classic Hits",     "url":"http://listen.181fm.com/181-eagle_64k.aac?noPreRoll=true",       "tuneinId":"s55021"},
+    {"title":"181.FM Classic Hits",       "genre":"Classic Hits",     "url":"http://listen.181fm.com/181-greatoldies_64k.aac?noPreRoll=true", "tuneinId":"s55022"},
+    {"title":"Radio ROKS Rock Ballads",   "genre":"Classic Hits",     "url":"http://online-radioroks2.tavrmedia.ua/RadioROKS_Ballads",        "tuneinId":"s212936"},
+    {"title":"AlternativeRadio.us",       "genre":"Alternative",      "url":"http://audiovision.cdnstream1.com/alt128k",                      "tuneinId":"s221580"},
+    {"title":"181.FM Lite 80's",          "genre":"80s",              "url":"http://listen.181fm.com/181-lite80s_64k.aac?noPreRoll=true",     "tuneinId":"s89818"},
+    {"title":".977 80's Hits",            "genre":"80s",              "url":"http://19353.live.streamtheworld.com/977_80_SC",                 "tuneinId":"s17339"},
+    {"title":".977 90's Hits",            "genre":"90s",              "url":"http://19353.live.streamtheworld.com/977_90AAC_SC",              "tuneinId":"s89818"},
+    {"title":".977 Hip Hop/RNB",          "genre":"HipHop",           "url":"http://19353.live.streamtheworld.com:3690/977_JAMZ_SC",          "tuneinId":"s111778"},
+    {"title":"181.FM The Box (Urban)",    "genre":"HipHop",           "url":"http://listen.181fm.com/181-thebox_64k.aac?noPreRoll=true",      "tuneinId":"s90460"},
+    {"title":"Streetz 108",               "genre":"HipHop",           "url":"http://14123.live.streamtheworld.com/SAM10AAC137_SC",            "tuneinId":"s210900"},
+    {"title":"Hip-Hop Request",           "genre":"HipHop",           "url":"http://149.56.175.167:5461/",                                    "tuneinId":"s287106"},
+    {"title":"RPGN Game Music Radio",     "genre":"Soundtrack",       "url":"http://stream.rpgamers.net:8000/rpgn",                           "tuneinId":"s209618"},
+    {"title":"Final Fantasy Radio",       "genre":"Soundtrack",       "url":"http://finalfantasystation.com:8000/stream.mp3",                 "tuneinId":"s180358"}
   ]
 }
