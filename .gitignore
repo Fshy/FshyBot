@@ -1,6 +1,5 @@
 # Logging and Databases
 winston.log
-guildRecords.json
 
 # Config
 config.json
