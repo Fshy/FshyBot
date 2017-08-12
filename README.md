@@ -96,6 +96,7 @@ Examples:
 
 * [Node.js](https://nodejs.org/en/download/) (Version 8.0.0 or newer)
 * [python 2.7](https://www.python.org/download/releases/2.7/)
+* [ffmpeg](https://www.ffmpeg.org/download.html)
 
 <h5>Windows:</h5>
 
@@ -111,8 +112,8 @@ npm install --global --production windows-build-tools
 $ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 $ sudo apt-get install -y nodejs
 
-#Install python2.7
-$ sudo apt-get install -y python2.7
+#Install python2.7 and ffmpeg
+$ sudo apt-get install -y python2.7 ffmpeg
 
 #Install required build tools (make, gcc)
 $ sudo apt-get install -y build-essential
