@@ -545,15 +545,28 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
 
   update(message){
     if (lib.checkOwner(message)) {
-      message.channel.send(lib.embed(`Updating...`,message));
-      lib.series([
-        'git fetch',
-        'git reset --hard origin/master',
-        'npm install --silent',
-        'pm2 restart all'
-      ], function(err){
-        if (err) {
-          console.log(err.message);
+      request('https://raw.githubusercontent.com/Fshy/FshyBot/master/package.json', function (error, response, body) {
+        response = JSON.parse(body);
+        if (error!=null) {
+          message.channel.send(lib.embed(`**ERROR:** Could not access repository`,message));
+        }else {
+          var version = require('./package').version;
+          if (response.version>version) {
+            //TODO Properly log each shell process/error to the end user
+            message.channel.send(lib.embed(`\`\`\`js\nCurrent:      ${version}\nLatest Build: ${response.version}\n\n// Updating from Fshy/FshyBot master Branch..\n// Installing Dependencies..\n// Restarting Script..\`\`\``,message));
+            lib.series([
+              'git fetch',
+              'git reset --hard origin/master',
+              'sudo npm install --silent',
+              'pm2 restart all'
+            ], function(err){
+              if (err) {
+                console.log(err.message);
+              }
+            });
+          }else {
+            message.channel.send(lib.embed(`\`\`\`js\nCurrent:      ${version}\nLatest Build: ${response.version}\n\n// Update Not Required\`\`\``,message));
+          }
         }
       });
     }else {
