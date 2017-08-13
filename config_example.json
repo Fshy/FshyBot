@@ -40,7 +40,7 @@
     {"title":"Real Hardstyle Radio",      "genre":"Hardstyle",        "url":"http://stream1.rhr.fm:8326",                                     "tuneinId":"s193826"},
     {"title":"Hardstyle FM",              "genre":"Hardstyle",        "url":"http://hardstylefm.shoutcaststream.com:8280",                    "tuneinId":"s261453"},
     {"title":"SLAM! Hardstyle",           "genre":"Hardstyle",        "url":"http://19643.live.streamtheworld.com/WEB11_AAC_SC",              "tuneinId":"s155542"},
-    {"title":"181.FM Energy 98",          "genre":"Electronic",       "url":"http://listen.181fm.com/181-energy98_128k.mp3",                  "tuneinId":"s95136"},
+    {"title":"181.FM Energy 98",          "genre":"Electronic",       "url":"http://listen.181fm.com/181-energy98_128k.mp3?noPreRoll=true",   "tuneinId":"s95136"},
     {"title":"ADR.FM - Electronic Dance", "genre":"Electronic",       "url":"http://listen.adr.fm/mp3_128",                                   "tuneinId":"s232826"},
     {"title":"181.FM The Eagle",          "genre":"Classic Hits",     "url":"http://listen.181fm.com/181-eagle_128k.mp3?noPreRoll=true",      "tuneinId":"s55021"},
     {"title":"Radio ROKS Rock Ballads",   "genre":"Classic Hits",     "url":"http://online-radioroks2.tavrmedia.ua/RadioROKS_Ballads",        "tuneinId":"s212936"},
