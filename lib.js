@@ -83,7 +83,7 @@ class Lib {
       delete guild.playing;
       delete guild.songQueue;
     });
-    fs.writeFile('guildRecords.json', JSON.stringify(guildObj), 'utf8', function (err,data) {
+    fs.writeFile('guildRecords.json', JSON.stringify(guildObj, null, '\t'), 'utf8', function (err,data) {
       if (err){
         console.log(err);
       }

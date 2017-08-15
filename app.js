@@ -30,15 +30,38 @@ var timer;
 client.login(config.token);
 
 client.on('ready', () => {
-  var fileMap = new Map(lib.readFileToMap());//Read from file
-  guildsMap = lib.readFileToMap();
-  var clientGuilds = client.guilds.keyArray();//Cached Guilds
-  for (var i = 0; i < clientGuilds.length; i++) {
-    if (!guildsMap.has(clientGuilds[i])) {
-      guildsMap.set(clientGuilds[i],{prefix:config.prefix});
+  if (!fs.existsSync('guildRecords.json')) {
+    fs.writeFileSync('guildRecords.json', JSON.stringify({}, null, '\t'), {});
+      console.log('asdf');
+      var clientGuilds = client.guilds.keyArray();//Cached Guilds
+      console.log(clientGuilds);
+      for (var i = 0; i < clientGuilds.length; i++) {
+        if (!guildsMap.has(clientGuilds[i])) {
+          guildsMap.set(clientGuilds[i],{prefix:config.prefix});
+        }
+      }
+      console.log(guildsMap);
+      lib.writeMapToFile(guildsMap);//Write to file
+  }else {
+    var fileMap = new Map(lib.readFileToMap());//Read from file
+    guildsMap = lib.readFileToMap();
+    var clientGuilds = client.guilds.keyArray();//Cached Guilds
+    for (var i = 0; i < clientGuilds.length; i++) {
+      if (!guildsMap.has(clientGuilds[i])) {
+        guildsMap.set(clientGuilds[i],{prefix:config.prefix});
+      }
     }
+    if (!_.isEqual(lib.map_to_object(guildsMap),lib.map_to_object(fileMap))) lib.writeMapToFile(guildsMap);//Write to file if not matching - i.e. new guild prefs
   }
-  if (!_.isEqual(lib.map_to_object(guildsMap),lib.map_to_object(fileMap))) lib.writeMapToFile(guildsMap);//Write to file if not matching - i.e. new guild prefs
+  // var fileMap = new Map(lib.readFileToMap());//Read from file
+  // guildsMap = lib.readFileToMap();
+  // var clientGuilds = client.guilds.keyArray();//Cached Guilds
+  // for (var i = 0; i < clientGuilds.length; i++) {
+  //   if (!guildsMap.has(clientGuilds[i])) {
+  //     guildsMap.set(clientGuilds[i],{prefix:config.prefix});
+  //   }
+  // }
+  // if (!_.isEqual(lib.map_to_object(guildsMap),lib.map_to_object(fileMap))) lib.writeMapToFile(guildsMap);//Write to file if not matching - i.e. new guild prefs
   console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
   // Alternate setGame
   var i = 0;
