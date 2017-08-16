@@ -32,15 +32,12 @@ client.login(config.token);
 client.on('ready', () => {
   if (!fs.existsSync('guildRecords.json')) {
     fs.writeFileSync('guildRecords.json', JSON.stringify({}, null, '\t'), {});
-      console.log('asdf');
       var clientGuilds = client.guilds.keyArray();//Cached Guilds
-      console.log(clientGuilds);
       for (var i = 0; i < clientGuilds.length; i++) {
         if (!guildsMap.has(clientGuilds[i])) {
           guildsMap.set(clientGuilds[i],{prefix:config.prefix});
         }
       }
-      console.log(guildsMap);
       lib.writeMapToFile(guildsMap);//Write to file
   }else {
     var fileMap = new Map(lib.readFileToMap());//Read from file
@@ -53,15 +50,6 @@ client.on('ready', () => {
     }
     if (!_.isEqual(lib.map_to_object(guildsMap),lib.map_to_object(fileMap))) lib.writeMapToFile(guildsMap);//Write to file if not matching - i.e. new guild prefs
   }
-  // var fileMap = new Map(lib.readFileToMap());//Read from file
-  // guildsMap = lib.readFileToMap();
-  // var clientGuilds = client.guilds.keyArray();//Cached Guilds
-  // for (var i = 0; i < clientGuilds.length; i++) {
-  //   if (!guildsMap.has(clientGuilds[i])) {
-  //     guildsMap.set(clientGuilds[i],{prefix:config.prefix});
-  //   }
-  // }
-  // if (!_.isEqual(lib.map_to_object(guildsMap),lib.map_to_object(fileMap))) lib.writeMapToFile(guildsMap);//Write to file if not matching - i.e. new guild prefs
   console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
   // Alternate setGame
   var i = 0;
@@ -88,7 +76,7 @@ client.on('guildCreate', (guild)=>{
     lib.writeMapToFile(guildsMap);//Write to file
   // }
   if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
-  guild.defaultChannel.send({embed:new Discord.RichEmbed()
+  guild.defaultChannel.send({embed:new Discord.MessageEmbed()
     .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
     .setDescription(`
 Thanks for adding me to your server!
@@ -103,38 +91,38 @@ Currently running v${version} on a ${process.platform}-${process.arch} platform`
 
 client.on('guildMemberAdd', (member) => {
   if (member.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
-    member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
+    member.guild.defaultChannel.send({embed:new Discord.MessageEmbed()
       .setDescription(`${member.nickname ? `${member.displayName} (${member.user.username})` : member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
       .setThumbnail(member.user.displayAvatarURL)
       .setColor(`${member.guild.me.displayHexColor!=='#000000' ? member.guild.me.displayHexColor : config.hexColour}`)});
   }
 });
 
-client.on('presenceUpdate', (oldMember, newMember) => {
-  if (!oldMember.user.bot) {//Not a Bot User - else null
-    if (newMember.presence.game) {//A game status exists - else null
-      if (newMember.presence.game.streaming) {//The new game status is a stream - else null
-        if (oldMember.presence.game) {//Still playing a game - else now started a game
-          if (!oldMember.presence.game.streaming) {//If user was streaming before update do nothing
-            if (newMember.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
-              newMember.guild.defaultChannel.send({embed:new Discord.RichEmbed()
-                .setDescription(`${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
-                .setThumbnail(newMember.user.displayAvatarURL)
-                .setColor(`${newMember.guild.me.displayHexColor!=='#000000' ? newMember.guild.me.displayHexColor : config.hexColour}`)});
-            }
-          }
-        }else {
-          if (newMember.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
-            newMember.guild.defaultChannel.send({embed:new Discord.RichEmbed()
-              .setDescription(`${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
-              .setThumbnail(newMember.user.displayAvatarURL)
-              .setColor(`${newMember.guild.me.displayHexColor!=='#000000' ? newMember.guild.me.displayHexColor : config.hexColour}`)});
-          }
-        }
-      }
-    }
-  }
-});
+// client.on('presenceUpdate', (oldMember, newMember) => {
+//   if (!oldMember.user.bot) {//Not a Bot User - else null
+//     if (newMember.presence.game) {//A game status exists - else null
+//       if (newMember.presence.game.streaming) {//The new game status is a stream - else null
+//         if (oldMember.presence.game) {//Still playing a game - else now started a game
+//           if (!oldMember.presence.game.streaming) {//If user was streaming before update do nothing
+//             if (newMember.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
+//               newMember.guild.defaultChannel.send({embed:new Discord.MessageEmbed()
+//                 .setDescription(`${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
+//                 .setThumbnail(newMember.user.displayAvatarURL)
+//                 .setColor(`${newMember.guild.me.displayHexColor!=='#000000' ? newMember.guild.me.displayHexColor : config.hexColour}`)});
+//             }
+//           }
+//         }else {
+//           if (newMember.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
+//             newMember.guild.defaultChannel.send({embed:new Discord.MessageEmbed()
+//               .setDescription(`${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
+//               .setThumbnail(newMember.user.displayAvatarURL)
+//               .setColor(`${newMember.guild.me.displayHexColor!=='#000000' ? newMember.guild.me.displayHexColor : config.hexColour}`)});
+//           }
+//         }
+//       }
+//     }
+//   }
+// });
 
 client.on('voiceStateUpdate', (oldMember, newMember) => {
   if (oldMember.voiceChannel) {//Was in a voiceChannel
@@ -223,16 +211,10 @@ client.on('message', (message)=>{
   if (message.channel.type===`dm`)
     return commands.chatbot(client,message.content.split(),message);
 
-  // Chatbot
-  if (message.content.startsWith(`2B`) || message.content.startsWith(`2b`)){
-    console.log(`\x1b[36m[${message.guild}] \x1b[1m${message.author.username}: \x1b[0m${message.content}`);
-    return commands.chatbot(client,message.content.split(/\s+/g).slice(1),message);
-  }
-
   // Custom Prefixes
   let guildPrefix = config.prefix;
   if (guildsMap.has(message.guild.id)) guildPrefix = guildsMap.get(message.guild.id).prefix;
-  if(!message.content.startsWith(guildPrefix)) return;
+  if(!message.content.startsWith(guildPrefix) && !message.content.startsWith(`2B`) && !message.content.startsWith(`2b`)) return;
 
   // Command Parsing
   console.log(`\x1b[36m[${message.guild}] \x1b[1m${message.author.username}: \x1b[0m${message.content}`);
@@ -279,6 +261,7 @@ client.on('message', (message)=>{
     case 'setgame':     return commands.setGame(timer,client,args,message);
     case 'setavatar':   return commands.setAvatar(client,args,message);
     case 'setstatus':   return commands.setStatus(client,guildPrefix,args,message);
+    case 'setprefix2b':
     case 'setprefix':   return commands.setprefix(guildsMap,guildPrefix,args,message);
 
     // Music
@@ -317,6 +300,11 @@ client.on('message', (message)=>{
     case 'calc':        return commands.calc(math,args,message);
     case 'roll':        return commands.roll(args,message);
 
+  }
+
+  // Chatbot
+  if (message.content.startsWith(`2B`) || message.content.startsWith(`2b`)){
+    return commands.chatbot(client,message.content.split(/\s+/g).slice(1),message);
   }
 
 });

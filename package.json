@@ -1,11 +1,11 @@
 {
   "name": "fshybot",
-  "version": "1.6.34",
+  "version": "1.6.35",
   "description": "Discord Bot",
   "main": "app.js",
   "dependencies": {
     "bufferutil": "^3.0.2",
-    "discord.js": "^11.1.0",
+    "discord.js": "github:hydrabolt/discord.js",
     "erlpack": "github:hammerandchisel/erlpack",
     "ffmpeg-binaries": "^3.2.2",
     "he": "^1.1.1",
