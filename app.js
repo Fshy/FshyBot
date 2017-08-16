@@ -98,32 +98,6 @@ client.on('guildMemberAdd', (member) => {
   }
 });
 
-// client.on('presenceUpdate', (oldMember, newMember) => {
-//   if (!oldMember.user.bot) {//Not a Bot User - else null
-//     if (newMember.presence.game) {//A game status exists - else null
-//       if (newMember.presence.game.streaming) {//The new game status is a stream - else null
-//         if (oldMember.presence.game) {//Still playing a game - else now started a game
-//           if (!oldMember.presence.game.streaming) {//If user was streaming before update do nothing
-//             if (newMember.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
-//               newMember.guild.defaultChannel.send({embed:new Discord.MessageEmbed()
-//                 .setDescription(`${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
-//                 .setThumbnail(newMember.user.displayAvatarURL)
-//                 .setColor(`${newMember.guild.me.displayHexColor!=='#000000' ? newMember.guild.me.displayHexColor : config.hexColour}`)});
-//             }
-//           }
-//         }else {
-//           if (newMember.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
-//             newMember.guild.defaultChannel.send({embed:new Discord.MessageEmbed()
-//               .setDescription(`${newMember.nickname ? `${newMember.displayName} (${newMember.user.username})` : newMember.user.username} is now streaming **${newMember.presence.game.name}** at ${newMember.presence.game.url}`)
-//               .setThumbnail(newMember.user.displayAvatarURL)
-//               .setColor(`${newMember.guild.me.displayHexColor!=='#000000' ? newMember.guild.me.displayHexColor : config.hexColour}`)});
-//           }
-//         }
-//       }
-//     }
-//   }
-// });
-
 client.on('voiceStateUpdate', (oldMember, newMember) => {
   if (oldMember.voiceChannel) {//Was in a voiceChannel
     if (newMember.voiceChannel !== oldMember.voiceChannel) {//If state changed, but channel remains the same i.e. Mute, Deafen
