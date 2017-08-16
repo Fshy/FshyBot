@@ -75,28 +75,30 @@ client.on('guildCreate', (guild)=>{
     guildsMap.set(guild.id,{prefix:config.prefix});
     lib.writeMapToFile(guildsMap);//Write to file
   // }
-  if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
-  guild.defaultChannel.send({embed:new Discord.MessageEmbed()
-    .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
-    .setDescription(`
-Thanks for adding me to your server!
-Please have a look at my command list using **!help**
-or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
-
-Currently running v${version} on a ${process.platform}-${process.arch} platform`)
-    .setThumbnail(client.user.displayAvatarURL)
-    .setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
-  }
+// CHANGED defaultChannel deprecated in discord-js v12
+//   if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
+//   guild.defaultChannel.send({embed:new Discord.MessageEmbed()
+//     .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
+//     .setDescription(`
+// Thanks for adding me to your server!
+// Please have a look at my command list using **!help**
+// or for more detailed information at [GitHub](https://github.com/Fshy/FshyBot) | [arc.moe](http://arc.moe)
+//
+// Currently running v${version} on a ${process.platform}-${process.arch} platform`)
+//     .setThumbnail(client.user.displayAvatarURL)
+//     .setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
+//   }
 });
 
-client.on('guildMemberAdd', (member) => {
-  if (member.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
-    member.guild.defaultChannel.send({embed:new Discord.MessageEmbed()
-      .setDescription(`${member.nickname ? `${member.displayName} (${member.user.username})` : member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
-      .setThumbnail(member.user.displayAvatarURL)
-      .setColor(`${member.guild.me.displayHexColor!=='#000000' ? member.guild.me.displayHexColor : config.hexColour}`)});
-  }
-});
+// CHANGED defaultChannel deprecated in discord-js v12
+// client.on('guildMemberAdd', (member) => {
+//   if (member.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
+//     member.guild.defaultChannel.send({embed:new Discord.MessageEmbed()
+//       .setDescription(`${member.nickname ? `${member.displayName} (${member.user.username})` : member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
+//       .setThumbnail(member.user.displayAvatarURL)
+//       .setColor(`${member.guild.me.displayHexColor!=='#000000' ? member.guild.me.displayHexColor : config.hexColour}`)});
+//   }
+// });
 
 client.on('voiceStateUpdate', (oldMember, newMember) => {
   if (oldMember.voiceChannel) {//Was in a voiceChannel
@@ -119,7 +121,7 @@ client.on('messageReactionAdd', (messageReaction,user)=>{
   if (messageReaction.message.author.id!==client.user.id) return;
   switch (messageReaction.emoji.identifier) {
     case '%E2%8F%AF'://PlayPause
-      let vconnec = client.voiceConnections.get(messageReaction.message.guild.defaultChannel.id);
+      let vconnec = client.voiceConnections.get(message.guild.id);
       if (vconnec) {
         let dispatch = vconnec.player.dispatcher;
         if (dispatch){
@@ -151,7 +153,7 @@ client.on('messageReactionRemove', (messageReaction,user)=>{
   if (messageReaction.message.author.id!==client.user.id) return;
   switch (messageReaction.emoji.identifier) {
     case '%E2%8F%AF'://PlayPause
-      let vconnec = client.voiceConnections.get(messageReaction.message.guild.defaultChannel.id);
+      let vconnec = client.voiceConnections.get(message.guild.id);
       if (vconnec) {
         let dispatch = vconnec.player.dispatcher;
         if (dispatch){
@@ -179,6 +181,7 @@ client.on('messageReactionRemove', (messageReaction,user)=>{
 });
 
 client.on('message', (message)=>{
+  console.log(message.guild);
   if(message.author.bot) return;
 
   // Receive DM
@@ -228,7 +231,7 @@ client.on('message', (message)=>{
 
     // Owner Commands
     case 'update':      return commands.update(message);
-    case 'broadcast':   return commands.broadcast(client,guildPrefix,args,message);
+    // case 'broadcast':   return commands.broadcast(client,guildPrefix,args,message); // CHANGED defaultChannel deprecated in discord-js v12
 
     // Admin Commands
     case 'setname':     return commands.setName(client,args,message);

@@ -58,22 +58,23 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
     var str = message.content.slice(guildPrefix.length+3);
     message.channel.send(lib.embed(str,message));
   }
-
-  broadcast(client,guildPrefix,args,message) {
-    if (lib.checkOwner(message)) {
-      if (args[0]) {
-        var str = message.content.slice(guildPrefix.length+9);
-        client.guilds.forEach(function (guild) {
-          if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES'))
-            guild.defaultChannel.send({embed:new Discord.MessageEmbed().setDescription(str).setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
-        });
-      }else {
-        message.channel.send(lib.embed(`**ERROR:** Enter a message to broadcast`,message));
-      }
-    }else {
-      message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`,message));
-    }
-  }
+  
+  // CHANGED defaultChannel deprecated in discord-js v12
+  // broadcast(client,guildPrefix,args,message) {
+  //   if (lib.checkOwner(message)) {
+  //     if (args[0]) {
+  //       var str = message.content.slice(guildPrefix.length+9);
+  //       client.guilds.forEach(function (guild) {
+  //         if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES'))
+  //           guild.defaultChannel.send({embed:new Discord.MessageEmbed().setDescription(str).setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
+  //       });
+  //     }else {
+  //       message.channel.send(lib.embed(`**ERROR:** Enter a message to broadcast`,message));
+  //     }
+  //   }else {
+  //     message.channel.send(lib.embed(`**ERROR:** Insufficient permissions to perform that command`,message));
+  //   }
+  // }
 
   logs(args,message){
     if (args[0]) {
@@ -615,7 +616,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
 
   clearQueue(guildsMap,client,message){
     lib.clearQueue(guildsMap,client,message);
-    let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+    let vconnec = client.voiceConnections.get(message.guild.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
       if (dispatch){
@@ -653,7 +654,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
               if (args[1] && args[1].toLowerCase()==='shuffle')
                 songQueue = lib.durstenfeldShuffle(songQueue);
 
-              let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+              let vconnec = client.voiceConnections.get(message.guild.id);
               if (vconnec) {
                 let dispatch = vconnec.player.dispatcher;
                 if (dispatch){
@@ -710,7 +711,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
                 if (args[1] && args[1].toLowerCase()==='shuffle')
                   songQueue = lib.durstenfeldShuffle(songQueue);
 
-                let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+                let vconnec = client.voiceConnections.get(message.guild.id);
                 if (vconnec) {
                   let dispatch = vconnec.player.dispatcher;
                   if (dispatch){
@@ -783,7 +784,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
               let stream = ytdl(match[2], {
                 filter : 'audioonly'
               });
-              let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+              let vconnec = client.voiceConnections.get(message.guild.id);
               if (vconnec) {
                 let dispatch = vconnec.player.dispatcher;
                 if (dispatch){
@@ -820,7 +821,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
               let stream = ytdl(res.id.videoId, {
                 filter : 'audioonly'
               });
-              let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+              let vconnec = client.voiceConnections.get(message.guild.id);
               if (vconnec) {
                 let dispatch = vconnec.player.dispatcher;
                 if (dispatch){
@@ -863,7 +864,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         return message.channel.send(lib.embed(`**ERROR:** Insufficient permissions\n\`\`\`${voiceChannel.name} ${padding}Speak ${voiceChannel.speakable ? '✔':'✘'} | Join ${voiceChannel.joinable ? '✔':'✘'}\`\`\``,message));
       }
       if (args[0]) {
-        let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+        let vconnec = client.voiceConnections.get(message.guild.id);
         if (vconnec) {
           let dispatch = vconnec.player.dispatcher;
           if (dispatch){
@@ -957,7 +958,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
   }
 
   stop(guildsMap,client,message){
-    let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+    let vconnec = client.voiceConnections.get(message.guild.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
       if (dispatch)
@@ -971,12 +972,12 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
   leave(guildsMap,client,message){
     lib.clearQueue(guildsMap,client,message);
     this.stop(guildsMap,client,message);
-    let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+    let vconnec = client.voiceConnections.get(message.guild.id);
     if (vconnec) vconnec.disconnect();
   }
 
   pause(client,message){
-    let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+    let vconnec = client.voiceConnections.get(message.guild.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
       if (dispatch)
@@ -985,7 +986,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
   }
 
   resume(client,message){
-    let vconnec = client.voiceConnections.get(message.guild.defaultChannel.id);
+    let vconnec = client.voiceConnections.get(message.guild.id);
     if (vconnec) {
       let dispatch = vconnec.player.dispatcher;
       if (dispatch)
