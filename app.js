@@ -181,7 +181,6 @@ client.on('messageReactionRemove', (messageReaction,user)=>{
 });
 
 client.on('message', (message)=>{
-  console.log(message.guild);
   if(message.author.bot) return;
 
   // Receive DM
