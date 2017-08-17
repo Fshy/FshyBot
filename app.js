@@ -2,7 +2,7 @@
 
 const request   = require('request');
 const Discord   = require('discord.js');
-const _         = require('lodash/core');
+const _         = require('lodash');
 const fs        = require('fs');
 const ytdl      = require('ytdl-core');
 const math      = require('mathjs');
@@ -256,8 +256,10 @@ client.on('message', (message)=>{
     case 'np':
     case 'nowplaying':  return commands.nowPlaying(guildsMap,message);
 
-    // PUBG
+    // Games
     case 'pubg':        return commands.pubg(args,message);
+    case 'hs':
+    case 'hearthstone': return commands.hearthstone(args,message);
 
     // Web APIs
     case 'r':           return commands.rslash(guildPrefix,message,args);

@@ -1,5 +1,5 @@
 const request   = require('request');
-const _         = require('lodash/core');
+const _         = require('lodash');
 const fs        = require('fs');
 const readline  = require('readline');
 const Discord   = require('discord.js');
@@ -194,13 +194,13 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
     }
     message.channel.send({embed:new Discord.MessageEmbed()
       .setTitle(`${config.name} Diagnostics:`)
-      .addField(`--------------------------------------- Process ----------------------------------------`,
+      .addField(`\`\`\`------------------------ Process ------------------------\`\`\``,
         `\`\`\`Uptime  | ${parseInt(client.uptime/86400000)}:${parseInt(client.uptime/3600000)%24}:${parseInt(client.uptime/60000)%60}:${parseInt(client.uptime/1000)%60}\nBuild   | v${version}\nMemory  | ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\`\`\``,false)
-      .addField(`---------------------------------------- Guild ------------------------------------------`,
+      .addField(`\`\`\`------------------------- Guild -------------------------\`\`\``,
         `\`\`\`ID      | ${message.guild.id}\nRegion  | ${message.guild.region.toUpperCase()}\nPing    | ${Math.round(client.ping)}ms\nMembers | ${message.guild.memberCount}\`\`\``,false)
-      .addField(`-------------------------------- TextChannel Perms ---------------------------------`,
+      .addField(`\`\`\`------------------- TextChannel Perms -------------------\`\`\``,
         `\`\`\`${textRes}\`\`\``,false)
-      .addField(`------------------------------- VoiceChannel Perms --------------------------------`,
+      .addField(`\`\`\`------------------- VoiceChannel Perms ------------------\`\`\``,
       `\`\`\`${voiceRes}\`\`\``,false)
       .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
   }
@@ -1060,12 +1060,11 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
   smug(message){
     request(`https://smugs.safe.moe/api/v1/i/r`, function (error, response, body) {
       if (!error && response.statusCode !== 200) {
-        message.channel.send(lib.embed('**ERROR:** Could not access safe.moe resource',message));
+        message.channel.send(lib.embed(`**ERROR:** Could not access safe.moe resource`,message));
       }else {
         try {
 		      body = JSON.parse(body);
           if (body.nsfw) {
-            message.channel.send(lib.embed(`Can't show that in a christian server`,message));
             return this.smug(message);
           }else {
             message.channel.send({embed:new Discord.MessageEmbed()
@@ -1203,6 +1202,46 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
     }else {
       message.channel.send(lib.embed(`**Usage:** !pubg <username>`,message));
     }
+  }
+
+  hearthstone(args,message){
+    var card = args.join(' ');
+    request({url:`https://omgvamp-hearthstone-v1.p.mashape.com/cards/search/${card}?collectible=1`,headers: {'X-Mashape-Key': config.hearthstone.apiKey}}, function (error, response, body) {
+      if (!body.error && response.statusCode !== 200) {
+        try {
+          body = JSON.parse(body);
+          message.channel.send(lib.embed(`**ERROR:** ${body.message}`,message));
+        } catch (e) {
+          console.log(e);
+        }
+      }else {
+        try {
+		      body = JSON.parse(body);
+          if (body[0]) {
+            var desc = ``;
+            if (body.length>1) {
+              desc += `\`\`\`js\nMultiple Cards Matching <${args}>:\n`;
+              for (var i = 0; i < body.length; i++) {
+                desc += `"${_.escapeRegExp(body[i].name)}"\n`;
+              }
+              desc += `\`\`\``;
+              message.channel.send({embed:new Discord.MessageEmbed()
+                .setDescription(desc)
+                .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+            }else {
+              message.channel.send({embed:new Discord.MessageEmbed()
+                .setDescription(`\`\`\`js\nCard:    '${body[0].name}'\nRarity:  '${body[0].rarity}'\nClass:   '${body[0].playerClass}'\nCardset: '${body[0].cardSet}'\`\`\``)
+                .setImage(body[0].img)
+                .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+            }
+          }else {
+            message.channel.send(lib.embed(`**ERROR:** No cards found.`,message));
+          }
+  			} catch (e) {
+          message.channel.send(lib.embed(`**ERROR:** ${e}`,message));
+  			}
+      }
+    });
   }
 
 }
