@@ -58,7 +58,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
     var str = message.content.slice(guildPrefix.length+3);
     message.channel.send(lib.embed(str,message));
   }
-  
+
   // CHANGED defaultChannel deprecated in discord-js v12
   // broadcast(client,guildPrefix,args,message) {
   //   if (lib.checkOwner(message)) {
@@ -1058,19 +1058,24 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
   }
 
   smug(message){
-    request(`http://arc.moe/smug`, function (error, response, body) {
-      body = JSON.parse(body);
-      if (error!=null) {
-        message.channel.send(lib.embed('**ERROR:** Could not access arc.moe resource',message));
+    request(`https://smugs.safe.moe/api/v1/i/r`, function (error, response, body) {
+      if (!error && response.statusCode !== 200) {
+        message.channel.send(lib.embed('**ERROR:** Could not access safe.moe resource',message));
       }else {
-        var random = Math.floor(Math.random() * body.length);//Picks one randomly to post
-        if (body[random]) {
-          message.channel.send({embed:new Discord.MessageEmbed()
-            .setImage(`${body[random]}`)
-            .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-        }else {
-          message.channel.send(lib.embed(`**ERROR:** Could not find the image requested`,message));
-        }
+        try {
+		      body = JSON.parse(body);
+          if (body.nsfw) {
+            message.channel.send(lib.embed(`Can't show that in a christian server`,message));
+            return this.smug(message);
+          }else {
+            message.channel.send({embed:new Discord.MessageEmbed()
+              .setImage(`https://smugs.safe.moe/${body.url}`)
+              .setDescription(`ˢᵐᵘᵍˢ ᵖʳᵒᵛᶦᵈᵉᵈ ᵇʸ [ˢᵃᶠᵉ⋅ᵐᵒᵉ](https://smugs.safe.moe)`)
+              .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
+          }
+  			} catch (e) {
+          message.channel.send(lib.embed(`**ERROR:** ${e}`,message));
+  			}
       }
     });
   }

@@ -54,15 +54,16 @@ client.on('ready', () => {
   // Alternate setGame
   var i = 0;
   timer = client.setInterval(function () {
-    switch (i%5) {
-      case 4:   client.user.setGame(`on ${client.guilds.size} Guilds for ${client.users.size} Users`);break;
-      case 3:   client.user.setGame(`Commands: !help`);                                               break;
-      case 2:   client.user.setGame(`@Fshy#0986`);                                                    break;
-      case 1:   client.user.setGame(`on arc.moe`);                                                    break;
-      case 0:   client.user.setGame(`NieR: Automata™`);                                               break;
-    }
+    var gamePresence = [
+      `NieR: Automata™`,
+      `from arc.moe`,
+      `Commands: !help`,
+      `Support via GitHub`,
+      `on ${client.guilds.size} Guilds for ${client.users.size} Users`
+    ];
+    client.user.setPresence({ game: { name: gamePresence[i%gamePresence.length], type: 0 } });
     i++;
-  },15000);
+  },7500);
   // Log Current Stats
   client.setInterval(function () {
     var d = new Date(Date.now());
