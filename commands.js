@@ -35,14 +35,12 @@ Tags are separated by a / symbol, Example: **${guildPrefix}sfw kancolle/thighhig
 **${guildPrefix}insta <username>** - Uploads a user's most recent instagram post
 **${guildPrefix}crypto <coin> <amount>** - Cryptocurrency price lookup
 **${guildPrefix}r <subreddit>** - Uploads a random image from a given subreddit
-
 **${guildPrefix}calc <expression>** - Evaluates a given expression
-**${guildPrefix}roll <n> <m>** - Rolls an n-sided die, m times and displays the result
 
 **-- Chatbot**
 Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
 
-*For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot) repo*`;
+*For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot/blob/master/README.md) repo*`;
       message.channel.send({embed:new Discord.MessageEmbed()
         .setTitle(`${message.guild.me.displayName} Commands:`)
         .setDescription(desc)

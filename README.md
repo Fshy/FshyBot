@@ -48,6 +48,7 @@ When requesting a song, reaction controls are available under the bot response m
 
 <pre>
 !pubg &lt;username&gt; &lt;region&gt; - PLAYERUNKNOWN'S BATTLEGROUNDS stats lookup (Regions:na/sa/eu/as/sea/oc)
+!hearthstone &lt;card name&gt;  - Performs a search and returns basic hearthstone card information 
 </pre>
 
 <h5>Anime/NSFW</h5>
