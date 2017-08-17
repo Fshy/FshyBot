@@ -1242,6 +1242,38 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
     });
   }
 
+  timezone(args,message){
+    var timezoneMap = lib.object_to_map(require('timezone-abbr-offsets'));
+    var chrono = require('chrono-node');
+    var prefix = guildsMap.get(message.guild.id).prefix;
+    try {
+      if (args[0]) {
+        if (!timezoneMap.get(args[0].toUpperCase())) throw `**Usage:** \`${prefix}time <timezone>\` or \`${prefix}time <timezone> <time>\``;
+        if (args[1]) {
+          var tz = args.shift();
+          if (!chrono.parseDate(args.join(' '))) throw `**Usage:** \`${prefix}time <timezone>\` or \`${prefix}time <timezone> <time>\``;
+          var time = chrono.parseDate(args.join(' '));
+          var tzOffset = timezoneMap.get(tz.toUpperCase());
+          var machineOffset = new Date().getTimezoneOffset();
+          var calculatedTime = new Date(Date.now()+(tzOffset*60000)+(machineOffset*60000));
+          var diff = time.getTime()-calculatedTime;
+          message.channel.send(lib.embed(`${args.join(' ')} ${tz.toUpperCase()} is in ${parseInt(diff/86400000) ? `${parseInt(diff/86400000)} days `:``}${parseInt(diff/3600000)%24 ? `${parseInt(diff/3600000)%24} hours `:` `}${parseInt(diff/60000)%60 ? `${parseInt(diff/60000)%60} minutes `:` `}${parseInt(diff/1000)%60 ? `${parseInt(diff/1000)%60} seconds`:``}`,message));
+        }else {
+          if (!timezoneMap.get(args[0].toUpperCase()))
+            throw `Timezone \`${args[0].toUpperCase()}\` does not appear in my database`;
+          var tzOffset = timezoneMap.get(args[0].toUpperCase())
+          var machineOffset = new Date().getTimezoneOffset();
+          message.channel.send(lib.embed(`Current ${args[0].toUpperCase()} time is ${new Date(Date.now()+(tzOffset*60000)+(machineOffset*60000)).toLocaleString()}`,message));
+        }
+      }else {
+        message.channel.send(lib.embed(`**Usage:** \`${prefix}time <timezone>\` or \`${prefix}time <timezone> <time>\``,message));
+      }
+    } catch (e) {
+      console.log(e);
+      message.channel.send(lib.embed(`${e}`,message));
+    }
+  }
+
 }
 
 module.exports = new Commands();

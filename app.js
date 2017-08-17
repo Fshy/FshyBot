@@ -265,6 +265,7 @@ client.on('message', (message)=>{
     case 'r':           return commands.rslash(guildPrefix,message,args);
     case 'crypto':      return commands.coin(args,message);
     case 'insta':       return commands.insta(args,message);
+    case 'time':        return commands.timezone(args,message);
 
     // Anime/NSFW
     case 'anime':       return commands.anime(args,message);
