@@ -238,7 +238,7 @@ client.on('message', (message)=>{
     case 'setgame':     return commands.setGame(timer,client,args,message);
     case 'setavatar':   return commands.setAvatar(client,args,message);
     case 'setstatus':   return commands.setStatus(client,guildPrefix,args,message);
-    case 'setprefix2b':
+    case '2bsetprefix':
     case 'setprefix':   return commands.setprefix(guildsMap,guildPrefix,args,message);
 
     // Music

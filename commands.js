@@ -1086,7 +1086,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
   }
 
   setprefix(guildsMap,guildPrefix,args,message){
-    if (message.guild.roles.exists('name', 'Admin')) {
+    if (message.guild.roles.exists('name', 'Admin') || lib.checkOwner(message)) {
       var newprefix = args.join('');
       if(newprefix){
         var admins = message.guild.roles.find('name', 'Admin').members;
