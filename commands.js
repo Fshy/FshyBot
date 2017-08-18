@@ -135,24 +135,10 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
               var version = require('./package').version;
               message.channel.send(lib.embed(`\`\`\`js\nCurrent:      ${version}\nLatest Build: ${gitPackage.version}\n\n//Latest Commit on FshyBot/master\nMessage:     '${body.message}'\nAuthor:      '${body.author.name}'\nTimestamp:   '${new Date(body.author.date).toLocaleString()}'\nSHA:         '${body.sha}'\`\`\``,message));
             });
-
           }
         });
       }
     });
-
-    // request('https://raw.githubusercontent.com/Fshy/FshyBot/master/package.json', function (error, response, body) {
-    //   response = JSON.parse(body);
-    //   if (error!=null) {
-    //     message.channel.send(lib.embed(`**ERROR:** Could not access repository`,message));
-    //   }else {
-    //     if (response.version!=version) {
-    //       message.channel.send(lib.embed(`Currently Running v${version}\nNightly Build: v${response.version}\n\n:warning: *Use **${guildPrefix}update** to fetch master branch and restart bot | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,message));
-    //     }else {
-    //       message.channel.send(lib.embed(`Currently Running v${version}\nNightly Build: v${response.version}\n\n:white_check_mark: *I'm fully updated to the latest build | [Changelog](https://github.com/Fshy/FshyBot/commits/master)*`,message));
-    //     }
-    //   }
-    // });
   }
 
   stats(version,client,message){
@@ -571,7 +557,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
           message.channel.send(lib.embed(`**ERROR:** Could not access repository`,message));
         }else {
           var version = require('./package').version;
-          if (response.version>version) {
+          if (lib.compareVersion(version,gitPackage.version)<0) {
             //TODO Properly log each shell process/error to the end user
             message.channel.send(lib.embed(`\`\`\`js\nCurrent:      ${version}\nLatest Build: ${response.version}\n\n// Updating from Fshy/FshyBot master Branch..\n// Installing Dependencies..\n// Restarting Script..\`\`\``,message));
             lib.series([
@@ -1090,7 +1076,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
       var newprefix = args.join('');
       if(newprefix){
         var admins = message.guild.roles.find('name', 'Admin').members;
-        if (admins.has(message.author.id)) {
+        if (admins.has(message.author.id) || lib.checkOwner(message)) {
           // set the prefix here
           guildsMap.set(message.guild.id,{prefix:newprefix});
           message.channel.send(lib.embed(`**SUCCESS:** Now listening for the prefix: \`${newprefix}\``,message));

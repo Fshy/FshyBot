@@ -13,6 +13,23 @@ class Lib {
     return (message.author.id===config.ownerID);
   }
 
+  compareVersion(v1, v2) {
+    if(v1===v2) return 0;
+    var a1 = v1.toString().split(".");
+    var a2 = v2.toString().split(".");
+    for( var i = 0; i < a1.length && i < a2.length; i++ ) {
+        var diff = parseInt(a1[i],10) - parseInt(a2[i],10);
+        if( diff>0 ) {
+            return 1;
+        }
+        else if( diff<0 ) {
+            return -1;
+        }
+    }
+    diff = a1.length - a2.length;
+    return (diff>0) ? 1 : (diff<0) ? -1 : 0;
+  }
+
   // execute a single shell command where "cmd" is a string
   exec(cmd, cb){
     var child_process = require('child_process');
