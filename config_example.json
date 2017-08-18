@@ -38,6 +38,9 @@
   "hearthstone":{
     "apiKey":             "OMGVAMP_HEARTHSTONE_API_KEY"
   },
+  "discordbots":{
+    "token":              "DISCORDBOTS_ORG_TOKEN"
+  },
   "radio": [
     {"title":"Odyssey Radio",             "genre":"Anime",            "url":"https://listen.moe/stream",                                      "tuneinId":"s277012"},
     {"title":"Real Hardstyle Radio",      "genre":"Hardstyle",        "url":"http://stream1.rhr.fm:8326",                                     "tuneinId":"s193826"},

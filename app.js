@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 
 const request   = require('request');
+const snekfetch = require('snekfetch');
 const Discord   = require('discord.js');
 const _         = require('lodash');
 const fs        = require('fs');
@@ -51,6 +52,7 @@ client.on('ready', () => {
     if (!_.isEqual(lib.map_to_object(guildsMap),lib.map_to_object(fileMap))) lib.writeMapToFile(guildsMap);//Write to file if not matching - i.e. new guild prefs
   }
   console.log(`\n\x1b[32m\x1b[1m// ${config.name} Online and listening for input\x1b[0m`);
+  lib.postDiscordBots();
   // Alternate setGame
   var i = 0;
   timer = client.setInterval(function () {
@@ -76,6 +78,7 @@ client.on('guildCreate', (guild)=>{
     guildsMap.set(guild.id,{prefix:config.prefix});
     lib.writeMapToFile(guildsMap);//Write to file
   // }
+  lib.postDiscordBots();
 // CHANGED defaultChannel deprecated in discord-js v12
 //   if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
 //   guild.defaultChannel.send({embed:new Discord.MessageEmbed()
@@ -89,6 +92,10 @@ client.on('guildCreate', (guild)=>{
 //     .setThumbnail(client.user.displayAvatarURL)
 //     .setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
 //   }
+});
+
+client.on('guildDelete', (guild)=>{
+  lib.postDiscordBots();
 });
 
 // CHANGED defaultChannel deprecated in discord-js v12

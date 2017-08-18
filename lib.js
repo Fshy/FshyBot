@@ -1,4 +1,5 @@
 const Discord   = require('discord.js');
+const snekfetch = require('snekfetch');
 const _         = require('lodash/core');
 const fs        = require('fs');
 const config    = require('./config.json');
@@ -28,6 +29,15 @@ class Lib {
     }
     diff = a1.length - a2.length;
     return (diff>0) ? 1 : (diff<0) ? -1 : 0;
+  }
+
+  postDiscordBots() {
+    snekfetch
+      .post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
+      .set('Authorization', config.discordbots.token)
+      .send({"server_count":client.guilds.size})
+      .then(() => console.log(`Posted Guild Size (${client.guilds.size}) to DiscordBots API`))
+      .catch(e => console.error(`Failed Posting to DiscordBots - ${e.stack}`));
   }
 
   // execute a single shell command where "cmd" is a string
