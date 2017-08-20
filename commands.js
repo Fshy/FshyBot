@@ -557,7 +557,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
           message.channel.send(lib.embed(`**ERROR:** Could not access repository`,message));
         }else {
           var version = require('./package').version;
-          if (lib.compareVersion(version,gitPackage.version)<0) {
+          if (lib.compareVersion(version,response.version)<0) {
             //TODO Properly log each shell process/error to the end user
             message.channel.send(lib.embed(`\`\`\`js\nCurrent:      ${version}\nLatest Build: ${response.version}\n\n// Updating from Fshy/FshyBot master Branch..\n// Installing Dependencies..\n// Restarting Script..\`\`\``,message));
             lib.series([
