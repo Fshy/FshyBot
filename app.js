@@ -161,7 +161,7 @@ client.on('messageReactionRemove', (messageReaction,user)=>{
   if (messageReaction.message.author.id!==client.user.id) return;
   switch (messageReaction.emoji.identifier) {
     case '%E2%8F%AF'://PlayPause
-      let vconnec = client.voiceConnections.get(message.guild.id);
+      let vconnec = client.voiceConnections.get(messageReaction.message.guild.id);
       if (vconnec) {
         let dispatch = vconnec.player.dispatcher;
         if (dispatch){
