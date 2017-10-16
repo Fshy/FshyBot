@@ -1047,7 +1047,6 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         message.channel.send(lib.embed(`**ERROR:** Could not access safe.moe resource`,message));
       }else {
         try {
-		      body = JSON.parse(body);
           message.channel.send({embed:new Discord.MessageEmbed()
             .setImage(body)
             .setDescription(`ˢᵐᵘᵍˢ ᵖʳᵒᵛᶦᵈᵉᵈ ᵇʸ [ˢᵃᶠᵉ⋅ᵐᵒᵉ](https://smugs.safe.moe)`)
