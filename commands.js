@@ -1042,20 +1042,16 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
   }
 
   smug(message){
-    request(`https://smugs.safe.moe/api/v1/i/r`, function (error, response, body) {
+    request(`https://arc.moe/api/smug`, function (error, response, body) {
       if (!error && response.statusCode !== 200) {
         message.channel.send(lib.embed(`**ERROR:** Could not access safe.moe resource`,message));
       }else {
         try {
 		      body = JSON.parse(body);
-          if (body.nsfw) {
-            return this.smug(message);
-          }else {
-            message.channel.send({embed:new Discord.MessageEmbed()
-              .setImage(`https://smugs.safe.moe/${body.url}`)
-              .setDescription(`ˢᵐᵘᵍˢ ᵖʳᵒᵛᶦᵈᵉᵈ ᵇʸ [ˢᵃᶠᵉ⋅ᵐᵒᵉ](https://smugs.safe.moe)`)
-              .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
-          }
+          message.channel.send({embed:new Discord.MessageEmbed()
+            .setImage(body)
+            .setDescription(`ˢᵐᵘᵍˢ ᵖʳᵒᵛᶦᵈᵉᵈ ᵇʸ [ˢᵃᶠᵉ⋅ᵐᵒᵉ](https://smugs.safe.moe)`)
+            .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
   			} catch (e) {
           message.channel.send(lib.embed(`**ERROR:** ${e}`,message));
   			}
