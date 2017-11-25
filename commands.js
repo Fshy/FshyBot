@@ -3,6 +3,7 @@ const _         = require('lodash');
 const fs        = require('fs');
 const readline  = require('readline');
 const Discord   = require('discord.js');
+const exec      = require('child_process').exec
 const config    = require('./config.json');
 const lib       = require('./lib');
 
@@ -1042,20 +1043,21 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
   }
 
   smug(message){
-    request(`https://arc.moe/api/smug`, function (error, response, body) {
-      if (!error && response.statusCode !== 200) {
-        message.channel.send(lib.embed(`**ERROR:** Could not access safe.moe resource`,message));
-      }else {
+    exec("curl https://smugs.safe.moe/api/v1/i/r", function(error, stdout, stderr){
+      try {
+        stdout = JSON.parse(stdout)
         try {
           message.channel.send({embed:new Discord.MessageEmbed()
-            .setImage(body)
+            .setImage(`https://smugs.safe.moe/${stdout.url}`)
             .setDescription(`ˢᵐᵘᵍˢ ᵖʳᵒᵛᶦᵈᵉᵈ ᵇʸ [ˢᵃᶠᵉ⋅ᵐᵒᵉ](https://smugs.safe.moe)`)
             .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
   			} catch (e) {
           message.channel.send(lib.embed(`**ERROR:** ${e}`,message));
   			}
+  		} catch (e) {
+        message.channel.send(lib.embed(`**ERROR:** ${e}`,message));
       }
-    });
+    })
   }
 
   invite(client,message){
