@@ -81,7 +81,7 @@ client.on('guildCreate', (guild)=>{
   lib.postDiscordBots();
 // CHANGED defaultChannel deprecated in discord-js v12
 //   if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
-//   guild.defaultChannel.send({embed:new Discord.MessageEmbed()
+//   guild.defaultChannel.send({embed:new Discord.RichEmbed()
 //     .setTitle(`// ${client.user.username} is now serving ${guild.name}`)
 //     .setDescription(`
 // Thanks for adding me to your server!
@@ -101,7 +101,7 @@ client.on('guildDelete', (guild)=>{
 // CHANGED defaultChannel deprecated in discord-js v12
 // client.on('guildMemberAdd', (member) => {
 //   if (member.guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES')) {//Has write permissions
-//     member.guild.defaultChannel.send({embed:new Discord.MessageEmbed()
+//     member.guild.defaultChannel.send({embed:new Discord.RichEmbed()
 //       .setDescription(`${member.nickname ? `${member.displayName} (${member.user.username})` : member.user.username} has joined the server.\nPlease welcome them to ${member.guild.name}`)
 //       .setThumbnail(member.user.displayAvatarURL)
 //       .setColor(`${member.guild.me.displayHexColor!=='#000000' ? member.guild.me.displayHexColor : config.hexColour}`)});

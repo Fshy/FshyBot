@@ -42,7 +42,7 @@ Tags are separated by a / symbol, Example: **${guildPrefix}sfw kancolle/thighhig
 Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
 
 *For the full commands list check the [GitHub](https://github.com/Fshy/FshyBot/blob/master/README.md) repo*`;
-      message.channel.send({embed:new Discord.MessageEmbed()
+      message.channel.send({embed:new Discord.RichEmbed()
         .setTitle(`${message.guild.me.displayName} Commands:`)
         .setDescription(desc)
         // .setImage('http://i.imgur.com/a96NGOY.png')
@@ -65,7 +65,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
   //       var str = message.content.slice(guildPrefix.length+9);
   //       client.guilds.forEach(function (guild) {
   //         if (guild.defaultChannel.permissionsFor(client.user).has('SEND_MESSAGES'))
-  //           guild.defaultChannel.send({embed:new Discord.MessageEmbed().setDescription(str).setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
+  //           guild.defaultChannel.send({embed:new Discord.RichEmbed().setDescription(str).setColor(`${guild.me.displayHexColor!=='#000000' ? guild.me.displayHexColor : config.hexColour}`)});
   //       });
   //     }else {
   //       message.channel.send(lib.embed(`**ERROR:** Enter a message to broadcast`,message));
@@ -108,7 +108,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
             }
           }
           desc = desc.substring(0, desc.lastIndexOf("\n<!--------------------------------------------------------->\n"));
-          message.channel.send({embed:new Discord.MessageEmbed()
+          message.channel.send({embed:new Discord.RichEmbed()
             .setTitle(`Showing last ${count} Voice Channel logs`)
             .setDescription(`\`\`\`html\n${desc==='' ? 'No logs found for this guild' : desc}\n\`\`\``)
             .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
@@ -177,7 +177,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         }
       });
     }
-    message.channel.send({embed:new Discord.MessageEmbed()
+    message.channel.send({embed:new Discord.RichEmbed()
       .setTitle(`${config.name} Diagnostics:`)
       .addField(`\`\`\`------------------------ Process ------------------------\`\`\``,
         `\`\`\`Uptime  | ${parseInt(client.uptime/86400000)}:${parseInt(client.uptime/3600000)%24}:${parseInt(client.uptime/60000)%60}:${parseInt(client.uptime/1000)%60}\nBuild   | v${version}\nMemory  | ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\`\`\``,false)
@@ -208,7 +208,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
                 }else {
                   for (var coin in body) {
                     if (body[coin].Name===currency) {
-                      return message.channel.send({embed:new Discord.MessageEmbed()
+                      return message.channel.send({embed:new Discord.RichEmbed()
                         .setAuthor(`${body[coin].CoinName} (${body[coin].Name}) - $${price}`,`https://www.cryptocompare.com${body[coin].ImageUrl}`)
                         .setDescription(`${amt} ${body[coin].Name} = $${(price*parseFloat(amt)).toFixed(2)}`)
                         .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
@@ -228,7 +228,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
               }else {
                 for (var coin in body) {
                   if (body[coin].Name===currency) {
-                    return message.channel.send({embed:new Discord.MessageEmbed()
+                    return message.channel.send({embed:new Discord.RichEmbed()
                       .setAuthor(`${body[coin].CoinName} (${body[coin].Name}) - $${price}`,`https://www.cryptocompare.com${body[coin].ImageUrl}`)
                       .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
                   }
@@ -296,7 +296,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         parseString(body, function (err, result) {
             const decode = require('he').decode;
             var anime = result.anime.entry[0];
-            message.channel.send({embed:new Discord.MessageEmbed()
+            message.channel.send({embed:new Discord.RichEmbed()
               .setTitle(anime.title[0])
               .setImage(anime.image[0])
               .addField(`English Title:`,`${anime.english[0]!='' ? anime.english[0] : '­'}`,true)
@@ -350,7 +350,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
       }else {
         if (body[0]) {
           var post = body[0];
-          message.channel.send({embed:new Discord.MessageEmbed()
+          message.channel.send({embed:new Discord.RichEmbed()
             .setImage(`http://danbooru.donmai.us${post.file_url}`)
             .setDescription(`Artist: ${post.tag_string_artist} | [Source](https://danbooru.donmai.us/posts/${post.id}) | [Original Source](${post.source})`)
             .setFooter(`Not what you expected? Try using ${guildPrefix}tags ${tag1} ${tag2 ? `or ${guildPrefix}tags ${tag2}`:``}`)
@@ -437,7 +437,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
       }else {
         suggestions = `No suggestions found for ${tag}`;
       }
-      message.channel.send({embed:new Discord.MessageEmbed()
+      message.channel.send({embed:new Discord.RichEmbed()
         .setTitle(`Tags matching '${tag}'`)
         .setDescription(`\`\`\`${suggestions}\`\`\``)
         .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});//return in code tags - markdown parsing tags
@@ -458,7 +458,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
           }
           if (urls.length!=0) {
             var random = Math.floor(Math.random() * urls.length);//Picks one randomly to post
-            message.channel.send({embed:new Discord.MessageEmbed()
+            message.channel.send({embed:new Discord.RichEmbed()
             .setImage(urls[random].url)
             .setDescription(`${urls[random].title}\n[Source](http://reddit.com${urls[random].permalink})`)
             .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
@@ -658,7 +658,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
                 }else {
                   body = JSON.parse(body);
                   if (!body.items[0]) return;
-                  message.channel.send({embed:new Discord.MessageEmbed()
+                  message.channel.send({embed:new Discord.RichEmbed()
                     .setDescription(`:pager: **Playlist:** [${body.items[0].snippet.title}](https://www.youtube.com/playlist?list=${body.items[0].id}) - 0/${songQueue.length}\n:headphones: **Playing:** -------------------- Loading --------------------`)
                     .setThumbnail(body.items[0].snippet.thumbnails.default.url)
                     .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)})
@@ -715,7 +715,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
                   }else {
                     body = JSON.parse(body);
                     if (!body.items[0]) return;
-                    message.channel.send({embed:new Discord.MessageEmbed()
+                    message.channel.send({embed:new Discord.RichEmbed()
                       .setDescription(`:pager: **Playlist:** [${body.items[0].snippet.title}](https://www.youtube.com/playlist?list=${body.items[0].id}) - 0/${songQueue.length}\n:headphones: **Playing:** -------------------- Loading --------------------`)
                       .setThumbnail(body.items[0].snippet.thumbnails.default.url)
                       .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)})
@@ -780,7 +780,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
               client.setTimeout(function () {
                 voiceChannel.join().then(connnection => {
                   var dispatcher = connnection.playStream(stream, {passes:2, volume:0.15});
-                  message.channel.send({embed:new Discord.MessageEmbed()
+                  message.channel.send({embed:new Discord.RichEmbed()
                     .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.member.nickname ? `${message.member.displayName} (${message.author.username})` : message.author.username}`)
                     .setThumbnail(res.snippet.thumbnails.default.url)
                     .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
@@ -817,7 +817,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
               client.setTimeout(function () {
                 voiceChannel.join().then(connnection => {
                   var dispatcher = connnection.playStream(stream, {passes:2, volume:0.15});
-                  message.channel.send({embed:new Discord.MessageEmbed()
+                  message.channel.send({embed:new Discord.RichEmbed()
                     .setDescription(`:headphones: **Now Playing:** ${res.snippet.title}\n:speech_balloon: **Requested by:** ${message.member.nickname ? `${message.member.displayName} (${message.author.username})` : message.author.username}`)
                     .setThumbnail(res.snippet.thumbnails.default.url)
                     .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)}).then(m =>{
@@ -994,7 +994,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
             var guildData = guildsMap.get(message.guild.id);
             guildData.playing = config.radio[choice].tuneinId;
             guildsMap.set(message.guild.id,guildData);
-            message.channel.send({embed:new Discord.MessageEmbed()
+            message.channel.send({embed:new Discord.RichEmbed()
               .setDescription(`**Now Streaming:** ${config.radio[choice].title}\n${body.Secondary ? `**Currently Playing:**  ${body.Secondary.Title}`:''}`)
               .setThumbnail(body.Primary.Image)
               .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
@@ -1016,7 +1016,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         }
         desc += `${guildsMap.get(message.guild.id).prefix}radio ${i+1}${commandPadding} | ${config.radio[i].title}${titlePadding} | ${config.radio[i].genre}\n`;
       }
-      message.channel.send({embed:new Discord.MessageEmbed()
+      message.channel.send({embed:new Discord.RichEmbed()
         .setTitle(`:radio: Programmed Stations:`)
         .setDescription(`\`\`\`Command      | Radio Station                  | Genre\n-------------------------------------------------------------\n${desc}\`\`\``)
         .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
@@ -1031,7 +1031,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
           message.channel.send(lib.embed(`**ERROR:** Could not access TuneIn API`,message));
         }else {
           body = JSON.parse(body);
-          message.channel.send({embed:new Discord.MessageEmbed()
+          message.channel.send({embed:new Discord.RichEmbed()
             .setDescription(`${body.Secondary ? `**Currently Playing:** ${body.Secondary.Title}`:'No ID3 Tags found for this stream'}`)
             .setThumbnail(body.Secondary ? body.Secondary.Image:'')
             .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
@@ -1047,7 +1047,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
       try {
         stdout = JSON.parse(stdout)
         try {
-          message.channel.send({embed:new Discord.MessageEmbed()
+          message.channel.send({embed:new Discord.RichEmbed()
             .setImage(`https://smugs.safe.moe/${stdout.url}`)
             .setDescription(`ˢᵐᵘᵍˢ ᵖʳᵒᵛᶦᵈᵉᵈ ᵇʸ [ˢᵃᶠᵉ⋅ᵐᵒᵉ](https://smugs.safe.moe)`)
             .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
@@ -1062,7 +1062,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
 
   invite(client,message){
     client.generateInvite(8).then(link => {
-      message.channel.send({embed:new Discord.MessageEmbed()
+      message.channel.send({embed:new Discord.RichEmbed()
         .setDescription(`You can use this [LINK](${link}) to invite me to your server! :sparkling_heart:`)
         .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
     });
@@ -1108,7 +1108,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
         var hashtag = args[0].slice(1);
         scraper.getMediaByTag(hashtag, function(error,response){
           var post = response.top_posts.nodes[0];
-          message.channel.send({embed:new Discord.MessageEmbed()
+          message.channel.send({embed:new Discord.RichEmbed()
                 .setDescription(`https://www.instagram.com/p/${post.code}\n${post.caption}`)
                 .setImage(post.display_src)
                 .setFooter(`♥ ${post.likes.count} | 💬 ${post.comments.count}`)
@@ -1117,7 +1117,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
       }else {
         scraper.getAccountInfo(args[0], function(error,response){
           if (response.is_private)
-          return message.channel.send({embed:new Discord.MessageEmbed()
+          return message.channel.send({embed:new Discord.RichEmbed()
                 .setAuthor(`@${response.username} | ${response.full_name}`,response.profile_pic_url,`https://www.instagram.com/${response.username}`)
                 .setDescription(`**ERROR:** User is a private account`)
                 .setImage(response.profile_pic_url_hd)
@@ -1126,7 +1126,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
           for (var i = 0; i < response.media.nodes.length; i++) {
             if (!response.media.nodes[i].is_video) {
               var post = response.media.nodes[i];
-              message.channel.send({embed:new Discord.MessageEmbed()
+              message.channel.send({embed:new Discord.RichEmbed()
                     .setAuthor(`@${response.username} | ${response.full_name}`,response.profile_pic_url,`https://www.instagram.com/${response.username}`)
                     .setDescription(`https://www.instagram.com/p/${post.code}\n${post.caption}`)
                     .setImage(post.display_src)
@@ -1173,7 +1173,7 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
           }
           desc += `\`\`\``;
         }
-        message.channel.send({embed:new Discord.MessageEmbed()
+        message.channel.send({embed:new Discord.RichEmbed()
                 .setAuthor(`${data.PlayerName}`,data.Avatar)
                 .setDescription(`**Region:** ${region ? region.toUpperCase():'---'} | **Season:** ${data.seasonDisplay}\n${desc!==''? desc:`\`\`\`No stats recorded for ${data.PlayerName} ${region ? `on ${region.toUpperCase()}`:''}\n\nMaybe try using ${guildsMap.get(message.guild.id).prefix}pubg <username> <region>\nRegions: NA,SA,EU,AS,SEA,OC\`\`\``}`)
                 .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
@@ -1206,11 +1206,11 @@ Start a sentence with "2B ..." and she'll respond, also try DM'ing her.
                 desc += `"${_.escapeRegExp(body[i].name)}"\n`;
               }
               desc += `\`\`\``;
-              message.channel.send({embed:new Discord.MessageEmbed()
+              message.channel.send({embed:new Discord.RichEmbed()
                 .setDescription(desc)
                 .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
             }else {
-              message.channel.send({embed:new Discord.MessageEmbed()
+              message.channel.send({embed:new Discord.RichEmbed()
                 .setDescription(`\`\`\`js\nCard:    '${body[0].name}'\nRarity:  '${body[0].rarity}'\nClass:   '${body[0].playerClass}'\nCardset: '${body[0].cardSet}'\`\`\``)
                 .setImage(body[0].img)
                 .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : config.hexColour}`)});
